@@ -2,6 +2,7 @@
 
       git pull origin main
 Pull the latest code 
+
 Always fetch the latest changes from the remote repo before creating a new branch
 
       git branch <branch_name>
