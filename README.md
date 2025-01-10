@@ -21,3 +21,6 @@ Work on your changes
   Current branch will be highlighted with an asterisk (*)
 
       git branch
+Remove branch
+
+      git branch -d <branch_name>
