@@ -1,0 +1,157 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   heredoc.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: hni-xuan <hni-xuan@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/01/22 11:49:45 by hni-xuan          #+#    #+#             */
+/*   Updated: 2025/01/23 14:59:57 by hni-xuan         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "minishell.h"
+
+/*
+Note:
+quoted delimeter and unquoted delimeter behave differently
+	quoted delimeter expand the variable & substitute the command
+	unquoted delimeter won't expand the variable & substitute the command
+
+Signal handling is needed in heredoc to handle interruptions eg. Ctrl+C
+	
+*/
+char	*handle_heredoc(char *delimeter, t_shell *shell)
+{
+	int		fd[2];
+	int		status;
+	pid_t	pid;
+	int		quoted_delimeter;
+	char	*checked_delimeter;
+	char	*input;
+	
+	input = NULL;
+	quoted_delimeter = NO;
+	checked_delimeter = check_delimeter(delimeter, &quoted_delimeter);
+	pipe(fd);
+	pid = fork();
+	if (pid == 0)
+		heredoc_input(fd, checked_delimeter);
+	else if (pid > 0)
+	{
+		read_heredoc_input(fd, &input);
+		waitpid(pid, &status, 0);
+		handle_heredoc_signal(status, shell);
+	}
+	if (quoted_delimeter == 0)
+		input = update_input(input, shell);
+	// printf("input: %s\n", input); // debug
+	return (input);
+}
+
+char	*update_input(char *input, t_shell *shell)
+{
+	int		i;
+	char	*new_input;
+
+	i = 0;
+	new_input = ft_strdup("");
+	while (input[i])
+	{
+		if (input[i] == '$')
+			new_input = update_arg(input, &i, new_input, shell);
+		else
+			new_input = join_input(new_input, input, &i);
+	}
+	free(input);
+	return (new_input);
+}
+
+char	*join_input(char *new_input, char *input, int *i)
+{
+	int start;
+	char *append_new_input;
+
+	start = *i;
+	while (input[*i])
+	{
+		if (input[*i] == '$')
+			break ;
+		(*i)++;
+	}
+	append_new_input = ft_substr(input, start, *i - start);
+	new_input = ft_strjoin(new_input, append_new_input);
+	free(append_new_input);
+	return (new_input);
+}
+
+void	read_heredoc_input(int *fd, char **input)
+{
+	int		buffer_read;
+	char	buffer[1024];
+	int		total_read;
+	char	*temp;
+	
+	close(fd[1]);
+	signal(SIGINT, handle_child_signal);
+	total_read = 0;
+	buffer_read = read(fd[0], buffer, 1024);
+	printf("buffer_read: %d\n", buffer_read); // debug
+	while (buffer_read > 0)
+	{
+		temp = malloc(total_read + buffer_read + 1);
+		printf("malloc : %d\n", total_read + buffer_read + 1); // debug
+		if (*input)
+		{
+			printf("input: %s\n", *input); // debug
+			ft_memcpy(temp, *input, total_read);
+			free(*input);
+		}
+		ft_memcpy(temp + total_read, buffer, buffer_read);
+		total_read += buffer_read;
+		temp[total_read] = 0;
+		*input = temp;
+		printf("input: %s\n", *input); // debug
+		buffer_read = read(fd[0], buffer, 1024);
+		printf("buffer_read: %d\n", buffer_read); // debug
+	}
+	close(fd[0]);
+}
+
+void	heredoc_input(int *fd, char *delimeter)
+{
+	char	*line;
+	
+	signal(SIGINT, SIG_DFL);
+	close(fd[0]);
+	while (1)
+	{
+		line = readline("> ");
+		if (!line)
+		{
+			ft_putstr_fd(HEREDOC_ERROR, 1);
+			ft_putstr_fd(delimeter, 1);
+			ft_putendl_fd("')", 1);
+			break ;
+		}
+		if (!ft_strcmp(line, delimeter))
+		{
+			free(line);
+			break ;
+		}
+		ft_putendl_fd(line, fd[1]);
+		free(line);
+	}
+	exit(SUCCESS);
+}
+
+char	*check_delimeter(char *delimeter, int *quoted_delimeter)
+{
+	char	*new_delimeter;
+	
+	if (delimeter[0] != '\'' && delimeter[0] != '\"')
+		return (delimeter);
+	*quoted_delimeter = YES;
+	new_delimeter = ft_substr(delimeter, 1, ft_strlen(delimeter) - 2);
+	return (new_delimeter);
+}
