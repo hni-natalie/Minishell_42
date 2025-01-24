@@ -18,7 +18,7 @@ Work on your changes
       git push origin <branch_name>
   List all the branches in the repo
 
-        git branch -r
+      git branch -r
         
   Current branch will be highlighted with an asterisk (*)
 
