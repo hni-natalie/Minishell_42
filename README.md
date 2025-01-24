@@ -17,10 +17,13 @@ Work on your changes
       git commit -m "created a new branch"
       git push origin <branch_name>
   List all the branches in the repo
-  
+
+        git branch -r
+        
   Current branch will be highlighted with an asterisk (*)
 
-      git branch -r
+      git branch 
+
 Remove branch
 
       git branch -d <branch_name>
