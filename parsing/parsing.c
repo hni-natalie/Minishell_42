@@ -6,7 +6,7 @@
 /*   By: hni-xuan <hni-xuan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 14:17:01 by hni-xuan          #+#    #+#             */
-/*   Updated: 2025/01/23 14:07:24 by hni-xuan         ###   ########.fr       */
+/*   Updated: 2025/02/03 10:56:20 by hni-xuan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ t_node	*parse_exec(char *prompt, int *i, t_shell *shell)
 	{
 		grab_token(prompt, i, arg);
 		exec_node->argv[idx] = ft_strdup(arg);
-		// printf("exec_node->argv[%d]: %s\n", idx, exec_node->argv[idx]); // debug
+		printf("exec_node->argv[%d]: %s\n", idx, exec_node->argv[idx]); // debug
 		idx++;
 		if (ft_strchr("<>", prompt[*i]))
 			node = parse_redir(node, prompt, i, shell);
@@ -92,20 +92,19 @@ t_node	*parse_redir(t_node *node, char *prompt, int *i, t_shell *shell)
 	int		tok;
 	char	arg[1024];
 	
-	// printf("prompt in parse_redir: %s\n", prompt); // debug
-	// printf("i in parse_redir: %d\n", *i); // debug
-	tok = grab_token(prompt, i, NULL);
-	// printf("tok in parse_redir: %c\n", tok); // debug
-	grab_token(prompt, i, arg);
-	// printf("arg in parse_redir: %s\n", arg); // debug
-	if (tok == '<')
-		node = redir_node(arg, INPUT, node, shell);
-	else if (tok == '>')
-		node = redir_node(arg, OUTPUT, node, shell);
-	else if (tok == 'a')
-		node = redir_node(arg, APPEND, node, shell);
-	else if (tok == 'h')
-		node = redir_node(arg, HEREDOC, node, shell);
+	while (ft_strchr("<>", prompt[*i]) && prompt[*i])
+	{
+		tok = grab_token(prompt, i, NULL);
+		grab_token(prompt, i, arg);
+		if (tok == '<')
+			node = redir_node(arg, INPUT, node, shell);
+		else if (tok == '>')
+			node = redir_node(arg, OUTPUT, node, shell);
+		else if (tok == 'a')
+			node = redir_node(arg, APPEND, node, shell);
+		else if (tok == 'h')
+			node = redir_node(arg, HEREDOC, node, shell);
+	}
 	return (node);
 }
 
@@ -131,10 +130,13 @@ t_node	*redir_node(char *arg, int redir_type, t_node *node, t_shell *shell)
 		redir_node->mode = -1;
 		redir_node->fd = -1;
 	}
-	printf("redir_node->file: %s\n", redir_node->file); // debug
-	printf("redir_node->delimeter: %s\n", redir_node->heredoc); // debug
+	// printf("redir_node->file: %s\n", redir_node->file); // debug
+	// printf("redir_node->delimeter: %s\n", redir_node->heredoc); // debug
 	if (node->type == REDIR)
+	{
+		printf("redir_node->file: %s\n", redir_node->file); // debug
 		return (insert_node(node, redir_node), node);
+	}
 	redir_node->next = node;
 	return ((t_node *)redir_node);
 }

@@ -6,7 +6,7 @@
 /*   By: hni-xuan <hni-xuan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 10:22:10 by hni-xuan          #+#    #+#             */
-/*   Updated: 2025/01/23 14:18:21 by hni-xuan         ###   ########.fr       */
+/*   Updated: 2025/01/24 12:15:04 by hni-xuan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void	handle_arg(char **argv, t_shell *shell)
 		new_arg = check_arg(argv[i], shell);
 		free(argv[i]);
 		argv[i] = new_arg;
-		// printf("after argv[%d]: %s\n", i, argv[i]); // debug
+		printf("after argv[%d]: %s\n", i, argv[i]); // debug
 	}
 }
 
@@ -104,7 +104,7 @@ char	*update_arg(char *arg, int *i, char *new_arg, t_shell *shell)
 		return ((*i)++, ft_itoa(shell->last_exit_status));
 	if (ft_isdigit(arg[*i]))
 		return ((*i)++, new_arg);
-	if (!(ft_isalnum(arg[*i])))
+	if (!(ft_isalnum(arg[*i])) && arg[*i] != '_')
 		return (ft_strjoin(new_arg, "$"));
 	start = *i;
 	while (ft_isalnum(arg[*i]) || arg[*i] == '_')
