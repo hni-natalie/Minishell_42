@@ -6,7 +6,7 @@
 /*   By: hni-xuan <hni-xuan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 11:03:11 by hni-xuan          #+#    #+#             */
-/*   Updated: 2025/01/23 11:27:07 by hni-xuan         ###   ########.fr       */
+/*   Updated: 2025/02/05 10:50:29 by hni-xuan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ void	start_shell(t_shell *shell)
 	while (1)
 	{
 		g_signal = 0;
+		shell->pipe_in_prompt = 0;
 		prompt = readline("\033[0;33mminishell$\033[0m ");
 		if (!prompt)
 		{
@@ -51,9 +52,10 @@ void	start_shell(t_shell *shell)
 		ast = parse_node(prompt, shell);
 		if (ast == NULL)
 			continue ;
-		// printf("ast: %d\n", ast->type); // debug
-		free_ast(ast);
+		parse_ast(ast, shell);
+		// printf("shell->pipe_in_prompt: %d\n", shell->pipe_in_prompt); // debug
 		free(prompt);
+		free_ast(ast);
 	}
 }
 
@@ -81,6 +83,23 @@ void	init_shell(t_shell *shell, char **env)
 	copied_env[i] = NULL;
 	shell->env = copied_env;
 	shell->last_exit_status = 0;
+	shell->pipe_in_prompt = 0;
 	signal(SIGINT, sigint_handler);
 	signal(SIGQUIT, SIG_IGN);
+}
+
+void	free_arr(char **arr)
+{
+	int	i;
+
+	i = -1;
+	while (arr[++i])
+		free(arr[i]);
+	free(arr);
+}
+
+void	print_error(char *error, char *prompt)
+{
+	printf("%s%s%s\n", RED, error, RESET);
+	free(prompt);
 }

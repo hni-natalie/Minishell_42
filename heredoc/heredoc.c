@@ -6,7 +6,7 @@
 /*   By: hni-xuan <hni-xuan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 11:49:45 by hni-xuan          #+#    #+#             */
-/*   Updated: 2025/01/23 14:59:57 by hni-xuan         ###   ########.fr       */
+/*   Updated: 2025/01/26 18:43:20 by hni-xuan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ char	*handle_heredoc(char *delimeter, t_shell *shell)
 	char	*checked_delimeter;
 	char	*input;
 	
-	input = NULL;
+	input = ft_strdup("");
 	quoted_delimeter = NO;
 	checked_delimeter = check_delimeter(delimeter, &quoted_delimeter);
 	pipe(fd);
@@ -43,46 +43,10 @@ char	*handle_heredoc(char *delimeter, t_shell *shell)
 		waitpid(pid, &status, 0);
 		handle_heredoc_signal(status, shell);
 	}
-	if (quoted_delimeter == 0)
+	if (quoted_delimeter == NO)
 		input = update_input(input, shell);
 	// printf("input: %s\n", input); // debug
 	return (input);
-}
-
-char	*update_input(char *input, t_shell *shell)
-{
-	int		i;
-	char	*new_input;
-
-	i = 0;
-	new_input = ft_strdup("");
-	while (input[i])
-	{
-		if (input[i] == '$')
-			new_input = update_arg(input, &i, new_input, shell);
-		else
-			new_input = join_input(new_input, input, &i);
-	}
-	free(input);
-	return (new_input);
-}
-
-char	*join_input(char *new_input, char *input, int *i)
-{
-	int start;
-	char *append_new_input;
-
-	start = *i;
-	while (input[*i])
-	{
-		if (input[*i] == '$')
-			break ;
-		(*i)++;
-	}
-	append_new_input = ft_substr(input, start, *i - start);
-	new_input = ft_strjoin(new_input, append_new_input);
-	free(append_new_input);
-	return (new_input);
 }
 
 void	read_heredoc_input(int *fd, char **input)
@@ -96,14 +60,14 @@ void	read_heredoc_input(int *fd, char **input)
 	signal(SIGINT, handle_child_signal);
 	total_read = 0;
 	buffer_read = read(fd[0], buffer, 1024);
-	printf("buffer_read: %d\n", buffer_read); // debug
+	// printf("buffer_read: %d\n", buffer_read); // debug
 	while (buffer_read > 0)
 	{
 		temp = malloc(total_read + buffer_read + 1);
-		printf("malloc : %d\n", total_read + buffer_read + 1); // debug
+		// printf("malloc : %d\n", total_read + buffer_read + 1); // debug
 		if (*input)
 		{
-			printf("input: %s\n", *input); // debug
+			// printf("input: %s\n", *input); // debug
 			ft_memcpy(temp, *input, total_read);
 			free(*input);
 		}
@@ -111,9 +75,9 @@ void	read_heredoc_input(int *fd, char **input)
 		total_read += buffer_read;
 		temp[total_read] = 0;
 		*input = temp;
-		printf("input: %s\n", *input); // debug
+		// printf("input: %s\n", *input); // debug
 		buffer_read = read(fd[0], buffer, 1024);
-		printf("buffer_read: %d\n", buffer_read); // debug
+		// printf("buffer_read: %d\n", buffer_read); // debug
 	}
 	close(fd[0]);
 }
@@ -142,16 +106,6 @@ void	heredoc_input(int *fd, char *delimeter)
 		ft_putendl_fd(line, fd[1]);
 		free(line);
 	}
+	printf("exit heredoc\n");
 	exit(SUCCESS);
-}
-
-char	*check_delimeter(char *delimeter, int *quoted_delimeter)
-{
-	char	*new_delimeter;
-	
-	if (delimeter[0] != '\'' && delimeter[0] != '\"')
-		return (delimeter);
-	*quoted_delimeter = YES;
-	new_delimeter = ft_substr(delimeter, 1, ft_strlen(delimeter) - 2);
-	return (new_delimeter);
 }

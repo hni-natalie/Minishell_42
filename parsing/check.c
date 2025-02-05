@@ -6,7 +6,7 @@
 /*   By: hni-xuan <hni-xuan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 15:59:01 by hni-xuan          #+#    #+#             */
-/*   Updated: 2025/01/23 13:47:38 by hni-xuan         ###   ########.fr       */
+/*   Updated: 2025/02/05 10:38:32 by hni-xuan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,16 +23,6 @@ int	empty_line(char *prompt)
 	return (free(prompt), 1);
 }
 
-void	free_arr(char **arr)
-{
-	int	i;
-
-	i = -1;
-	while (arr[++i])
-		free(arr[i]);
-	free(arr);
-}
-
 int	syntax_error(char *prompt)
 {
 	int		i;
@@ -47,9 +37,7 @@ int	syntax_error(char *prompt)
 	while (prompt[i])
 	{
 		prev_tok = tok;
-		// printf("prev_tok: %c\n", prev_tok); // debug
 		tok = grab_token(prompt, &i, NULL);
-		// printf("tok: %c\n", tok); // debug
 		if ((tok == '|' && prev_tok != 'w') || (tok == '|' && prev_tok == '|'))
 			return (print_error(PIPE_ERROR, prompt), 1);
 		else if (ft_strchr("<ha>", prev_tok) && tok == ';')
@@ -84,8 +72,16 @@ int	quote_opening(char *prompt)
 	return (0);
 }
 
-void	print_error(char *error, char *prompt)
+void	check_quote(int *quote, char *arg, int *i, int action)
 {
-	printf("%s%s%s\n", RED, error, RESET);
-	free(prompt);
+	if (action == OPEN_QUOTE)
+	{
+		*quote = arg[*i];
+		(*i)++;
+	}
+	else if (action == CLOSE_QUOTE)
+	{
+		*quote = 0;
+		(*i)++;
+	}
 }

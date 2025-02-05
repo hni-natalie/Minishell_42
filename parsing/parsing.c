@@ -6,7 +6,7 @@
 /*   By: hni-xuan <hni-xuan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 14:17:01 by hni-xuan          #+#    #+#             */
-/*   Updated: 2025/02/03 10:56:20 by hni-xuan         ###   ########.fr       */
+/*   Updated: 2025/02/05 10:27:40 by hni-xuan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,10 @@ t_node	*parse_node(char *prompt, t_shell *shell)
 	node = parse_exec(prompt, &i, shell);
 	token = grab_token(prompt, &i, arg);
 	if (token == '|')
+	{
+		shell->pipe_in_prompt = 1;
 		node = pipe_node(node, parse_node(&prompt[i], shell));
+	}
 	return (node);
 }
 
@@ -47,7 +50,7 @@ t_node	*parse_exec(char *prompt, int *i, t_shell *shell)
 	{
 		grab_token(prompt, i, arg);
 		exec_node->argv[idx] = ft_strdup(arg);
-		printf("exec_node->argv[%d]: %s\n", idx, exec_node->argv[idx]); // debug
+		// printf("exec_node->argv[%d]: %s\n", idx, exec_node->argv[idx]); // debug
 		idx++;
 		if (ft_strchr("<>", prompt[*i]))
 			node = parse_redir(node, prompt, i, shell);
@@ -134,7 +137,7 @@ t_node	*redir_node(char *arg, int redir_type, t_node *node, t_shell *shell)
 	// printf("redir_node->delimeter: %s\n", redir_node->heredoc); // debug
 	if (node->type == REDIR)
 	{
-		printf("redir_node->file: %s\n", redir_node->file); // debug
+		// printf("redir_node->file: %s\n", redir_node->file); // debug
 		return (insert_node(node, redir_node), node);
 	}
 	redir_node->next = node;

@@ -6,7 +6,7 @@
 #    By: hni-xuan <hni-xuan@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/01/10 16:18:44 by hni-xuan          #+#    #+#              #
-#    Updated: 2025/01/23 13:16:05 by hni-xuan         ###   ########.fr        #
+#    Updated: 2025/02/05 13:50:57 by hni-xuan         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,15 +26,18 @@ OBJ_DIR = ./obj/
 MAIN_DIR = ./main/
 PARSING_DIR = ./parsing/
 HEREDOC_DIR = ./heredoc/
+EXECUTION_DIR = ./execution/
 
 # Files
 MAIN_FILES = main signal
 PARSING_FILES = token parsing init free arg_handler check 
 HEREDOC_FILES = heredoc heredoc_utils
+EXECUTION_FILES = execute setup
 
 OBJ = $(addprefix $(OBJ_DIR), $(addsuffix .o, $(MAIN_FILES)))
 OBJ += $(addprefix $(OBJ_DIR), $(addsuffix .o, $(PARSING_FILES)))
 OBJ += $(addprefix $(OBJ_DIR), $(addsuffix .o, $(HEREDOC_FILES)))
+OBJ += $(addprefix $(OBJ_DIR), $(addsuffix .o, $(EXECUTION_FILES)))
 
 all : $(NAME)
 
@@ -53,6 +56,9 @@ $(OBJ_DIR)%.o: $(PARSING_DIR)%.c | $(OBJ_DIR)
 	@$(CC) $(CFLAGS) -I$(LIBFT_DIR) -c $< -o $@
 
 $(OBJ_DIR)%.o: $(HEREDOC_DIR)%.c | $(OBJ_DIR)
+	@$(CC) $(CFLAGS) -I$(LIBFT_DIR) -c $< -o $@
+
+$(OBJ_DIR)%.o: $(EXECUTION_DIR)%.c | $(OBJ_DIR)
 	@$(CC) $(CFLAGS) -I$(LIBFT_DIR) -c $< -o $@
 
 $(LIBFT_DIR)/libft.a:

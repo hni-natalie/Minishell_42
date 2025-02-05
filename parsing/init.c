@@ -6,7 +6,7 @@
 /*   By: hni-xuan <hni-xuan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 16:38:35 by hni-xuan          #+#    #+#             */
-/*   Updated: 2025/01/26 18:29:43 by hni-xuan         ###   ########.fr       */
+/*   Updated: 2025/02/03 11:06:54 by hni-xuan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ t_node	*pipe_node(t_node *left_node, t_node *right_node)
 {
 	t_pipe_node	*pipe_node;
 
-	printf("pipe_node\n");
+	// printf("pipe_node\n");
 	pipe_node = malloc(sizeof(t_pipe_node));
 	if (!pipe_node)
 		return (NULL);
@@ -40,7 +40,7 @@ t_node	*init_exec_node(void)
 
 void	init_redir_node(t_redir_node *redir_node, int redir_type)
 {
-	printf("init_redir_node\n"); //debug
+	// printf("init_redir_node\n"); //debug
 	ft_memset(redir_node, 0, sizeof(t_redir_node));
 	redir_node->type = REDIR;
 	if (redir_type == INPUT)

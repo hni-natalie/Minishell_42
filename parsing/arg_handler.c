@@ -6,7 +6,7 @@
 /*   By: hni-xuan <hni-xuan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 10:22:10 by hni-xuan          #+#    #+#             */
-/*   Updated: 2025/01/24 12:15:04 by hni-xuan         ###   ########.fr       */
+/*   Updated: 2025/02/05 10:38:16 by hni-xuan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void	handle_arg(char **argv, t_shell *shell)
 		new_arg = check_arg(argv[i], shell);
 		free(argv[i]);
 		argv[i] = new_arg;
-		printf("after argv[%d]: %s\n", i, argv[i]); // debug
+		// printf("after argv[%d]: %s\n", i, argv[i]); // debug
 	}
 }
 
@@ -78,20 +78,6 @@ char	*join_arg(char *new_arg, char *arg, int *i, int quote)
 	return (new_arg);
 }
 
-void	check_quote(int *quote, char *arg, int *i, int action)
-{
-	if (action == OPEN_QUOTE)
-	{
-		*quote = arg[*i];
-		(*i)++;
-	}
-	else if (action == CLOSE_QUOTE)
-	{
-		*quote = 0;
-		(*i)++;
-	}
-}
-
 char	*update_arg(char *arg, int *i, char *new_arg, t_shell *shell)
 {
 	char	*input;
@@ -126,9 +112,7 @@ char	*get_env(char **env, char *input)
 	if (!input || !env)
 		return (NULL);
 	while (env[++i])
-	{
 		if (ft_strncmp(env[i], input, ft_strlen(input)) == 0)
 			return (ft_strchr(env[i], '=') + 1);
-	}
 	return (NULL);
 }
