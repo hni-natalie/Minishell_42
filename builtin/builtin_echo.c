@@ -6,7 +6,7 @@
 /*   By: rraja-az <rraja-az@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 14:20:27 by rraja-az          #+#    #+#             */
-/*   Updated: 2025/02/08 13:55:14 by rraja-az         ###   ########.fr       */
+/*   Updated: 2025/02/08 17:51:30 by rraja-az         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,25 +46,22 @@ int	builtin_echo(char **cmd, t_shell *shell)
 	// check for -n option
 	i = 1;
 	suppress = false;
-	while (args[i] && ft_strcmp(args[1], "-n") == 0)
+	while (cmd[i] && ft_strcmp(cmd[i], "-n") == 0)
 	{
 		suppress = true;
 		++i;
 	}
-
 	// iterate through remaining args
-	while (args[i])
+	while (cmd[i])
 	{
-		write(1, args[i], ft_strlen(args[i]));
-		if (args [i + 1])
-			write (1, " ", 1);
+		write(1, cmd[i], ft_strlen(args[i]));
+		if (cmd[i + 1])
+			write(1, " ", 1);
 		i++;
 	}
-	
 	// print newline unless -n is set
-	if (!suppress)
+	if (!cmd[1] && !suppress)
 		write (1, "\n", 1);
-
 	// set exit status
 	shell->last_exit_status = 0;
 	return (shell->last_exit_status);
