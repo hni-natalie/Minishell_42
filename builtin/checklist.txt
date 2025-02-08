@@ -1,0 +1,77 @@
+TODO :
+
+	1. DONE 		: cleanup builtin.h > to use fx pointer / estruct / none?
+	2. TO DISCUSS 	: merge struct (if there's any with struct.h)
+	3. BUILTINS
+		- echo with option -n
+		- cd with only a relative of absolute path
+		- pwd with no options
+		- export with no options
+		- unset with no options
+		- env with no options or no arguments
+		- exit with no options
+	4. EXEC & SIGNAL
+		- execute.c
+			- parse ast; check built in fx
+			- exec command; link with builtin and exec cmd (normal cmd) via execve
+			/*
+				DESC: Identify command is built-in when processing s_exec_node
+				1. Extract cmd
+					- access argv[0] to get the cmd name
+					- ensure that av[0] is not NULL
+				
+				2.	Compare with built in list cmd names
+				3.	Check and execute
+					- command is builtin? true > execute
+					- false > pass exec to exec cmd handler
+				4.	Special case
+					- eg cd / exit > no forking (because they affect parent shell)
+					- eg echo / pwd > child process 
+				5.	Intergrate with AST
+					- when exec s_exec_node, check if its built in before attempting external exec
+					- ensure (s_redir_node) are handled properly before calling built in function
+				
+			*/
+		- setup.c
+			- signal setup
+
+
+GIT :
+
+	When working on collab repo, always FORK first, forked repo is a copy of your own (your github)
+
+	1. Rename current origin to upstream
+		- CMD : git remote rename origin upstream
+		- so that it tracks the original repo as upstream because local repo is still pointing to original repo
+	2. Add your fork as the new origin
+		- CMD : git remote add origin git@github.com:rplra/42minishell.git
+		- now your local repo is pointing to your forked repo
+	3. Verify changes
+		- CMD : git remote -v
+		- OUTPUT : 	origin    git@github.com:rplra/42minishell.git (fetch)
+					origin    git@github.com:rplra/42minishell.git (push)
+					upstream  git@github.com:original-owner/Minishell_42.git (fetch)
+					upstream  git@github.com:original-owner/Minishell_42.git (push)
+	4. Push your existing work to the fork
+		- CMD : git push -u origin your-branch-name(lyara_builtin)
+	5. Keep your fork updated
+		- whenever original repo (upstream) gets updates, fetch and merge
+		- CMD : git fetch upstream
+				git merge upstream/main  # Merge updates into your main branch
+		or rebase
+		- CMD : git rebase upstream/main
+		- in this case, CMD : git rebase upstream/natalie_parsing
+	6. Pull Request; for main repo to receive the changes when you push to your forked repo
+		- go to fork (rplra/42minishell.git)
+		- click "Contribute" > " Open Pull Request"
+		- choose hni-natalie/Minishell_42 as the base repo
+		- submit PR for review (natalie to review and merge)
+			- approved > merged and done
+			- request changes > comments on what to be fixed
+				- if request changes > mofidy code > commit > push to same branch
+				- PR auto updates with new commit (for review, no need to PR again)
+
+
+
+
+
