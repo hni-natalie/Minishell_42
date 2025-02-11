@@ -6,7 +6,7 @@
 /*   By: rraja-az <rraja-az@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 13:06:57 by rraja-az          #+#    #+#             */
-/*   Updated: 2025/02/10 17:28:02 by rraja-az         ###   ########.fr       */
+/*   Updated: 2025/02/11 13:29:43 by rraja-az         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,14 +37,57 @@
 			- malloc for new vars
 */
 
-static void	sort_export_var(char *var, t_shell *shell)
+/* static int	env_len(t_shell *shell)
 {
-	
+	int	i;
+
+	i = 0;
+	while (shell->env[i])
+		i++;
+	return (i);
+} */
+
+// using insertion sort
+static void	sort_export_var(t_shell *shell)
+{
+	int	i;
+	int	j;
+	int len;
+	char *tmp;
+
+	if (!shell || !shell->env)
+		return ;
+	i = 1;
+	len = 0;
+	while (shell->env[len])
+		len++;
+	while (i < len)
+	{
+		tmp = shell->env[i];
+		j = i - 1;
+		while (j >= 0 && ft_strcmp(shell->env[j], tmp) > 0)
+		{
+			shell->env[j + 1] = shell->env[j];
+			j--;
+		}
+		shell->env[j + 1] = tmp;
+		i++;
+	}
 }
 
 static void	print_export_var(char *var, t_shell *shell)
 {
+	int	i;
 	
+	if (!shell | !shell->env)
+		return;
+	sort_export_var(shell);
+	i = 0;
+	while (shell->env[i])
+	{
+		printf("declare -x %s\n", shell->env[i]);
+		i++;
+	}
 }
 
 int	builtin_export(char **args, t_shell *shell)
@@ -53,7 +96,11 @@ int	builtin_export(char **args, t_shell *shell)
 
 	i = 1;
 	if (!args[i])
+	{
 		print_export_var(shell->env[i], shell);
+		shell->last_exit_status = 0;
+		return (shell->last_exit_status);
+	}
 	while (args[i])
 	{
 		if (is_env_name(args[i], shell->env[i]))
@@ -61,4 +108,7 @@ int	builtin_export(char **args, t_shell *shell)
 		else
 			update_env(args[i], get_value(args[i]), true, shell);
 	}
+	sort_export_var(shell);
+	shell->last_exit_status = 0;
+	return (shell->last_exit_status);
 }

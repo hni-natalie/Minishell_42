@@ -6,7 +6,7 @@
 /*   By: rraja-az <rraja-az@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/07 16:24:16 by rraja-az          #+#    #+#             */
-/*   Updated: 2025/02/07 21:21:43 by rraja-az         ###   ########.fr       */
+/*   Updated: 2025/02/11 14:51:55 by rraja-az         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ static bool	is_numeric(char *s)
 		// 
 	// return (result * sign) % 256
 		// WHY? because exit code ends at 255
-static int	exit_toi(char *s)
+static int	exit_toi(char *s, t_shell *shell, t_node *ast)
 {
 	int	sign;
 	int result;
@@ -86,8 +86,10 @@ static int	exit_toi(char *s)
 		if (*s == '\0' || !(*s >= '0' && *s <= '9'))
 		{
 			printf("Error: Exit code must be numeric\n");
-			// clean entire shell
-			exit(2); // update last_exit_status?
+			shell->last_exit_status = 2;
+			free_ast(ast);
+			free_shell(shell);
+			exit(2);
 		}
 		result = result * 10 + (*s - '0');
 		s++;
@@ -95,7 +97,7 @@ static int	exit_toi(char *s)
 	return ((result * sign) % 256);
 }
 
-int	builtin_exit(char **args, t_shell *shell)
+int	builtin_exit(char **args, t_shell *shell, t_node *ast)
 {
 	int	exit_status;
 	
@@ -111,13 +113,15 @@ int	builtin_exit(char **args, t_shell *shell)
 		{
 			printf("minishell: exit: %s: numeric argument required\n", args[1]);
 			shell->last_exit_status = 2;
-			free_shell(shell); // TODO
+			free_ast(ast);
+			free_shell(shell);
 			exit(2);
 		}
-		exit_status = exit_toi(args[1]);
+		exit_status = exit_toi(args[1], shell, ast);
 	}
 	else
 		exit_status = shell->last_exit_status;
+	free_ast(ast);
 	free_shell(shell);
 	exit(exit_status);
 }

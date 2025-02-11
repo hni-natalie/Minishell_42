@@ -6,7 +6,7 @@
 /*   By: rraja-az <rraja-az@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 13:57:00 by rraja-az          #+#    #+#             */
-/*   Updated: 2025/02/08 17:19:47 by rraja-az         ###   ########.fr       */
+/*   Updated: 2025/02/11 13:32:45 by rraja-az         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,18 +15,19 @@
 
 # include "minishell.h"
 # include <limits.h>
+# include <stdbool.h>
 
 typedef	struct 		s_shell t_shell;
 
 /*					BUILT-INS				*/
 // return type should be int because they return exit status/code
-int 				builtin_echo(char **cmd, t_shell *shell);
-int 				builtin_cd(char **cmd, t_shell *shell);
-int 				builtin_pwd(char **cmd, t_shell *shell);
-int 				builtin_export(char **cmd, t_shell *shell);
-int 				builtin_unset(char **cmd, t_shell *shell);
-int 				builtin_env(char **cmd, t_shell *shell);
-int 				builtin_exit(char **cmd, t_shell *shell);
+int 				builtin_echo(char **args, t_shell *shell);
+int 				builtin_cd(char **args, t_shell *shell);
+int 				builtin_pwd(char **args, t_shell *shell);
+int 				builtin_export(char **args, t_shell *shell);
+int 				builtin_unset(char **args, t_shell *shell);
+int 				builtin_env(char **args, t_shell *shell);
+int 				builtin_exit(char **args, t_shell *shell);
 
 
 /*					UTILS					*/
@@ -34,7 +35,6 @@ bool				is_builtin(const char *cmd);
 int					exec_builtin(char **cmd, t_shell *shell);
 
 #endif
-
 
 
 /*

@@ -5,18 +5,14 @@ TODO :
 	2. BUILTIN.C (DONE)	: cleanup function and decide which approach to use
 	3. STRUCT (DISCUSS) : merge struct (if there's any with struct.h)
 	4. BUILTINS
-		- ECHO	(DONE)	: echo with option -n
-		- CD	(WIP)	: with only a relative of absolute path
-				- TODO
-					: function update_env to link to env 
-					: update oldpwd and pwd
+		+ ECHO	(DONE)	: echo with option -n
+		+ CD	(DONE)	: with only a relative of absolute path
 		- PWD	(DONE)	: pwd with no options
-		- EXPORT(WIP)	: export with no options
+						: ** check PATH_MAX
+		- EXPORT(DONE)	: export with no options
 		- UNSET	(DONE) 	: uset with no options
 		- ENV	(DONE) 	: env with no options or no arguments
-		- EXIT	(WIP)	: exit with no options
-				- TODO
-					: function to clean entire shell 
+		- EXIT	(DONE)	: exit with no options
 	5. EXEC & SIGNAL
 		- execute.c
 			- parse ast; check built in fx

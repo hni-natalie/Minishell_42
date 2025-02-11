@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hni-xuan <hni-xuan@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rraja-az <rraja-az@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 13:25:16 by hni-xuan          #+#    #+#             */
-/*   Updated: 2025/02/05 10:33:33 by hni-xuan         ###   ########.fr       */
+/*   Updated: 2025/02/11 15:17:32 by rraja-az         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,4 +62,20 @@ void	free_redir_data(t_redir_node *r_node)
 		free(r_node->file);
 	if (r_node->heredoc)
 		free(r_node->heredoc);
+}
+
+void	free_shell(t_shell *shell)
+{
+	int	i;
+	
+	if (!shell)
+		return;
+	if (shell->env)
+	{
+		i = 0;
+		while (shell->env[i])
+			free(shell->env[i++]);
+		free(shell->env);
+	}
+	free(shell);
 }
