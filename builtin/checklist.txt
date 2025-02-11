@@ -1,16 +1,23 @@
 TODO :
 
-	1. DONE 		: cleanup builtin.h > to use fx pointer / estruct / none?
-	2. TO DISCUSS 	: merge struct (if there's any with struct.h)
-	3. BUILTINS
-		- DONE		: echo with option -n
-		- cd with only a relative of absolute path
-		- pwd with no options
-		- export with no options
-		- unset with no options
-		- env with no options or no arguments
-		- exit with no options
-	4. EXEC & SIGNAL
+	0. MAKEFILE	 (TODO)	: to make compatible with both linux and mac
+	1. BUILTIN.H (DONE)	: cleanup builtin.h > to use fx pointer / estruct / array?
+	2. BUILTIN.C (DONE)	: cleanup function and decide which approach to use
+	3. STRUCT (DISCUSS) : merge struct (if there's any with struct.h)
+	4. BUILTINS
+		- ECHO	(DONE)	: echo with option -n
+		- CD	(WIP)	: with only a relative of absolute path
+				- TODO
+					: function update_env to link to env 
+					: update oldpwd and pwd
+		- PWD	(DONE)	: pwd with no options
+		- EXPORT(WIP)	: export with no options
+		- UNSET	(DONE) 	: uset with no options
+		- ENV	(DONE) 	: env with no options or no arguments
+		- EXIT	(WIP)	: exit with no options
+				- TODO
+					: function to clean entire shell 
+	5. EXEC & SIGNAL
 		- execute.c
 			- parse ast; check built in fx
 			- exec command; link with builtin and exec cmd (normal cmd) via execve
@@ -30,10 +37,10 @@ TODO :
 				5.	Intergrate with AST
 					- when exec s_exec_node, check if its built in before attempting external exec
 					- ensure (s_redir_node) are handled properly before calling built in function
-				
 			*/
 		- setup.c
 			- signal setup
+		
 
 
 GIT :
