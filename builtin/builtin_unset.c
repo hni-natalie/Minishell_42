@@ -6,7 +6,7 @@
 /*   By: rraja-az <rraja-az@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/10 09:56:27 by rraja-az          #+#    #+#             */
-/*   Updated: 2025/02/10 15:14:57 by rraja-az         ###   ########.fr       */
+/*   Updated: 2025/02/12 14:43:24 by rraja-az         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ int	builtin_unset(char **args, t_shell *shell)
 	if (!args[i])
 	{
 		printf("unset: not enough arguments\n");
-		shell->last_exit_status = 1;
+		shell->last_exit_status = FAILURE;
 		return (shell->last_exit_status);
 	}
 	while (args[i])
@@ -93,6 +93,6 @@ int	builtin_unset(char **args, t_shell *shell)
 			remove_env_var(args[i], shell);
 		i++;
 	}
-	shell->last_exit_status = 0;
+	shell->last_exit_status = SUCCESS;
 	return (shell->last_exit_status);
 }

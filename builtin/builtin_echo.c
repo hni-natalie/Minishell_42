@@ -6,7 +6,7 @@
 /*   By: rraja-az <rraja-az@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 14:20:27 by rraja-az          #+#    #+#             */
-/*   Updated: 2025/02/11 14:16:57 by rraja-az         ###   ########.fr       */
+/*   Updated: 2025/02/12 08:59:53 by rraja-az         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,14 +35,14 @@
 int	builtin_echo(char **args, t_shell *shell)
 {
 	int		i;
-	bool	suppress;
+	bool	suppress_n;
 	
 	i = 1;
-	suppress = false;
+	suppress_n = false;
 	while (args[i] && ft_strncmp(args[i], "-n", 2) == 0
 		&& ft_strspn(args[i] + 1, "n") == ft_strlen(args[i]) - 1)
 	{
-		suppress = true;
+		suppress_n = true;
 		i++;
 	}
 	while (args[i])
@@ -52,9 +52,9 @@ int	builtin_echo(char **args, t_shell *shell)
 			write(1, " ", 1);
 		i++;
 	}
-	if (!args[i] && !suppress)
+	if (!args[i] && !suppress_n)
 		write (1, "\n", 1);
-	shell->last_exit_status = 0;
+	shell->last_exit_status = SUCCESS;
 	return (shell->last_exit_status);
 }
 

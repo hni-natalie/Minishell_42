@@ -6,7 +6,7 @@
 /*   By: rraja-az <rraja-az@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/05 15:59:07 by rraja-az          #+#    #+#             */
-/*   Updated: 2025/02/11 11:36:36 by rraja-az         ###   ########.fr       */
+/*   Updated: 2025/02/12 15:04:14 by rraja-az         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@
 		- EG: VAR=VALUE
 		- compares exactly and and make sure *env[len] is = > return after =
 */
-char	*get_directory(char *var, t_shell *shell)
+static char	*get_directory(char *var, t_shell *shell)
 {
 	int		var_len;
 	char	**env;
@@ -76,20 +76,20 @@ char	*get_directory(char *var, t_shell *shell)
 	3. Else, update the pwd to current dir
 	4. Free pwd (cz getcwd previously malloc)
 */
-int update_pwd(t_shell *shell)
+static int update_pwd(t_shell *shell)
 {
 	char	*pwd;
 	char	*oldpwd;
 
 	pwd = getcwd(NULL, 0);
 	if (!pwd)
-		return (1);
+		return (FAILURE);
 	oldpwd = get_directory("PWD", shell);
 	if (oldpwd)
 		update_env("OLDPWD", oldpwd, false, shell);
 	update_env("PWD", pwd, false, shell);
 	free(pwd);
-	return (0);
+	return (SUCCESS);
 }
 
 /*
@@ -101,7 +101,7 @@ int update_pwd(t_shell *shell)
 	4. if chdir home is true > update pwd > else return 1
 		- chdir return 0 (successful), -1 (error)
 */
-int	home_directory(t_shell *shell)
+static int	home_directory(t_shell *shell)
 {
 	char *home;
 
@@ -109,12 +109,12 @@ int	home_directory(t_shell *shell)
 	if (!home)
 	{
 		printf("minishell: cd: HOME not set\n");
-		return (1);
+		return (FAILURE);
 	}
 	if (chdir(home) == 0)
 		return (update_pwd(shell));
 	printf("minishell: cd: %s: No such file or directory\n", home); // DISCUSS - necessary?
-	return (1); 
+	return (FAILURE); 
 }
 
 /*
@@ -124,7 +124,7 @@ int	home_directory(t_shell *shell)
 	2. if oldpwd is null or fails > print error > return 1
 	3. getcwd > print the current directory (same as bash)
 */
-int prev_directory(t_shell *shell)
+static int prev_directory(t_shell *shell)
 {
 	char	*oldpwd;
 	char	*cwd;
@@ -133,7 +133,7 @@ int prev_directory(t_shell *shell)
 	if (!oldpwd || chdir(oldpwd) == -1)
 	{
 		printf("minishell: cd: OLDPWD not set\n");
-		return (1);
+		return (FAILURE);
 	}
 	cwd = get(NULL, 0);
 	if (cwd)
@@ -164,7 +164,7 @@ int	builtin_cd(char **args, t_shell *shell)
 	if (chdir(args[1]) == -1)
 	{
 		printf("minishell: cd : %s: No such file or directory\n", args[1]);
-		shell->last_exit_status = 1;
+		shell->last_exit_status = FAILURE;
 		return (shell->last_exit_status);
 	}
 	return (update_pwd(shell));

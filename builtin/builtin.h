@@ -6,7 +6,7 @@
 /*   By: rraja-az <rraja-az@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 13:57:00 by rraja-az          #+#    #+#             */
-/*   Updated: 2025/02/11 13:32:45 by rraja-az         ###   ########.fr       */
+/*   Updated: 2025/02/12 15:07:50 by rraja-az         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,11 @@
 
 typedef	struct 		s_shell t_shell;
 
-/*					BUILT-INS				*/
+/*					VALIDATE & EXEC					*/
+bool				is_builtin(const char *cmd);
+int					exec_builtin(char **cmd, t_shell *shell);
+
+/*					BUILT-INS						*/
 // return type should be int because they return exit status/code
 int 				builtin_echo(char **args, t_shell *shell);
 int 				builtin_cd(char **args, t_shell *shell);
@@ -27,15 +31,9 @@ int 				builtin_pwd(char **args, t_shell *shell);
 int 				builtin_export(char **args, t_shell *shell);
 int 				builtin_unset(char **args, t_shell *shell);
 int 				builtin_env(char **args, t_shell *shell);
-int 				builtin_exit(char **args, t_shell *shell);
-
-
-/*					UTILS					*/
-bool				is_builtin(const char *cmd);
-int					exec_builtin(char **cmd, t_shell *shell);
+int 				builtin_exit(char **args, t_shell *shell, t_node *ast);
 
 #endif
-
 
 /*
 typedef struct 		s_builtin

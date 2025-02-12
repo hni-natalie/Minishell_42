@@ -6,7 +6,7 @@
 /*   By: rraja-az <rraja-az@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/07 09:46:20 by rraja-az          #+#    #+#             */
-/*   Updated: 2025/02/08 17:27:12 by rraja-az         ###   ########.fr       */
+/*   Updated: 2025/02/12 14:56:55 by rraja-az         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,10 +97,11 @@ char	*get_env_value(char *env)
 			return (ft_substr(env, i + 1, ft_strlen(env) - i - 1));
 		i++;
 	}
-	return (NULL);
+	//return (NULL);
+	return (ft_strdup(""));
 }
 
-void	get_env(t_shell *shell)
+void	get_env_var(t_shell *shell)
 {
 	int		i;
 	char	**env;
@@ -110,14 +111,15 @@ void	get_env(t_shell *shell)
 	env = shell->env;
 	if (env == NULL)
 		return ;
-	i = -1;
-	while (env[++i])
+	i = 0;
+	while (env[i])
 	{
 		env_name = get_env_name(env[i]);
 		env_value = get_env_value(env[i]);
 		update_env(env_name, env_value, true, shell);
 		free(env_name);
 		free(env_value);
+		i++;
 	}
 }
 
@@ -130,11 +132,9 @@ bool	is_env_name(char *name, t_shell *shell)
 	while (shell->env[i])
 	{
 		env_name = get_env_name(shell->env[i]);
-		if (ft_strncmp(name, env_name, ft_strlen(name)) == 0)
-		{
-			free(env_name);
-			return (true);
-		}
+		//if (ft_strncmp(name, env_name, ft_strlen(name)) == 0)
+		if (ft_strncmp(name, env_name, ft_strlen(name) + 1) == 0)
+			return (free(env_name), true);
 		free(env_name);
 		i++;
 	}
@@ -155,7 +155,7 @@ void	update_env(char *name, char *value, bool add, t_shell *shell)
 		{
 			free(env_name);
 			free(shell->env[i]);
-			new_value = ft_strjoin_three(name, '=', value);
+			new_value = set_new_env(name, '=', value);
 			shell->env[i] = new_value;
 			return ;
 		}
@@ -166,6 +166,13 @@ void	update_env(char *name, char *value, bool add, t_shell *shell)
 		shell->env = extend_env_array(shell->env, name, value);
 }
 
+/*
+	DESC: Extend array length for new var
+
+	1. check for array length
+	2. calloc (len + 2); why 2? > new i & null
+	
+*/
 char	**extend_env_array(char **env, char *name, char *value)
 {
 	int		i;
@@ -175,17 +182,34 @@ char	**extend_env_array(char **env, char *name, char *value)
 	len = 0;
 	while (env[len])
 		len++;
-	new_env = malloc((len + 2) * sizeof(char *));
+	new_env = ft_calloc((len + 2), sizeof(char *));
 	if (!new_env)
-		return (NULL);
+		return (free_array(env), NULL);
 	i = 0;
 	while (i < len)
 	{
-		new_env[i] = env[i];
+		if (!(new_env[i] = ft_strdup(env[i])))
+			return (free_array(new_env), NULL);
 		i++;
 	}
-	new_env[i] = ft_strjoin_three(name, '=', value);
+	if (!(new_env[i] = set_new_env(name, '=', value)))
+		return (free_array(new_env), NULL);
 	new_env[i + 1] = NULL;
-	free(env);
+	free_array(env);
+	return (new_env);
+}
+
+char	*set_new_env(const char *s1, const char *s2, const char *s3)
+{
+	char	*tmp;
+	char	*new_env;
+
+	if (!s1 || !s2 || !s3)
+		return (NULL);
+	tmp = ft_strjoin(s1, s2);
+	if (!tmp)
+		return (NULL);
+	new_env = ft_strjoin(tmp, s3);
+	free (tmp);
 	return (new_env);
 }
