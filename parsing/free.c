@@ -6,7 +6,7 @@
 /*   By: rraja-az <rraja-az@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 13:25:16 by hni-xuan          #+#    #+#             */
-/*   Updated: 2025/02/11 15:17:32 by rraja-az         ###   ########.fr       */
+/*   Updated: 2025/02/12 10:02:47 by rraja-az         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,18 +64,23 @@ void	free_redir_data(t_redir_node *r_node)
 		free(r_node->heredoc);
 }
 
-void	free_shell(t_shell *shell)
+void	free_array(char **arr)
 {
 	int	i;
-	
+
+	if (!arr)
+		return ;
+	i = -1;
+	while(arr[++i])
+		free(arr[i]);
+	free(arr);
+}
+
+void	free_shell(t_shell *shell)
+{
 	if (!shell)
 		return;
 	if (shell->env)
-	{
-		i = 0;
-		while (shell->env[i])
-			free(shell->env[i++]);
-		free(shell->env);
-	}
+		free_array(shell->env);
 	free(shell);
 }
