@@ -8,9 +8,11 @@ TODO :
 		+ ECHO	(DONE)	: echo with option -n
 		+ CD	(DONE)	: with only a relative of absolute path
 		- PWD	(DONE)	: pwd with no options
-						: ** check PATH_MAX
-		- EXPORT(DONE)	: export with no options
-		- UNSET	(DONE) 	: uset with no options
+		- EXPORT(WIP)	: export with no options
+						: **check for failure
+						: **check array realloc for new var 	
+		- UNSET	(WIP) 	: uset with no options
+						: ** check shifting index and freeing mem
 		- ENV	(DONE) 	: env with no options or no arguments
 		- EXIT	(DONE)	: exit with no options
 	5. EXEC & SIGNAL
