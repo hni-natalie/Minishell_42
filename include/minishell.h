@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hni-xuan <hni-xuan@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rraja-az <rraja-az@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 11:05:28 by hni-xuan          #+#    #+#             */
-/*   Updated: 2025/02/05 12:30:29 by hni-xuan         ###   ########.fr       */
+/*   Updated: 2025/02/12 10:04:04 by rraja-az         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,10 @@
 
 # define YES 1
 # define NO 0
+
+# define PATH_MAX 4096
+// max buffer size for file paths (getconf PATH_MAX /)
+// LINUX : 4096 | MAC : 1024
 
 extern int	g_signal;
 
@@ -106,6 +110,8 @@ void	free_ast(t_node *node);
 void	free_redir_data(t_redir_node *r_node);
 void	typecasting_node(t_node *node, t_redir_node **r_node,
 			t_exec_node **e_node, t_pipe_node **p_node);
+void	free_array(char **arr);
+void	free_shell(t_shell *shell);
 
 // init.c
 t_node	*init_exec_node(void);
