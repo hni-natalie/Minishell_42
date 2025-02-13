@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hni-xuan <hni-xuan@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rraja-az <rraja-az@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 17:50:49 by hni-xuan          #+#    #+#             */
-/*   Updated: 2025/02/05 11:15:30 by hni-xuan         ###   ########.fr       */
+/*   Updated: 2025/02/13 09:23:06 by rraja-az         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,9 +46,36 @@ void	execute_node(t_node *node, t_shell *shell)
 		execute_command(exec_node, shell);
 }
 
+/* 
+	Check if ;
+	1. argv is empty string > print as bash > return
+	2. argv is_built in > exec_built_in
+	3. agrv cmd not found > return 127 > exit child process
+	127 : exit code for "command not found"
+
+	WHY empty only return and invalid exits?
+	- empty doesnt even execute = parent process
+	- invalid forks child to exec, child fails to find cmd and prints error
+		- since execve fails > child must exit
+*/
 void	execute_command(t_exec_node *exec_node, t_shell *shell)
 {
-	// link with builtin and execute command other than builtin 
-	// by using execve
+	if (!exec_node || !exec_node->argv || !exec_node->argv[0])
+	{
+		printf("minishell: command not found\n");
+		shell->last_exit_status = 127;
+		return ;
+	}
+	if (is_builtin(exec_node->argv[0]))
+	{
+		shell->last_exit_status = exec_builtin(exec_node->argv, shell);
+		return ;
+	}
+	if (!execve(exec_node->argv[0], exec_node->argv, shell->env))
+	{
+		printf("minishell: %s: command not found\n", exec_node->argv[0]);
+		shell->last_exit_status = 127;
+		exit(127);
+	}
 }
 
