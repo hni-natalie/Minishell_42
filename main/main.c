@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hni-xuan <hni-xuan@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rraja-az <rraja-az@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 11:03:11 by hni-xuan          #+#    #+#             */
-/*   Updated: 2025/02/05 10:50:29 by hni-xuan         ###   ########.fr       */
+/*   Updated: 2025/02/14 10:11:51 by rraja-az         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ int main (int argc, char **argv, char **env)
 	}
 	init_shell(&shell, env);
 	start_shell(&shell);
-	free_arr(shell.env);
+	free_array(shell.env);
 	return (EXIT_SUCCESS);
 }
 
@@ -40,7 +40,7 @@ void	start_shell(t_shell *shell)
 		g_signal = 0;
 		shell->pipe_in_prompt = 0;
 		prompt = readline("\033[0;33mminishell$\033[0m ");
-		if (!prompt)
+		if (!prompt) //handles ctrl_d signal
 		{
 			printf("%s%s%s\n", RED, "exit 👋 Bye ~", RESET);
 			exit(SUCCESS);
@@ -88,7 +88,7 @@ void	init_shell(t_shell *shell, char **env)
 	signal(SIGQUIT, SIG_IGN);
 }
 
-void	free_arr(char **arr)
+/* void	free_arr(char **arr)
 {
 	int	i;
 
@@ -96,7 +96,7 @@ void	free_arr(char **arr)
 	while (arr[++i])
 		free(arr[i]);
 	free(arr);
-}
+} */
 
 void	print_error(char *error, char *prompt)
 {
