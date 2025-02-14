@@ -6,7 +6,7 @@
 /*   By: rraja-az <rraja-az@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 11:05:28 by hni-xuan          #+#    #+#             */
-/*   Updated: 2025/02/12 15:00:17 by rraja-az         ###   ########.fr       */
+/*   Updated: 2025/02/14 16:25:33 by rraja-az         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 # include <sys/wait.h>
+# include <stdbool.h>
 # include <stdio.h>
 # include <signal.h>
 # include <unistd.h>
@@ -42,7 +43,7 @@
 # define NO 0
 
 # define PATH_MAX 4096
-// max buffer size for file paths (getconf PATH_MAX /)
+// max buffer size for file paths (CLI: getconf PATH_MAX /)
 // LINUX : 4096 | MAC : 1024
 
 extern int	g_signal;
@@ -50,7 +51,7 @@ extern int	g_signal;
 // main.c
 void	init_shell(t_shell *shell, char **env);
 void	start_shell(t_shell *shell);
-void	free_arr(char **arr);
+//void	free_arr(char **arr);
 void	print_error(char *error, char *prompt);
 
 // signal.c
@@ -95,10 +96,35 @@ char	*update_input(char *input, t_shell *shell);
 char	*join_input(char *new_input, char *input, int *i);
 void	handle_heredoc_signal(int status, t_shell *shell);
 
+// builtin.c
+bool	is_builtin(const char *cmd);
+int		exec_builtin(char **cmd, t_shell *shell);
+
+// builtin
+int 	builtin_echo(char **argv, t_shell *shell);
+int 	builtin_cd(char **argv, t_shell *shell);
+int 	builtin_pwd(char **argv, t_shell *shell);
+int 	builtin_export(char **argv, t_shell *shell);
+int 	builtin_unset(char **argv, t_shell *shell);
+int 	builtin_env(char **argv, t_shell *shell);
+int 	builtin_exit(char **argv, t_shell *shell, t_node *ast);
+
+// builtin_utils.c
+char	*get_env_name(char *env);
+char	*get_env_value(char *env);
+void	get_env_var(t_shell *shell);
+bool	is_env_name(char *name, t_shell *shell);
+void	update_env(char *name, char *value, bool add, t_shell *shell);
+char	**extend_env_array(char **env, char *name, char *value);
+char	*set_new_env(const char *s1, const char *s2, const char *s3);
+
 // execution
 void	parse_ast(t_node *ast, t_shell *shell);
+void	execute_parent(t_node *ast, t_shell *shell);
+void	execute_child(t_node *ast, t_shell *shell);
 void	execute_node(t_node *node, t_shell *shell);
 void	execute_command(t_exec_node *exec_node, t_shell *shell);
+
 
 // setup
 void	setup_pipe(t_pipe_node *pipe_node, t_shell *shell);
