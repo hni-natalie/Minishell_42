@@ -6,7 +6,7 @@
 /*   By: rraja-az <rraja-az@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 17:50:49 by hni-xuan          #+#    #+#             */
-/*   Updated: 2025/02/14 11:12:50 by rraja-az         ###   ########.fr       */
+/*   Updated: 2025/02/15 14:24:24 by rraja-az         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ void	execute_parent(t_node *ast, t_shell *shell)
 	if (exec_node->argv[0] && is_builtin(exec_node->argv[0]))
 		shell->last_exit_status = exec_builtin(exec_node->argv, shell);
 	else
-		execute_command(ast, shell);
+		execute_command((t_exec_node *)ast, shell);
 }
 
 /* 
@@ -115,6 +115,28 @@ void	execute_node(t_node *node, t_shell *shell)
 */
 void	execute_command(t_exec_node *exec_node, t_shell *shell)
 {
+	char	*cmd_path;
+	
+	if (!exec_node->argv[0])
+		return ;
+	if (is_builtin(exec_node->argv[0]))
+	{
+		shell->last_exit_status = exec_builtin(exec_node->argv, shell);
+		return ;
+	}
+	cmd_path = get_path(exec_node->argv[0], shell->env);
+	if (execve(cmd_path, exec_node->argv, shell->env) == -1)
+	{
+		printf("minishell: %s: command not found\n", exec_node->argv[0]);
+		shell->last_exit_status = 127;
+		exit(127);
+	}
+}
+
+/* void	execute_command(t_exec_node *exec_node, t_shell *shell)
+{
+	char	*cmd_path;
+	
 	if (!exec_node || !exec_node->argv || !exec_node->argv[0])
 	{
 		printf("minishell: command not found\n");
@@ -132,4 +154,4 @@ void	execute_command(t_exec_node *exec_node, t_shell *shell)
 		shell->last_exit_status = 127;
 		exit(127);
 	}
-}
+} */
