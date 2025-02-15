@@ -6,11 +6,10 @@
 /*   By: rraja-az <rraja-az@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/05 15:59:07 by rraja-az          #+#    #+#             */
-/*   Updated: 2025/02/12 15:04:14 by rraja-az         ###   ########.fr       */
+/*   Updated: 2025/02/15 10:13:44 by rraja-az         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "builtin.h"
 #include "../include/minishell.h"
 
 /*
@@ -39,7 +38,7 @@
 
 */
 /* 
-	DESC	: Search for env var by its (1)name, returns corresponding (2)directory
+	DESC: Search for env var by its (1)name, returns corresponding (2)directory
 		- EG: var = PATH, directory = /usr/bin
 		- EG: VAR=VALUE
 		- compares exactly and and make sure *env[len] is = > return after =
@@ -135,7 +134,7 @@ static int prev_directory(t_shell *shell)
 		printf("minishell: cd: OLDPWD not set\n");
 		return (FAILURE);
 	}
-	cwd = get(NULL, 0);
+	cwd = getcwd(NULL, 0);
 	if (cwd)
 	{
 		printf("%s\n", cwd);
@@ -152,18 +151,18 @@ static int prev_directory(t_shell *shell)
 	3. Change dir based on arg > check for error
 	4. cd-ed > return update_pwd
 */
-int	builtin_cd(char **args, t_shell *shell)
+int	builtin_cd(char **argv, t_shell *shell)
 {
-	if (args[1] == NULL || args[1][0] == '~')
+	if (argv[1] == NULL || argv[1][0] == '~')
 	{
 		shell->last_exit_status = home_directory(shell);
 		return (shell->last_exit_status);
 	}
-	if (args[1][0] == '-')
+	if (argv[1][0] == '-')
 		return (prev_directory(shell));
-	if (chdir(args[1]) == -1)
+	if (chdir(argv[1]) == -1)
 	{
-		printf("minishell: cd : %s: No such file or directory\n", args[1]);
+		printf("minishell: cd : %s: No such file or directory\n", argv[1]);
 		shell->last_exit_status = FAILURE;
 		return (shell->last_exit_status);
 	}

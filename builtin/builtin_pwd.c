@@ -6,11 +6,10 @@
 /*   By: rraja-az <rraja-az@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 12:20:41 by rraja-az          #+#    #+#             */
-/*   Updated: 2025/02/12 15:07:59 by rraja-az         ###   ########.fr       */
+/*   Updated: 2025/02/14 16:47:57 by rraja-az         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "builtin.h"
 #include "../include/minishell.h"
 
 /*
@@ -20,11 +19,11 @@
 	**PATH_MAX : prevents overflow, set standard limit
 */
 
-int	builtin_pwd(char **args, t_shell *shell)
+int	builtin_pwd(char **argv, t_shell *shell)
 {
 	char	pwd[PATH_MAX];
 
-	if (args[1] == NULL)
+	if (argv[1] == NULL)
 	{
 		if (getcwd(pwd, sizeof(pwd)))
 		{

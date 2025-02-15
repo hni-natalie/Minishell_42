@@ -6,11 +6,10 @@
 /*   By: rraja-az <rraja-az@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/07 16:24:16 by rraja-az          #+#    #+#             */
-/*   Updated: 2025/02/11 14:51:55 by rraja-az         ###   ########.fr       */
+/*   Updated: 2025/02/15 12:54:18 by rraja-az         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "builtin.h"
 #include "../include/minishell.h"
 
 /*
@@ -59,69 +58,28 @@ static bool	is_numeric(char *s)
 	return (true);
 }
 
-	// set sign to 1
-	// skip leading whitespace
-	// if cmd starts with '-', set sign = -1 and move index
-	// if cmd starts with '+', move index
-	// init result to 0
-	// iterate args
-		// 
-	// return (result * sign) % 256
-		// WHY? because exit code ends at 255
-static int	exit_toi(char *s, t_shell *shell, t_node *ast)
-{
-	int	sign;
-	int result;
-	
-	sign = 1;
-	result = 0;
-	while (*s == ' ' || (*s >= 9 && *s <= 13))
-		s++;
-	if (*s == '-')
-		sign = -1;
-	if (*s == '+' || *s == '-')
-		s++;
-	while (*s)
-	{
-		if (*s == '\0' || !(*s >= '0' && *s <= '9'))
-		{
-			printf("Error: Exit code must be numeric\n");
-			shell->last_exit_status = 2;
-			free_ast(ast);
-			free_shell(shell);
-			exit(2);
-		}
-		result = result * 10 + (*s - '0');
-		s++;
-	}
-	return ((result * sign) % 256);
-}
-
-int	builtin_exit(char **args, t_shell *shell, t_node *ast)
+int	builtin_exit(char **argv, t_shell *shell)
 {
 	int	exit_status;
 	
 	printf("exit\n");
-	if (args[1] && args[2])
+	if (argv[1] && argv[2])
 	{
 		printf("minishell: exit: too many arguments\n");
 		return (1);
 	}
-	if (args[1])
+	if (argv[1])
 	{
-		if (!is_numeric(args[1]))
+		if (!is_numeric(argv[1]))
 		{
-			printf("minishell: exit: %s: numeric argument required\n", args[1]);
+			printf("minishell: exit: %s: numeric argument required\n", argv[1]);
 			shell->last_exit_status = 2;
-			free_ast(ast);
-			free_shell(shell);
 			exit(2);
 		}
-		exit_status = exit_toi(args[1], shell, ast);
+		exit_status = ft_atoi(argv[1]) % 256;
+		shell->last_exit_status = exit_status;
 	}
 	else
 		exit_status = shell->last_exit_status;
-	free_ast(ast);
-	free_shell(shell);
 	exit(exit_status);
 }

@@ -6,13 +6,11 @@
 /*   By: rraja-az <rraja-az@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 13:22:08 by rraja-az          #+#    #+#             */
-/*   Updated: 2025/02/08 17:27:30 by rraja-az         ###   ########.fr       */
+/*   Updated: 2025/02/14 16:47:49 by rraja-az         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "builtin.h"
 #include "../include/minishell.h"
-
 
 /*
 	ENV (with no options or no arguments)

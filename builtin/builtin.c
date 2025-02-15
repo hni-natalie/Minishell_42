@@ -6,14 +6,13 @@
 /*   By: rraja-az <rraja-az@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 13:16:01 by rraja-az          #+#    #+#             */
-/*   Updated: 2025/02/08 17:16:32 by rraja-az         ###   ########.fr       */
+/*   Updated: 2025/02/15 12:22:04 by rraja-az         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "builtin.h"
 #include "../include/minishell.h"
 
-bool	is_builtin(const char *cmd)
+bool	is_builtin(char *cmd)
 {
 	if (!cmd)
 		return (false);

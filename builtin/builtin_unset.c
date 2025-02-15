@@ -6,11 +6,10 @@
 /*   By: rraja-az <rraja-az@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/10 09:56:27 by rraja-az          #+#    #+#             */
-/*   Updated: 2025/02/12 14:43:24 by rraja-az         ###   ########.fr       */
+/*   Updated: 2025/02/14 16:48:00 by rraja-az         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "builtin.h"
 #include "../include/minishell.h"
 
 /*
@@ -74,23 +73,23 @@ static void	remove_env_var(char *var, t_shell *shell)
 	shell->env[i] = NULL; 
 }
 
-int	builtin_unset(char **args, t_shell *shell)
+int	builtin_unset(char **argv, t_shell *shell)
 {
 	int	i;
 
 	i = 1;
-	if (!args[i])
+	if (!argv[i])
 	{
 		printf("unset: not enough arguments\n");
 		shell->last_exit_status = FAILURE;
 		return (shell->last_exit_status);
 	}
-	while (args[i])
+	while (argv[i])
 	{
-		if (!is_env_var(args[i], shell))
+		if (!is_env_var(argv[i], shell))
 			printf("unset: variable does not exist\n");
 		else
-			remove_env_var(args[i], shell);
+			remove_env_var(argv[i], shell);
 		i++;
 	}
 	shell->last_exit_status = SUCCESS;

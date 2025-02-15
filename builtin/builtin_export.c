@@ -6,11 +6,10 @@
 /*   By: rraja-az <rraja-az@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 13:06:57 by rraja-az          #+#    #+#             */
-/*   Updated: 2025/02/12 14:08:00 by rraja-az         ###   ########.fr       */
+/*   Updated: 2025/02/14 16:47:55 by rraja-az         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "builtin.h"
 #include "../include/minishell.h"
 
 /*
@@ -114,29 +113,29 @@ static void	print_export_var(t_shell *shell)
 	}
 }
 
-int	builtin_export(char **args, t_shell *shell)
+int	builtin_export(char **argv, t_shell *shell)
 {
 	int	i;
 
-	if (!args[1])
+	if (!argv[1])
 	{
 		print_export_var(shell);
 		shell->last_exit_status = SUCCESS;
 		return (shell->last_exit_status);
 	}
 	i = 0;
-	while (args[++i])
+	while (argv[++i])
 	{
-		if (!is_valid_env_name(args[i]))
+		if (!is_valid_env_name(argv[i]))
 		{
-			printf("minishell: export: %s: not a valid identifier\n", args[i]);
+			printf("minishell: export: %s: not a valid identifier\n", argv[i]);
 			shell->last_exit_status = FAILURE;
 			return (shell->last_exit_status);
 		}	
-		if (is_env_name(args[i], shell))
-			update_env(args[i], get_env_value(args[i]), false, shell);
+		if (is_env_name(argv[i], shell))
+			update_env(argv[i], get_env_value(argv[i]), false, shell);
 		else
-			update_env(args[i], get_env_value(args[i]), true, shell);
+			update_env(argv[i], get_env_value(argv[i]), true, shell);
 	}
 	sort_export_var(shell);
 	shell->last_exit_status = SUCCESS;
