@@ -6,7 +6,7 @@
 /*   By: rraja-az <rraja-az@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/15 14:48:59 by rraja-az          #+#    #+#             */
-/*   Updated: 2025/02/15 14:49:02 by rraja-az         ###   ########.fr       */
+/*   Updated: 2025/02/17 11:01:19 by rraja-az         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,10 +21,8 @@ bool	is_env_name(char *name, t_shell *shell)
 	while (shell->env[i])
 	{
 		env_name = get_env_name(shell->env[i]);
-		//if (ft_strncmp(name, env_name, ft_strlen(name)) == 0)
-		if (ft_strncmp(name, env_name, ft_strlen(name) + 1) == 0)
-			return (free(env_name), true);
-		free(env_name);
+		if (ft_strncmp(name, env_name, ft_strlen(name)) == 0)
+			return (true);
 		i++;
 	}
 	return (false);
@@ -42,13 +40,11 @@ void	update_env(char *name, char *value, bool add, t_shell *shell)
 		env_name = get_env_name(shell->env[i]);
 		if (ft_strncmp(name, env_name, ft_strlen(env_name) + 1) == 0)
 		{
-			free(env_name);
 			free(shell->env[i]);
 			new_value = set_new_env(name, '=', value);
 			shell->env[i] = new_value;
 			return ;
 		}
-		free(env_name);
 		i++;
 	}
 	if (add == true)
@@ -66,26 +62,26 @@ char	**extend_env_array(char **env, char *name, char *value)
 {
 	int		i;
 	int		len;
-	char	**new_env;
+	char	**new_env_arr;
 
 	len = 0;
 	while (env[len])
 		len++;
-	new_env = ft_calloc((len + 2), sizeof(char *));
-	if (!new_env)
+	new_env_arr = ft_calloc((len + 2), sizeof(char *));
+	if (!new_env_arr)
 		return (free_array(env), NULL);
 	i = 0;
 	while (i < len)
 	{
-		if (!(new_env[i] = ft_strdup(env[i])))
-			return (free_array(new_env), NULL);
+		if (!(new_env_arr[i] = ft_strdup(env[i])))
+			return (free_array(new_env_arr), NULL);
 		i++;
 	}
-	if (!(new_env[i] = set_new_env(name, '=', value)))
-		return (free_array(new_env), NULL);
-	new_env[i + 1] = NULL;
+	if (!(new_env_arr[i] = set_new_env(name, '=', value)))
+		return (free_array(new_env_arr), NULL);
+	new_env_arr[i + 1] = NULL;
 	free_array(env);
-	return (new_env);
+	return (new_env_arr);
 }
 
 char	*set_new_env(char *s1, char c, char *s2)
@@ -104,6 +100,8 @@ char	*set_new_env(char *s1, char c, char *s2)
 	tmp[len] = c;
 	tmp[len + 1] = '\0';
 	new_env = ft_strjoin(tmp, s2);
-	free (tmp);
+	if (!new_env)
+		return (NULL);
+	free(tmp);
 	return (new_env);
 }
