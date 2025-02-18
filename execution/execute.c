@@ -6,7 +6,7 @@
 /*   By: rraja-az <rraja-az@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 17:50:49 by hni-xuan          #+#    #+#             */
-/*   Updated: 2025/02/15 14:24:24 by rraja-az         ###   ########.fr       */
+/*   Updated: 2025/02/18 10:08:42 by rraja-az         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,9 +25,15 @@
 void	parse_ast(t_node *ast, t_shell *shell)
 { 
 	if (!shell->pipe_in_prompt && ast->type == EXEC)
+	{
 		execute_parent(ast, shell);
+		//printf("Executing parent\n"); // debug
+	}
 	else
+	{
 		execute_child(ast, shell);
+		printf("Executing child\n");
+	}
 }
 
 void	execute_parent(t_node *ast, t_shell *shell)
@@ -117,41 +123,24 @@ void	execute_command(t_exec_node *exec_node, t_shell *shell)
 {
 	char	*cmd_path;
 	
-	if (!exec_node->argv[0])
-		return ;
+	if (!exec_node) // debug
+        printf("Error: exec_node is NULL\n"); // debug
+    if (!exec_node->argv) // debug
+        printf("Error: exec_node->argv is NULL\n"); // debug
+    if (!exec_node->argv[0]) // debug
+    {
+	    printf("Error: exec_node->argv[0] is NULL\n"); // debug
+	//if (!exec_node->argv[0])
+		// return;
+		return ; // debug
+	}
 	if (is_builtin(exec_node->argv[0]))
 	{
 		shell->last_exit_status = exec_builtin(exec_node->argv, shell);
 		return ;
 	}
-	cmd_path = get_path(exec_node->argv[0], shell->env);
-	if (execve(cmd_path, exec_node->argv, shell->env) == -1)
-	{
-		printf("minishell: %s: command not found\n", exec_node->argv[0]);
-		shell->last_exit_status = 127;
-		exit(127);
-	}
+	cmd_path = get_path(exec_node->argv[0], shell);
+	if (!cmd_path || execve(cmd_path, exec_node->argv, shell->env) == -1)
+		execute_error(cmd_path, exec_node);
+	printf("Executing command: %s\n", exec_node->argv[0]); // debug
 }
-
-/* void	execute_command(t_exec_node *exec_node, t_shell *shell)
-{
-	char	*cmd_path;
-	
-	if (!exec_node || !exec_node->argv || !exec_node->argv[0])
-	{
-		printf("minishell: command not found\n");
-		shell->last_exit_status = 127;
-		return ;
-	}
-	if (is_builtin(exec_node->argv[0]))
-	{
-		shell->last_exit_status = exec_builtin(exec_node->argv, shell);
-		return ;
-	}
-	if (execve(exec_node->argv[0], exec_node->argv, shell->env) == -1)
-	{
-		printf("minishell: %s: command not found\n", exec_node->argv[0]);
-		shell->last_exit_status = 127;
-		exit(127);
-	}
-} */

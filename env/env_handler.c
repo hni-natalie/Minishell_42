@@ -6,7 +6,7 @@
 /*   By: rraja-az <rraja-az@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/15 14:48:59 by rraja-az          #+#    #+#             */
-/*   Updated: 2025/02/17 11:01:19 by rraja-az         ###   ########.fr       */
+/*   Updated: 2025/02/18 11:11:25 by rraja-az         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,28 @@ bool	is_env_name(char *name, t_shell *shell)
 	return (false);
 }
 
+char	*set_new_env(char *s1, char c, char *s2)
+{
+	int		len;
+	char	*tmp;
+	char	*new_env;
+
+	if (!s1 || !s2)
+		return (NULL);
+	len = ft_strlen(s1);
+	tmp = malloc((len + 2) * sizeof(char));
+	if (!tmp)
+		return (NULL);
+	ft_strlcpy(tmp, s1, len + 1);
+	tmp[len] = c;
+	tmp[len + 1] = '\0';
+	new_env = ft_strjoin(tmp, s2);
+	if (!new_env)
+		return (NULL);
+	free(tmp);
+	return (new_env);
+}
+
 void	update_env(char *name, char *value, bool add, t_shell *shell)
 {
 	int		i;
@@ -47,7 +69,7 @@ void	update_env(char *name, char *value, bool add, t_shell *shell)
 		}
 		i++;
 	}
-	if (add == true)
+	if (add)
 		shell->env = extend_env_array(shell->env, name, value);
 }
 
@@ -82,26 +104,4 @@ char	**extend_env_array(char **env, char *name, char *value)
 	new_env_arr[i + 1] = NULL;
 	free_array(env);
 	return (new_env_arr);
-}
-
-char	*set_new_env(char *s1, char c, char *s2)
-{
-	int		len;
-	char	*tmp;
-	char	*new_env;
-
-	if (!s1 || !s2)
-		return (NULL);
-	len = ft_strlen(s1);
-	tmp = malloc((len + 2) * sizeof(char));
-	if (!tmp)
-		return (NULL);
-	ft_strlcpy(tmp, s1, len + 1);
-	tmp[len] = c;
-	tmp[len + 1] = '\0';
-	new_env = ft_strjoin(tmp, s2);
-	if (!new_env)
-		return (NULL);
-	free(tmp);
-	return (new_env);
 }

@@ -6,7 +6,7 @@
 /*   By: rraja-az <rraja-az@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 11:05:28 by hni-xuan          #+#    #+#             */
-/*   Updated: 2025/02/15 14:47:33 by rraja-az         ###   ########.fr       */
+/*   Updated: 2025/02/17 16:41:30 by rraja-az         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,7 @@ void	handle_arg(char **argv, t_shell *shell);
 char	*check_arg(char *arg, t_shell *shell);
 char	*update_arg(char *arg, int *i, char *new_arg, t_shell *shell);
 char	*join_arg(char *new_arg, char *arg, int *i, int quote);
-char	*get_env(char **env, char *input);
+
 
 // heredoc
 char	*handle_heredoc(char *arg, t_shell *shell);
@@ -109,16 +109,15 @@ int 	builtin_unset(char **argv, t_shell *shell);
 int 	builtin_env(char **argv, t_shell *shell);
 int 	builtin_exit(char **argv, t_shell *shell);
 
-// env_init.c
+// env
+char	*get_env(char **env, char *input);
 char	*get_env_name(char *env);
 char	*get_env_value(char *env);
-void	get_env_var(t_shell *shell);
-
-// env_handler.c
 bool	is_env_name(char *name, t_shell *shell);
+char	*set_new_env(char *s1, char c, char *s2);
 void	update_env(char *name, char *value, bool add, t_shell *shell);
 char	**extend_env_array(char **env, char *name, char *value);
-char	*set_new_env(char *s1, char c, char *s2);
+char	*get_path(char *cmd, t_shell *shell);
 
 // execution
 void	parse_ast(t_node *ast, t_shell *shell);
@@ -126,6 +125,7 @@ void	execute_parent(t_node *ast, t_shell *shell);
 void	execute_child(t_node *ast, t_shell *shell);
 void	execute_node(t_node *node, t_shell *shell);
 void	execute_command(t_exec_node *exec_node, t_shell *shell);
+void	execute_error(char	*cmd_path, t_exec_node *exec_node);
 
 // setup
 void	setup_pipe(t_pipe_node *pipe_node, t_shell *shell);

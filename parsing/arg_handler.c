@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   arg_handler.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hni-xuan <hni-xuan@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rraja-az <rraja-az@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 10:22:10 by hni-xuan          #+#    #+#             */
-/*   Updated: 2025/02/05 10:38:16 by hni-xuan         ###   ########.fr       */
+/*   Updated: 2025/02/17 10:15:09 by rraja-az         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,7 +104,7 @@ char	*update_arg(char *arg, int *i, char *new_arg, t_shell *shell)
 	return (ft_strjoin(new_arg, updated_input));
 }
 
-char	*get_env(char **env, char *input)
+/* char	*get_env(char **env, char *input)
 {
 	int		i;
 	
@@ -115,4 +115,4 @@ char	*get_env(char **env, char *input)
 		if (ft_strncmp(env[i], input, ft_strlen(input)) == 0)
 			return (ft_strchr(env[i], '=') + 1);
 	return (NULL);
-}
+} */

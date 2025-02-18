@@ -6,7 +6,7 @@
 /*   By: rraja-az <rraja-az@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/15 14:53:43 by rraja-az          #+#    #+#             */
-/*   Updated: 2025/02/17 13:44:43 by rraja-az         ###   ########.fr       */
+/*   Updated: 2025/02/17 18:46:50 by rraja-az         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,8 +54,12 @@ static char	*find_path(char *cmd, char **paths)
 	i = 0;
 	while (paths[i])
 	{
-		append = ft_strjoin("/", cmd);
-		fullpath = ft_strjoin(paths[i], append);
+		append = ft_strjoin(paths[i], "/");
+		printf("appended: %s\n", append);
+		if (!append)
+			return (NULL);
+		fullpath = ft_strjoin(append, cmd);
+		printf("fullpath: %s\n", fullpath);
 		free(append);
 		if (access(fullpath, F_OK | X_OK) == 0)
 			return (fullpath);
@@ -71,22 +75,20 @@ char	*get_path(char *cmd, t_shell *shell)
 	char	*cmd_path;
 	char	**paths;
 
-	// check if the cmd is an absolute or relative path
 	cmd_path = is_relative_path(cmd);
+	//printf("cmd path: %s\n", cmd_path); // debug
 	if (cmd_path)
 		return (cmd_path);
-	// find THE path variable
-		// loop through all vars and stops at PATH
-		// skip PATH=; env_path now holds value only (after equal sign)
 	env_path = extract_path("PATH", shell);
 	if (!env_path)
 		return (NULL);
-	// split path into directories
-		// use ft_split to split into array of directories
 	paths = ft_split(env_path, ':');
+	for (int i = 0; paths[i] ;i++) // debug
+		printf("path[%i]= %s\n", i, paths[i]); // debug
 	if (!paths)
 		return (NULL);
 	cmd_path = find_path(cmd, paths);
+	printf("cmd fullpath: %s\n", cmd_path); // debug
 	free_array(paths);
 	return (cmd_path);
 }

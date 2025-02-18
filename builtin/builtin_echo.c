@@ -6,7 +6,7 @@
 /*   By: rraja-az <rraja-az@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 14:20:27 by rraja-az          #+#    #+#             */
-/*   Updated: 2025/02/15 13:17:48 by rraja-az         ###   ########.fr       */
+/*   Updated: 2025/02/18 10:07:04 by rraja-az         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,8 +36,7 @@ int	builtin_echo(char **argv, t_shell *shell)
 	
 	i = 1;
 	suppress_n = false;
-	while (argv[i] && ft_strncmp(argv[i], "-n", 2) == 0
-		&& ft_strspn(argv[i] + 1, "n") == ft_strlen(argv[i]) - 1)
+	while (argv[i] && ft_strcmp(argv[i], "-n") == 0)
 	{
 		suppress_n = true;
 		i++;

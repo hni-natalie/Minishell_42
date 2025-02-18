@@ -6,7 +6,7 @@
 /*   By: rraja-az <rraja-az@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 11:03:11 by hni-xuan          #+#    #+#             */
-/*   Updated: 2025/02/14 10:11:51 by rraja-az         ###   ########.fr       */
+/*   Updated: 2025/02/15 12:10:50 by rraja-az         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ int main (int argc, char **argv, char **env)
 	init_shell(&shell, env);
 	start_shell(&shell);
 	free_array(shell.env);
+	// free ast > free shell?
 	return (EXIT_SUCCESS);
 }
 
