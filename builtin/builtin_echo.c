@@ -1,0 +1,55 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   builtin_echo.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: rraja-az <rraja-az@student.42kl.edu.my>    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/02/04 14:20:27 by rraja-az          #+#    #+#             */
+/*   Updated: 2025/02/18 10:07:04 by rraja-az         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "../include/minishell.h"
+
+/* 
+	ECHO
+	DESC: prints arg to stdout, seperated by sapce
+		: should handle -n; suppress trailing n/l
+
+	FLOW:
+		1. Parse args
+			- Iterate arg passed to echo
+			- Check if first arg is -n && multiple -n flags
+				**ft_strspn(args[i] + 1, "n") > whatever after '-'
+				** == ft_strlen(args[i]) - 1) > length after '-'
+				> true > set flag to suppress newline
+		2. Print arg
+		3. Check if no arg and supress not flagged
+		5. Return exit status
+*/
+
+int	builtin_echo(char **argv, t_shell *shell)
+{
+	int		i;
+	bool	suppress_n;
+	
+	i = 1;
+	suppress_n = false;
+	while (argv[i] && ft_strcmp(argv[i], "-n") == 0)
+	{
+		suppress_n = true;
+		i++;
+	}
+	while (argv[i])
+	{
+		write(1, argv[i], ft_strlen(argv[i]));
+		if (argv[i + 1])
+			write(1, " ", 1);
+		i++;
+	}
+	if (!argv[i] && !suppress_n)
+		write (1, "\n", 1);
+	shell->last_exit_status = SUCCESS;
+	return (shell->last_exit_status);
+}
