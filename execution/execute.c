@@ -6,7 +6,7 @@
 /*   By: rraja-az <rraja-az@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 17:50:49 by hni-xuan          #+#    #+#             */
-/*   Updated: 2025/02/19 09:28:15 by rraja-az         ###   ########.fr       */
+/*   Updated: 2025/02/19 14:38:20 by rraja-az         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,72 +14,68 @@
 
 /*
 	DESC: Parses execution, determines execution type 
-		: Execute command or pipeline whilst ensuring proper signal handling
-		> by handling diff exex cases wether there is a pipeline / builtin
+		: Execute command or forks (ensuring proper signal handling)
 	
-	1. Check if current cmd is a simple command (EXEC) and not in a pipeline
-		- if command is builtin > exec without forking a child process
-		- builtins dont fork because they affect the shell's state
-
+	1. Check if ast is an EXEC node
+	2. Check if cmd is a builtin > true > exc_builtin
+		- builtin is executed directly in parent process
+			because the modify the shell state
+	3. Else (if not builtin) > fork
 */
+
 void	parse_ast(t_node *ast, t_shell *shell)
 {
 	t_exec_node	*exec_node;
-	pid_t		pid;
 
-	if (!ast || ast->type != EXEC)
+	if (!ast)
+		return;
+	if (ast->type == EXEC)
 	{
-		execute_child(ast, shell);
-		return ;
+		exec_node = (t_exec_node *)ast;
+		if (exec_node->argv[0] && is_builtin(exec_node->argv[0]))
+		{
+			shell->last_exit_status = exec_builtin(exec_node->argv, shell);
+			return;
+		}
 	}
-	exec_node = (t_exec_node *)ast;
-	if (exec_node->argv[0] && is_builtin(exec_node->argv[0]))
-	{
-		shell->last_exit_status = exec_builtin(exec_node->argv, shell);
-		return ;
-	}
+	execute_fork(ast, shell);
+}
+
+/* 
+	DESC: Creates child process, execute the cmd
+
+	1. Supress signals from parent before forking
+		- WHY? if we ctrl+c in parent, child wont execute
+	2. Fork (child) > restore signals > execute cmd
+	3. Parent waits for child to end > restore parent's signals
+	4. Handle child process exit status
+		- exit status = 128 + 2(SIGINT) / 3(SIGQUIT) 
+*/
+void	execute_fork(t_node *ast, t_shell *shell)
+{
+	pid_t	pid;
+	int		status;
+
 	signal(SIGINT, SIG_IGN);
 	signal(SIGQUIT, SIG_IGN);
 	pid = fork();
 	if (pid == 0)
-		execute_child(ast, shell);
-	else if (pid > 0)
-		execute_parent(pid, shell);
-}
-
-void	execute_parent(pid_t pid, t_shell *shell)
-{
-	int			status;
-	
-	waitpid(pid, &status, 0);
-	signal(SIGINT, sigint_handler); 
-	signal(SIGQUIT, SIG_IGN);
-	if (WIFEXITED(status))
-		shell->last_exit_status = WEXITSTATUS(status);
-	else if (WIFSIGNALED(status))
-		shell->last_exit_status = 128 + WTERMSIG(status);
-}
-
-/* 
-	DESC: Handles pipe and redir
-
-	1. IGNORE signals in parent BEFORE forking so only child reacts to signal
-		- WHY NEED to ignore first? 
-			> if parent receives ctrl+c, child might not even exec
-	2. FORK
-		- restore default signal handlers to child
-		- child exec cmd > exit
-	3. WAIT for child to finish
-		restore parent's signal after child finishes
-	3. EXIT STATUS
-		- capture child exits so $? (similar to Bash)
-*/
-void	execute_child(t_node *ast, t_shell *shell)
-{
+	{
 		signal(SIGINT, SIG_DFL);
 		signal(SIGQUIT, SIG_DFL);
 		execute_node(ast, shell);
 		exit(shell->last_exit_status);
+	}
+	else if (pid > 0)
+	{
+		waitpid(pid, &status, 0);
+		signal(SIGINT, sigint_handler);
+		signal(SIGQUIT, SIG_IGN);
+		if (WIFEXITED(status))
+			shell->last_exit_status = WEXITSTATUS(status);
+		else if (WIFSIGNALED(status))
+			shell->last_exit_status = 128 + WTERMSIG(status);
+	}
 }
 
 /*
@@ -130,38 +126,4 @@ void	execute_command(t_exec_node *exec_node, t_shell *shell)
 	cmd_path = get_path(exec_node->argv[0], shell);
 	if (!cmd_path || execve(cmd_path, exec_node->argv, shell->env) == -1)
 		execute_error(cmd_path, exec_node);
-	//printf("Executing command: %s\n", exec_node->argv[0]); // debug
 }
-
-
-	// if (!exec_node) // debug
-    //     printf("Error: exec_node is NULL\n"); // debug
-    // if (!exec_node->argv) // debug
-    //     printf("Error: exec_node->argv is NULL\n"); // debug
-    // if (!exec_node->argv[0]) // debug
-    // {
-	//     printf("Error: exec_node->argv[0] is NULL\n"); // debug
-	//	return ; // debug
-	//}
-
-
-/* void	parse_ast(t_node *ast, t_shell *shell)
-{
-	if (!shell->pipe_in_prompt && ast->type == EXEC)
-		execute_parent(ast, shell);
-	else
-		execute_child(ast, shell);
-}
-
-void	execute_parent(t_node *ast, t_shell *shell)
-{
-	t_exec_node	*exec_node;
-	pid_t		pid;
-	int			status;
-	
-	exec_node = (t_exec_node *)ast;
-	if (exec_node->argv[0] && is_builtin(exec_node->argv[0]))
-		shell->last_exit_status = exec_builtin(exec_node->argv, shell);
-	else
-		execute_command((t_exec_node *)ast, shell);
-} */
