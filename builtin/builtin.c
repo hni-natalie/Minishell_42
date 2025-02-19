@@ -6,7 +6,7 @@
 /*   By: rraja-az <rraja-az@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 13:16:01 by rraja-az          #+#    #+#             */
-/*   Updated: 2025/02/15 12:22:04 by rraja-az         ###   ########.fr       */
+/*   Updated: 2025/02/19 11:13:50 by rraja-az         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ bool	is_builtin(char *cmd)
 int		exec_builtin(char **cmd, t_shell *shell)
 {
 	if (!cmd || !cmd[0])
-		return (1);
+		return (FAILURE);
 	else if (ft_strcmp(cmd[0], "echo") == 0)
 		return (builtin_echo(cmd, shell));
 	else if (ft_strcmp(cmd[0], "cd") == 0)
@@ -50,7 +50,7 @@ int		exec_builtin(char **cmd, t_shell *shell)
 		return (builtin_env(cmd, shell));
 	else if (ft_strcmp(cmd[0], "exit") == 0)
 		return (builtin_exit(cmd, shell));
-	return (1);
+	return (FAILURE);
 }
 
 /*
