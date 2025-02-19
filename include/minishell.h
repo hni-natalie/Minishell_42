@@ -6,7 +6,7 @@
 /*   By: rraja-az <rraja-az@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 11:05:28 by hni-xuan          #+#    #+#             */
-/*   Updated: 2025/02/17 16:41:30 by rraja-az         ###   ########.fr       */
+/*   Updated: 2025/02/19 09:27:26 by rraja-az         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,7 +121,7 @@ char	*get_path(char *cmd, t_shell *shell);
 
 // execution
 void	parse_ast(t_node *ast, t_shell *shell);
-void	execute_parent(t_node *ast, t_shell *shell);
+void	execute_parent(pid_t pid, t_shell *shell);
 void	execute_child(t_node *ast, t_shell *shell);
 void	execute_node(t_node *node, t_shell *shell);
 void	execute_command(t_exec_node *exec_node, t_shell *shell);

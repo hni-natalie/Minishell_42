@@ -6,14 +6,14 @@
 /*   By: rraja-az <rraja-az@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 17:50:49 by hni-xuan          #+#    #+#             */
-/*   Updated: 2025/02/18 10:08:42 by rraja-az         ###   ########.fr       */
+/*   Updated: 2025/02/19 09:28:15 by rraja-az         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 /*
-	DESC: Parses AST, determines execution type 
+	DESC: Parses execution, determines execution type 
 		: Execute command or pipeline whilst ensuring proper signal handling
 		> by handling diff exex cases wether there is a pipeline / builtin
 	
@@ -23,28 +23,41 @@
 
 */
 void	parse_ast(t_node *ast, t_shell *shell)
-{ 
-	if (!shell->pipe_in_prompt && ast->type == EXEC)
-	{
-		execute_parent(ast, shell);
-		//printf("Executing parent\n"); // debug
-	}
-	else
-	{
-		execute_child(ast, shell);
-		printf("Executing child\n");
-	}
-}
-
-void	execute_parent(t_node *ast, t_shell *shell)
 {
 	t_exec_node	*exec_node;
-	
+	pid_t		pid;
+
+	if (!ast || ast->type != EXEC)
+	{
+		execute_child(ast, shell);
+		return ;
+	}
 	exec_node = (t_exec_node *)ast;
 	if (exec_node->argv[0] && is_builtin(exec_node->argv[0]))
+	{
 		shell->last_exit_status = exec_builtin(exec_node->argv, shell);
-	else
-		execute_command((t_exec_node *)ast, shell);
+		return ;
+	}
+	signal(SIGINT, SIG_IGN);
+	signal(SIGQUIT, SIG_IGN);
+	pid = fork();
+	if (pid == 0)
+		execute_child(ast, shell);
+	else if (pid > 0)
+		execute_parent(pid, shell);
+}
+
+void	execute_parent(pid_t pid, t_shell *shell)
+{
+	int			status;
+	
+	waitpid(pid, &status, 0);
+	signal(SIGINT, sigint_handler); 
+	signal(SIGQUIT, SIG_IGN);
+	if (WIFEXITED(status))
+		shell->last_exit_status = WEXITSTATUS(status);
+	else if (WIFSIGNALED(status))
+		shell->last_exit_status = 128 + WTERMSIG(status);
 }
 
 /* 
@@ -63,26 +76,10 @@ void	execute_parent(t_node *ast, t_shell *shell)
 */
 void	execute_child(t_node *ast, t_shell *shell)
 {
-	pid_t	pid;
-	int		status;
-	
-	signal(SIGINT, SIG_IGN);
-	signal(SIGQUIT, SIG_IGN);
-	pid = fork();
-	if (pid == 0)
-	{
 		signal(SIGINT, SIG_DFL);
 		signal(SIGQUIT, SIG_DFL);
 		execute_node(ast, shell);
 		exit(shell->last_exit_status);
-	}
-	waitpid(pid, &status, 0);
-	signal(SIGINT, sigint_handler); 
-	signal(SIGQUIT, SIG_IGN);
-	if (WIFEXITED(status))
-		shell->last_exit_status = WEXITSTATUS(status);
-	else if (WIFSIGNALED(status))
-		shell->last_exit_status = 128 + WTERMSIG(status);
 }
 
 /*
@@ -123,17 +120,8 @@ void	execute_command(t_exec_node *exec_node, t_shell *shell)
 {
 	char	*cmd_path;
 	
-	if (!exec_node) // debug
-        printf("Error: exec_node is NULL\n"); // debug
-    if (!exec_node->argv) // debug
-        printf("Error: exec_node->argv is NULL\n"); // debug
-    if (!exec_node->argv[0]) // debug
-    {
-	    printf("Error: exec_node->argv[0] is NULL\n"); // debug
-	//if (!exec_node->argv[0])
-		// return;
-		return ; // debug
-	}
+	if (!exec_node->argv[0])
+		return;
 	if (is_builtin(exec_node->argv[0]))
 	{
 		shell->last_exit_status = exec_builtin(exec_node->argv, shell);
@@ -142,5 +130,38 @@ void	execute_command(t_exec_node *exec_node, t_shell *shell)
 	cmd_path = get_path(exec_node->argv[0], shell);
 	if (!cmd_path || execve(cmd_path, exec_node->argv, shell->env) == -1)
 		execute_error(cmd_path, exec_node);
-	printf("Executing command: %s\n", exec_node->argv[0]); // debug
+	//printf("Executing command: %s\n", exec_node->argv[0]); // debug
 }
+
+
+	// if (!exec_node) // debug
+    //     printf("Error: exec_node is NULL\n"); // debug
+    // if (!exec_node->argv) // debug
+    //     printf("Error: exec_node->argv is NULL\n"); // debug
+    // if (!exec_node->argv[0]) // debug
+    // {
+	//     printf("Error: exec_node->argv[0] is NULL\n"); // debug
+	//	return ; // debug
+	//}
+
+
+/* void	parse_ast(t_node *ast, t_shell *shell)
+{
+	if (!shell->pipe_in_prompt && ast->type == EXEC)
+		execute_parent(ast, shell);
+	else
+		execute_child(ast, shell);
+}
+
+void	execute_parent(t_node *ast, t_shell *shell)
+{
+	t_exec_node	*exec_node;
+	pid_t		pid;
+	int			status;
+	
+	exec_node = (t_exec_node *)ast;
+	if (exec_node->argv[0] && is_builtin(exec_node->argv[0]))
+		shell->last_exit_status = exec_builtin(exec_node->argv, shell);
+	else
+		execute_command((t_exec_node *)ast, shell);
+} */

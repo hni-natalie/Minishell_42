@@ -6,7 +6,7 @@
 /*   By: rraja-az <rraja-az@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/15 14:53:43 by rraja-az          #+#    #+#             */
-/*   Updated: 2025/02/17 18:46:50 by rraja-az         ###   ########.fr       */
+/*   Updated: 2025/02/18 14:41:46 by rraja-az         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,15 +55,15 @@ static char	*find_path(char *cmd, char **paths)
 	while (paths[i])
 	{
 		append = ft_strjoin(paths[i], "/");
-		printf("appended: %s\n", append);
+		//printf("appended: %s\n", append); // debug
 		if (!append)
 			return (NULL);
 		fullpath = ft_strjoin(append, cmd);
-		printf("fullpath: %s\n", fullpath);
-		free(append);
+		//printf("fullpath: %s\n", fullpath); // debug
+		// free(append);
 		if (access(fullpath, F_OK | X_OK) == 0)
 			return (fullpath);
-		free(fullpath);
+		// free(fullpath);
 		i++;
 	}
 	return (NULL);
@@ -83,12 +83,12 @@ char	*get_path(char *cmd, t_shell *shell)
 	if (!env_path)
 		return (NULL);
 	paths = ft_split(env_path, ':');
-	for (int i = 0; paths[i] ;i++) // debug
-		printf("path[%i]= %s\n", i, paths[i]); // debug
+	//for (int i = 0; paths[i] ;i++) // debug
+	//	printf("path[%i]= %s\n", i, paths[i]); // debug
 	if (!paths)
 		return (NULL);
 	cmd_path = find_path(cmd, paths);
-	printf("cmd fullpath: %s\n", cmd_path); // debug
-	free_array(paths);
+	//printf("cmd fullpath: %s\n", cmd_path); // debug
+	// free_array(paths);
 	return (cmd_path);
 }
