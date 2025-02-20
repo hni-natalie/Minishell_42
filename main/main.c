@@ -6,7 +6,7 @@
 /*   By: rraja-az <rraja-az@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 11:03:11 by hni-xuan          #+#    #+#             */
-/*   Updated: 2025/02/19 11:05:23 by rraja-az         ###   ########.fr       */
+/*   Updated: 2025/02/20 17:45:45 by rraja-az         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,35 +68,12 @@ void	start_shell(t_shell *shell)
 */
 void	init_shell(t_shell *shell, char **env)
 {
-	char	**copied_env;
-	int		i;
-	
-	i = 0;
-	while (env[i])
-		i++;
-	copied_env = malloc(sizeof(char *) * (i + 1));
-	if (!copied_env)
-		shell->env = NULL;
-	i = -1;
-	while (env[++i])
-		copied_env[i] = ft_strdup(env[i]);
-	copied_env[i] = NULL;
-	shell->env = copied_env;
+	shell->env = copy_env(env);
 	shell->last_exit_status = 0;
 	shell->pipe_in_prompt = 0;
 	signal(SIGINT, sigint_handler);
 	signal(SIGQUIT, SIG_IGN);
 }
-
-/* void	free_arr(char **arr)
-{
-	int	i;
-
-	i = -1;
-	while (arr[++i])
-		free(arr[i]);
-	free(arr);
-} */
 
 void	print_error(char *error, char *prompt)
 {
