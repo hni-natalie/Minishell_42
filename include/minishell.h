@@ -6,7 +6,7 @@
 /*   By: rraja-az <rraja-az@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 11:05:28 by hni-xuan          #+#    #+#             */
-/*   Updated: 2025/02/20 17:44:07 by rraja-az         ###   ########.fr       */
+/*   Updated: 2025/02/20 21:25:57 by rraja-az         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,7 +137,6 @@ void	free_redir_data(t_redir_node *r_node);
 void	typecasting_node(t_node *node, t_redir_node **r_node,
 			t_exec_node **e_node, t_pipe_node **p_node);
 void	free_array(char **arr);
-//void	free_shell(t_node *ast, t_shell *shell);
 
 // init.c
 t_node	*init_exec_node(void);

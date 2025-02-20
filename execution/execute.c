@@ -6,7 +6,7 @@
 /*   By: rraja-az <rraja-az@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 17:50:49 by hni-xuan          #+#    #+#             */
-/*   Updated: 2025/02/19 14:38:20 by rraja-az         ###   ########.fr       */
+/*   Updated: 2025/02/20 21:15:03 by rraja-az         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,10 @@
 	DESC: Parses execution, determines execution type 
 		: Execute command or forks (ensuring proper signal handling)
 	
-	1. Check if ast is an EXEC node
+	1. Check if ast is an EXEC type
+		- typecast ast node to t_exec_node and assign it to exec_node
+		- WHY typecast? so we can access fields within t_exec_node
+		- t_node is a generic node
 	2. Check if cmd is a builtin > true > exc_builtin
 		- builtin is executed directly in parent process
 			because the modify the shell state
