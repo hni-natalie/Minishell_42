@@ -6,7 +6,7 @@
 /*   By: rraja-az <rraja-az@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 11:27:06 by rraja-az          #+#    #+#             */
-/*   Updated: 2025/02/14 11:56:43 by rraja-az         ###   ########.fr       */
+/*   Updated: 2025/02/20 20:22:07 by rraja-az         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,8 @@ size_t	ft_strspn(const char *s, const char *accept)
 	
 	if (!s || !accept)
 		return (0);
+	i = 0;
+	count = 0;
 	while (*s)
 	{
 		while (accept[i] && *s != accept[i])
