@@ -6,7 +6,7 @@
 /*   By: rraja-az <rraja-az@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 11:05:28 by hni-xuan          #+#    #+#             */
-/*   Updated: 2025/02/19 14:19:14 by rraja-az         ###   ########.fr       */
+/*   Updated: 2025/02/20 17:44:07 by rraja-az         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@
 # define YES 1
 # define NO 0
 
-# define PATH_MAX 4096
+# define PATH_MAX 1024
 // max buffer size for file paths (CLI: getconf PATH_MAX /)
 // LINUX : 4096 | MAC : 1024
 
@@ -83,7 +83,7 @@ void	handle_arg(char **argv, t_shell *shell);
 char	*check_arg(char *arg, t_shell *shell);
 char	*update_arg(char *arg, int *i, char *new_arg, t_shell *shell);
 char	*join_arg(char *new_arg, char *arg, int *i, int quote);
-
+char	*get_env(char **env, char *input);
 
 // heredoc
 char	*handle_heredoc(char *arg, t_shell *shell);
@@ -110,7 +110,7 @@ int 	builtin_env(char **argv, t_shell *shell);
 int 	builtin_exit(char **argv, t_shell *shell);
 
 // env
-char	*get_env(char **env, char *input);
+char	**copy_env(char **env);
 char	*get_env_name(char *env);
 char	*get_env_value(char *env);
 bool	is_env_name(char *name, t_shell *shell);
