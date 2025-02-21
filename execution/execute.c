@@ -126,10 +126,10 @@ void	execute_command(t_exec_node *exec_node, t_shell *shell)
 		shell->last_exit_status = exec_builtin(exec_node->argv, shell);
 		return ;
 	}
-	printf("exec_node->argv[0] = %s\n", exec_node->argv[0]); // debug
+	// printf("exec_node->argv[0] = %s\n", exec_node->argv[0]); // debug
 	if (execve(exec_node->argv[0], exec_node->argv, shell->env) == -1)
 		cmd_path = get_path(exec_node->argv[0], shell);
-	printf("cmd fullpath: %s\n", cmd_path); // debug
+	// printf("cmd fullpath: %s\n", cmd_path); // debug
 	if (!cmd_path || execve(cmd_path, exec_node->argv, shell->env) == -1)
 		execute_error(cmd_path, exec_node);
 }
