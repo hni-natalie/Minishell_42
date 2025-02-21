@@ -6,7 +6,7 @@
 /*   By: rraja-az <rraja-az@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 11:05:28 by hni-xuan          #+#    #+#             */
-/*   Updated: 2025/02/19 14:19:14 by rraja-az         ###   ########.fr       */
+/*   Updated: 2025/02/20 21:25:57 by rraja-az         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@
 # define YES 1
 # define NO 0
 
-# define PATH_MAX 4096
+# define PATH_MAX 1024
 // max buffer size for file paths (CLI: getconf PATH_MAX /)
 // LINUX : 4096 | MAC : 1024
 
@@ -83,7 +83,7 @@ void	handle_arg(char **argv, t_shell *shell);
 char	*check_arg(char *arg, t_shell *shell);
 char	*update_arg(char *arg, int *i, char *new_arg, t_shell *shell);
 char	*join_arg(char *new_arg, char *arg, int *i, int quote);
-
+char	*get_env(char **env, char *input);
 
 // heredoc
 char	*handle_heredoc(char *arg, t_shell *shell);
@@ -110,7 +110,7 @@ int 	builtin_env(char **argv, t_shell *shell);
 int 	builtin_exit(char **argv, t_shell *shell);
 
 // env
-char	*get_env(char **env, char *input);
+char	**copy_env(char **env);
 char	*get_env_name(char *env);
 char	*get_env_value(char *env);
 bool	is_env_name(char *name, t_shell *shell);
@@ -137,7 +137,6 @@ void	free_redir_data(t_redir_node *r_node);
 void	typecasting_node(t_node *node, t_redir_node **r_node,
 			t_exec_node **e_node, t_pipe_node **p_node);
 void	free_array(char **arr);
-//void	free_shell(t_node *ast, t_shell *shell);
 
 // init.c
 t_node	*init_exec_node(void);
