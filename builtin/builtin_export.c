@@ -6,7 +6,7 @@
 /*   By: rraja-az <rraja-az@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 13:06:57 by rraja-az          #+#    #+#             */
-/*   Updated: 2025/02/14 16:47:55 by rraja-az         ###   ########.fr       */
+/*   Updated: 2025/02/21 15:14:00 by rraja-az         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,56 +70,81 @@ static bool	is_valid_env_name(const char *name)
 	return (true);
 }
 
+// copy the env var because we dont want to modify the original env
+static char	**export_var_copy(t_shell *shell, int *len)
+{
+	int		i;
+	char	**export_env;
+	
+	*len = 0;
+	while (shell->env[*len])
+		(*len)++;
+	export_env = malloc((*len + 1) * sizeof(char *));
+	if (!export_env)
+		return (NULL);
+	i = 0;
+	while(i < *len)
+	{
+		export_env[i] = ft_strdup(shell->env[i]);
+		if (!export_env[i])
+		{
+			free_array(export_env);
+			return (NULL);
+		}
+		i++;
+	}
+	export_env[*len] = NULL;
+	return (export_env);
+}
+
 // using insertion sort
-static void	sort_export_var(t_shell *shell)
+static void	sort_export_var(char **export_env)
 {
 	int	i;
 	int	j;
-	int len;
 	char *tmp;
 
-	if (!shell || !shell->env)
+	if (!export_env || !export_env[0])
 		return ;
-	len = 0;
-	while (shell->env[len])
-		len++;
 	i = 1;
-	while (i < len)
+	while (export_env[i])
 	{
-		tmp = shell->env[i];
+		tmp = export_env[i];
 		j = i - 1;
-		while (j >= 0 && ft_strcmp(shell->env[j], tmp) > 0)
+		while (j >= 0 && ft_strcmp(export_env[j], tmp) > 0)
 		{
-			shell->env[j + 1] = shell->env[j];
+			export_env[j + 1] = export_env[j];
 			j--;
 		}
-		shell->env[j + 1] = tmp;
+		export_env[j + 1] = tmp;
 		i++;
 	}
 }
 
-static void	print_export_var(t_shell *shell)
+static void	print_export_var(char **export_env, int len)
 {
 	int	i;
 	
-	if (!shell || !shell->env)
+	if (!export_env || !export_env[0])
 		return;
-	sort_export_var(shell);
+	sort_export_var(export_env, len);
 	i = 0;
-	while (shell->env[i])
+	while (export_env[i])
 	{
-		printf("declare -x %s\n", shell->env[i]);
+		printf("declare -x \"%s\"\n", export_env[i]);
 		i++;
 	}
 }
 
-int	builtin_export(char **argv, t_shell *shell)
+int	builtin_export(char **argv, char **export_env, t_shell *shell)
 {
-	int	i;
+	int		i;
+	char	**export_env;
 
+	export_env = export_var_copy(shell, &len);
 	if (!argv[1])
 	{
-		print_export_var(shell);
+		print_export_var(export_env, len);
 		shell->last_exit_status = SUCCESS;
 		return (shell->last_exit_status);
 	}
