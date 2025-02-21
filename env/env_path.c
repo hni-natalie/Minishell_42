@@ -55,15 +55,13 @@ static char	*find_path(char *cmd, char **paths)
 	while (paths[i])
 	{
 		append = ft_strjoin(paths[i], "/");
-		//printf("appended: %s\n", append); // debug
 		if (!append)
 			return (NULL);
 		fullpath = ft_strjoin(append, cmd);
-		//printf("fullpath: %s\n", fullpath); // debug
-		// free(append);
+		free(append);
 		if (access(fullpath, F_OK | X_OK) == 0)
 			return (fullpath);
-		// free(fullpath);
+		free(fullpath);
 		i++;
 	}
 	return (NULL);
@@ -89,6 +87,6 @@ char	*get_path(char *cmd, t_shell *shell)
 		return (NULL);
 	cmd_path = find_path(cmd, paths);
 	//printf("cmd fullpath: %s\n", cmd_path); // debug
-	// free_array(paths);
+	free_array(paths);
 	return (cmd_path);
 }

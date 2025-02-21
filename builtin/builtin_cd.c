@@ -154,5 +154,3 @@ int	builtin_cd(char **argv, t_shell *shell)
 	shell->last_exit_status = update_pwd(shell);
 	return (shell->last_exit_status);
 }
-
-// hello, hi
