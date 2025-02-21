@@ -17,6 +17,7 @@ bool	is_builtin(char *cmd)
 	if (!cmd)
 		return (false);
 	return ((ft_strcmp(cmd, "echo") == 0)
+		|| (ft_strcmp(cmd, "/usr/bin/echo") == 0)
 		|| (ft_strcmp(cmd, "cd") == 0)
 		|| (ft_strcmp(cmd, "pwd") == 0)
 		|| (ft_strcmp(cmd, "export") == 0)
@@ -36,7 +37,7 @@ int		exec_builtin(char **cmd, t_shell *shell)
 {
 	if (!cmd || !cmd[0])
 		return (FAILURE);
-	else if (ft_strcmp(cmd[0], "echo") == 0)
+	else if (ft_strcmp(cmd[0], "echo") == 0 || ft_strcmp(cmd[0], "/usr/bin/echo") == 0)
 		return (builtin_echo(cmd, shell));
 	else if (ft_strcmp(cmd[0], "cd") == 0)
 		return (builtin_cd(cmd, shell));
