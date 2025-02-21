@@ -6,7 +6,7 @@
 /*   By: rraja-az <rraja-az@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/15 14:48:59 by rraja-az          #+#    #+#             */
-/*   Updated: 2025/02/18 11:11:25 by rraja-az         ###   ########.fr       */
+/*   Updated: 2025/02/21 08:31:02 by rraja-az         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ char	*set_new_env(char *s1, char c, char *s2)
 	new_env = ft_strjoin(tmp, s2);
 	if (!new_env)
 		return (NULL);
-	free(tmp);
+	//free(tmp);
 	return (new_env);
 }
 

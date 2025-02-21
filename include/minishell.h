@@ -6,7 +6,7 @@
 /*   By: rraja-az <rraja-az@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 11:05:28 by hni-xuan          #+#    #+#             */
-/*   Updated: 2025/02/20 21:25:57 by rraja-az         ###   ########.fr       */
+/*   Updated: 2025/02/21 07:43:33 by rraja-az         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@
 # define YES 1
 # define NO 0
 
-# define PATH_MAX 1024
+# define PATH_MAX 4096
 // max buffer size for file paths (CLI: getconf PATH_MAX /)
 // LINUX : 4096 | MAC : 1024
 
