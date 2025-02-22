@@ -6,7 +6,7 @@
 /*   By: rraja-az <rraja-az@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 13:06:57 by rraja-az          #+#    #+#             */
-/*   Updated: 2025/02/21 15:14:00 by rraja-az         ###   ########.fr       */
+/*   Updated: 2025/02/22 16:03:58 by rraja-az         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@
 		
 	FLOW : 
 		1. Check args
-			- no args > print list of exported vars ALPHABETICALLY (bubble sort)
+			- no args > print list of exported vars ALPHABETICALLY (insertion sort)
 			- has args > process each one
 		2. Validate args
 			- valid identifier (NAME=value format, start with letter/underscore)
@@ -71,19 +71,20 @@ static bool	is_valid_env_name(const char *name)
 }
 
 // copy the env var because we dont want to modify the original env
-static char	**export_var_copy(t_shell *shell, int *len)
+static char	**export_env_copy(t_shell *shell)
 {
 	int		i;
+	int		len;
 	char	**export_env;
 	
-	*len = 0;
-	while (shell->env[*len])
-		(*len)++;
-	export_env = malloc((*len + 1) * sizeof(char *));
+	len = 0;
+	while (shell->env[len])
+		len++;
+	export_env = malloc((len + 1) * sizeof(char *));
 	if (!export_env)
 		return (NULL);
 	i = 0;
-	while(i < *len)
+	while(i < len)
 	{
 		export_env[i] = ft_strdup(shell->env[i]);
 		if (!export_env[i])
@@ -93,76 +94,124 @@ static char	**export_var_copy(t_shell *shell, int *len)
 		}
 		i++;
 	}
-	export_env[*len] = NULL;
+	export_env[len] = NULL;
 	return (export_env);
 }
 
 // using insertion sort
-static void	sort_export_var(char **export_env)
+static void sort_export_var(char **export_env)
 {
-	int	i;
-	int	j;
-	char *tmp;
+    int i;
+    int j;
+    char *tmp;
 
-	if (!export_env || !export_env[0])
-		return ;
-	i = 1;
-	while (export_env[i])
-	{
-		tmp = export_env[i];
-		j = i - 1;
-		while (j >= 0 && ft_strcmp(export_env[j], tmp) > 0)
+    if (!export_env || !export_env[0])
+        return;
+    i = 1;
+    while (export_env[i])
+    {
+        tmp = export_env[i];
+        j = i - 1;
+        while (j >= 0 && ft_strcmp(export_env[j], tmp) > 0)
+        {
+            export_env[j + 1] = export_env[j];
+            j--;
+        }
+        export_env[j + 1] = tmp;
+        i++;
+    }
+}
+
+static void print_export_env(t_shell *shell)
+{
+    int		i;
+	char	**env;
+	char	*equal;
+
+	env = export_env_copy(shell);
+    if (!env || !env[0])
+        return;
+    sort_export_var(env);
+    i = 0;
+    while (env[i])
+    {
+		equal = ft_strchr(env[i], '=');
+        if (equal)
 		{
-			export_env[j + 1] = export_env[j];
-			j--;
+			*equal = '\0';
+			printf("declare -x %s=\"%s\"\n", env[i], equal + 1);
+			*equal = '=';
 		}
-		export_env[j + 1] = tmp;
+		else 
+			printf("declare -x %s\n", env[i]);
 		i++;
 	}
+	free_array(env);
 }
 
-static void	print_export_var(char **export_env, int len)
-{
-	int	i;
+/* 
+	DESC: Extract variable name
 	
-	if (!export_env || !export_env[0])
-		return;
-	sort_export_var(export_env, len);
-	i = 0;
-	while (export_env[i])
-	{
-		printf("declare -x \"%s\"\n", export_env[i]);
-		i++;
-	}
-}
-
-int	builtin_export(char **argv, char **export_env, t_shell *shell)
+	1. Extract name
+	2. Check if name is valid
+		- error > prints error > returns failure > updates exit status
+	3. Extract value 
+	4. Check if it var exist in shell > update value
+	5. 
+	
+*/
+static	int	handle_equal(char *equal, char *argv, t_shell *shell)
 {
-	int		i;
-	char	**export_env;
+	int		len;
+	char	name[PATH_MAX];
+	char	*value;
 
-	export_env = export_var_copy(shell, &len);
-	if (!argv[1])
+	len = equal - argv;
+	ft_strlcpy(name, argv, len + 1);
+	if (!is_valid_env_name(name))
 	{
-		print_export_var(export_env, len);
-		shell->last_exit_status = SUCCESS;
-		return (shell->last_exit_status);
+		printf("minishell: export: %s: not a valid identifier\n", name);
+        shell->last_exit_status = FAILURE;
+        return (shell->last_exit_status);
 	}
-	i = 0;
-	while (argv[++i])
-	{
-		if (!is_valid_env_name(argv[i]))
-		{
-			printf("minishell: export: %s: not a valid identifier\n", argv[i]);
-			shell->last_exit_status = FAILURE;
-			return (shell->last_exit_status);
-		}	
-		if (is_env_name(argv[i], shell))
-			update_env(argv[i], get_env_value(argv[i]), false, shell);
-		else
-			update_env(argv[i], get_env_value(argv[i]), true, shell);
-	}
-	sort_export_var(shell);
+	value = equal + 1;
+	if (is_env_name(name, shell))
+		update_env(name, value, false, shell);
+	else
+		update_env(name, value, true, shell);
 	shell->last_exit_status = SUCCESS;
 	return (shell->last_exit_status);
+}
+
+int builtin_export(char **argv, t_shell *shell)
+{
+    int		i;
+	char	*equal;
+
+    if (!argv[1])
+    {
+        print_export_env(shell);
+        shell->last_exit_status = SUCCESS;
+        return (shell->last_exit_status);
+    }
+    i = 0;
+    while (argv[++i])
+    {
+		equal = ft_strchr(argv[i], '=');
+		if (equal && handle_equal(equal, argv[i], shell))
+			return (shell->last_exit_status);
+		else if (!equal)
+		{
+			if (!is_valid_env_name(argv[i]))
+			{
+				printf("minishell: export: %s: not a valid identifier\n", argv[i]);
+				shell->last_exit_status = FAILURE;
+			}
+			else if (!is_env_name(argv[i], shell))
+			{
+				shell->env = extend_env_array(shell->env, argv[i], NULL);
+			}
+		}
+    }
+    return (shell->last_exit_status);
 }
