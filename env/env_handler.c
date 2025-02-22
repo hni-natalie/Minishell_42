@@ -6,7 +6,7 @@
 /*   By: rraja-az <rraja-az@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/15 14:48:59 by rraja-az          #+#    #+#             */
-/*   Updated: 2025/02/21 08:31:02 by rraja-az         ###   ########.fr       */
+/*   Updated: 2025/02/22 15:12:58 by rraja-az         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +82,7 @@ void	update_env(char *name, char *value, bool add, t_shell *shell)
 	2. calloc (len + 2); why 2? > new i & null
 	
 */
+
 char	**extend_env_array(char **env, char *name, char *value)
 {
 	int		i;
@@ -94,16 +95,48 @@ char	**extend_env_array(char **env, char *name, char *value)
 	new_env_arr = ft_calloc((len + 2), sizeof(char *));
 	if (!new_env_arr)
 		return (free_array(env), NULL);
-	i = 0;
-	while (i < len)
+	i = -1;
+	while (++i < len)
 	{
-		if (!(new_env_arr[i] = ft_strdup(env[i])))
+		if (!(new_env_arr[i] = ft_strdup(env[i]))) 
 			return (free_array(new_env_arr), NULL);
-		i++;
 	}
-	if (!(new_env_arr[i] = set_new_env(name, '=', value)))
+	if (value)
+		new_env_arr[i] = set_new_env(name, '=', value);
+	else
+		new_env_arr[i] = ft_strdup(name);
+	if (!new_env_arr[i])
 		return (free_array(new_env_arr), NULL);
 	new_env_arr[i + 1] = NULL;
 	free_array(env);
 	return (new_env_arr);
 }
+
+
+/* char	**extend_env_array(char **env, char *name, char *value)
+{
+	int		i;
+	int		len;
+	char	**new_env_arr;
+	char	*new_var;
+
+	len = 0;
+	while (env[len])
+		len++;
+	new_env_arr = ft_calloc((len + 2), sizeof(char *));
+	if (!new_env_arr)
+		return (free_array(env), NULL);
+	i = -1;
+	while (++i < len)
+	{
+		if (!(new_env_arr[i] = ft_strdup(env[i])))
+			return (free_array(new_env_arr), NULL);
+	}
+	if (!(new_env_arr[i] = set_new_env(name, '=', value)))
+		return (free_array(new_env_arr), NULL);
+	else 
+		
+	new_env_arr[i + 1] = NULL;
+	free_array(env);
+	return (new_env_arr);
+} */
