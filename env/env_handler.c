@@ -62,11 +62,13 @@ void	update_env(char *name, char *value, bool add, t_shell *shell)
 		env_name = get_env_name(shell->env[i]);
 		if (ft_strncmp(name, env_name, ft_strlen(env_name) + 1) == 0)
 		{
+			free(env_name);
 			free(shell->env[i]);
 			new_value = set_new_env(name, '=', value);
 			shell->env[i] = new_value;
 			return ;
 		}
+		free(env_name);
 		i++;
 	}
 	if (add)

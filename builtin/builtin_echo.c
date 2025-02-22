@@ -32,19 +32,20 @@
 int	builtin_echo(char **argv, t_shell *shell)
 {
 	int		i;
+	int		j;
 	bool	suppress_n;
 	
-	i = 1;
+	i = 0;
 	suppress_n = false;
-	while (argv[i] && argv[i][0] == '-' && argv[i][1] == 'n' 
+	while (argv[++i] && argv[i][0] == '-' && argv[i][1] == 'n' 
 		&& ft_strspn(argv[i] + 1, "n") == ft_strlen(argv[i]) - 1)
-	{
 		suppress_n = true;
-		i++;
-	}
 	while (argv[i])
 	{
-		write(1, argv[i], ft_strlen(argv[i]));
+		j = -1;
+		while (argv[i][++j])
+			if (argv[i][j] != '\\')
+				write(1, &argv[i][j], 1);
 		if (argv[i + 1])
 			write(1, " ", 1);
 		i++;

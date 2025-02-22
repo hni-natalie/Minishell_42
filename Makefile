@@ -14,7 +14,7 @@ YELLOW = '\033[0;33m'
 RESET = '\033[0m'
 
 CC = cc 
-CFLAGS = -Wall -Wextra -Werror -Iinclude -g
+CFLAGS = -Wall -Wextra -Werror -Iinclude -g3 -fsanitize=address
 LFLAGS = -lreadline
 RM = rm -rf
 

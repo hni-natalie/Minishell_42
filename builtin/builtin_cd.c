@@ -6,7 +6,7 @@
 /*   By: rraja-az <rraja-az@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/05 15:59:07 by rraja-az          #+#    #+#             */
-/*   Updated: 2025/02/21 09:53:03 by rraja-az         ###   ########.fr       */
+/*   Updated: 2025/02/21 09:56:40 by rraja-az         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -154,5 +154,3 @@ int	builtin_cd(char **argv, t_shell *shell)
 	shell->last_exit_status = update_pwd(shell);
 	return (shell->last_exit_status);
 }
-
-// hello
