@@ -6,7 +6,7 @@
 /*   By: rraja-az <rraja-az@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 13:24:44 by hni-xuan          #+#    #+#             */
-/*   Updated: 2025/02/20 21:16:36 by rraja-az         ###   ########.fr       */
+/*   Updated: 2025/02/23 07:52:39 by rraja-az         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,7 @@ typedef struct s_redir_node
 typedef struct s_shell
 {
 	char	**env;
+	char	**export_env;
 	int		last_exit_status;
 	int		pipe_in_prompt;
 }	t_shell;
