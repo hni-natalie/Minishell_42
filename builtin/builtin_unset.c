@@ -6,7 +6,7 @@
 /*   By: rraja-az <rraja-az@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/10 09:56:27 by rraja-az          #+#    #+#             */
-/*   Updated: 2025/02/14 16:48:00 by rraja-az         ###   ########.fr       */
+/*   Updated: 2025/02/23 08:54:38 by rraja-az         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@
 		3. return status
 */
 
-static bool	is_env_var(char *var, t_shell *shell)
+/* static bool	is_env_var(char *var, t_shell *shell)
 {
 	int	i;
 	int	j;
@@ -46,31 +46,52 @@ static bool	is_env_var(char *var, t_shell *shell)
 		i++;
 	}
 	return (false);
+} */
+
+static bool is_env_var(char *var, char **env)
+{
+    int     i;
+    char    *env_name;
+    bool    found;
+
+    i = 0;
+    found = false;
+    while (env[i])
+    {
+        env_name = get_env_name(env[i]);
+        if (ft_strncmp(var, env_name, ft_strlen(var) + 1) == 0)
+            found = true;
+        free(env_name);
+        i++;
+    }
+    return (found);
 }
 
-static void	remove_env_var(char *var, t_shell *shell)
+static void remove_env_var(char *var, char **env)
 {
-	int	i;
-	
-	i = 0;
-	// find index of var
-	while (shell->env[i])
-	{
-		if ((ft_strncmp(shell->env[i], var, ft_strlen(var)) == 0) && (shell->env[i][ft_strlen(var)] == '='))
-			break;
-		i++;
-	}
-	// if var not found
-	if (!shell->env[i])
-		return;
-	// free(shell->env[i]); // is it malloced?
-	// shift elements left
-	while (shell->env[i + 1])
-	{
-		shell->env[i] = shell->env[i + 1];
-		i++;
-	}
-	shell->env[i] = NULL; 
+    int i;
+    char *env_name;
+    
+    i = 0;
+    while (env[i])
+    {
+        env_name = get_env_name(env[i]);
+        if (ft_strncmp(var, env_name, ft_strlen(var) + 1) == 0)
+        {
+            free(env_name);
+            free(env[i]);
+            // shift elements left
+            while (env[i + 1])
+            {
+                env[i] = env[i + 1];
+                i++;
+            }
+            env[i] = NULL;
+            return;
+        }
+        free(env_name);
+        i++;
+    }
 }
 
 int	builtin_unset(char **argv, t_shell *shell)
@@ -86,10 +107,11 @@ int	builtin_unset(char **argv, t_shell *shell)
 	}
 	while (argv[i])
 	{
-		if (!is_env_var(argv[i], shell))
+		if (!is_env_var(argv[i], shell->env) && !is_env_var(argv[i], shell->export_env))
 			printf("unset: variable does not exist\n");
 		else
-			remove_env_var(argv[i], shell);
+			remove_env_var(argv[i], shell->env);
+			remove_env_var(argv[i], shell->export_env);
 		i++;
 	}
 	shell->last_exit_status = SUCCESS;
