@@ -6,7 +6,7 @@
 /*   By: rraja-az <rraja-az@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 11:05:28 by hni-xuan          #+#    #+#             */
-/*   Updated: 2025/02/20 21:25:57 by rraja-az         ###   ########.fr       */
+/*   Updated: 2025/02/23 17:58:59 by rraja-az         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,14 +51,13 @@ extern int	g_signal;
 // main.c
 void	init_shell(t_shell *shell, char **env);
 void	start_shell(t_shell *shell);
-//void	free_arr(char **arr);
 void	print_error(char *error, char *prompt);
 
 // signal.c
 void	sigint_handler(int signum);
 void	handle_sigint(t_shell *shell);
 void	handle_child_signal(int signum);
-void	handle_child_exit(int left_status, int right_status, t_shell *shell);
+//void	handle_child_exit(int left_status, int right_status, t_shell *shell);
 
 // check.c
 int		empty_line(char *prompt);
@@ -113,8 +112,7 @@ int 	builtin_exit(char **argv, t_shell *shell);
 char	**copy_env(char **env);
 char	*get_env_name(char *env);
 char	*get_env_value(char *env);
-bool	is_env_name(char *name, t_shell *shell);
-char	*set_new_env(char *s1, char c, char *s2);
+bool	is_env_name(char *name, char **env);
 void	update_env(char *name, char *value, bool add, t_shell *shell);
 char	**extend_env_array(char **env, char *name, char *value);
 char	*get_path(char *cmd, t_shell *shell);
@@ -124,7 +122,8 @@ void	parse_ast(t_node *ast, t_shell *shell);
 void	execute_fork(t_node *ast, t_shell *shell);
 void	execute_node(t_node *node, t_shell *shell);
 void	execute_command(t_exec_node *exec_node, t_shell *shell);
-void	execute_error(char	*cmd_path, t_exec_node *exec_node);
+void	handle_process_status(int status, t_shell *shell);
+void	handle_execute_error(char	*cmd_path, t_exec_node *exec_node);
 
 // setup
 void	setup_pipe(t_pipe_node *pipe_node, t_shell *shell);

@@ -6,7 +6,7 @@
 /*   By: rraja-az <rraja-az@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 16:51:50 by hni-xuan          #+#    #+#             */
-/*   Updated: 2025/02/13 16:02:14 by rraja-az         ###   ########.fr       */
+/*   Updated: 2025/02/23 13:08:50 by rraja-az         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ void	sigint_handler(int signum)
 
 void	handle_sigint(t_shell *shell)
 {
-	shell->last_exit_status = 130;
+	shell->last_exit_status = 128 + SIGINT;
 	g_signal = 0;
 }
 
@@ -41,4 +41,3 @@ void	handle_child_signal(int signum)
 	if (signum == SIGINT)
 		ft_putstr_fd("\n", 1);
 }
-

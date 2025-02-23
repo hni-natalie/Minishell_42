@@ -6,7 +6,7 @@
 /*   By: rraja-az <rraja-az@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 17:50:49 by hni-xuan          #+#    #+#             */
-/*   Updated: 2025/02/20 21:15:03 by rraja-az         ###   ########.fr       */
+/*   Updated: 2025/02/23 14:02:45 by rraja-az         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,12 +72,9 @@ void	execute_fork(t_node *ast, t_shell *shell)
 	else if (pid > 0)
 	{
 		waitpid(pid, &status, 0);
+		handle_process_status(status, shell);
 		signal(SIGINT, sigint_handler);
 		signal(SIGQUIT, SIG_IGN);
-		if (WIFEXITED(status))
-			shell->last_exit_status = WEXITSTATUS(status);
-		else if (WIFSIGNALED(status))
-			shell->last_exit_status = 128 + WTERMSIG(status);
 	}
 }
 
@@ -126,7 +123,11 @@ void	execute_command(t_exec_node *exec_node, t_shell *shell)
 		shell->last_exit_status = exec_builtin(exec_node->argv, shell);
 		return ;
 	}
-	cmd_path = get_path(exec_node->argv[0], shell);
+	// printf("exec_node->argv[0] = %s\n", exec_node->argv[0]); // debug
+	cmd_path = NULL;
+	if (execve(exec_node->argv[0], exec_node->argv, shell->env) == -1)
+		cmd_path = get_path(exec_node->argv[0], shell);
+	// printf("cmd fullpath: %s\n", cmd_path); // debug
 	if (!cmd_path || execve(cmd_path, exec_node->argv, shell->env) == -1)
-		execute_error(cmd_path, exec_node);
+		handle_execute_error(cmd_path, exec_node);
 }

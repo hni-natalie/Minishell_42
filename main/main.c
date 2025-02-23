@@ -6,7 +6,7 @@
 /*   By: rraja-az <rraja-az@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 11:03:11 by hni-xuan          #+#    #+#             */
-/*   Updated: 2025/02/20 17:45:45 by rraja-az         ###   ########.fr       */
+/*   Updated: 2025/02/23 07:53:04 by rraja-az         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,7 @@ void	start_shell(t_shell *shell)
 void	init_shell(t_shell *shell, char **env)
 {
 	shell->env = copy_env(env);
+	shell->export_env = copy_env(env);
 	shell->last_exit_status = 0;
 	shell->pipe_in_prompt = 0;
 	signal(SIGINT, sigint_handler);

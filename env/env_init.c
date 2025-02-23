@@ -6,7 +6,7 @@
 /*   By: rraja-az <rraja-az@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/15 14:48:34 by rraja-az          #+#    #+#             */
-/*   Updated: 2025/02/20 17:45:53 by rraja-az         ###   ########.fr       */
+/*   Updated: 2025/02/21 08:25:49 by rraja-az         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,19 +27,25 @@ char	**copy_env(char **env)
 	while (env[++i])
 		copied_env[i] = ft_strdup(env[i]);
 	copied_env[i] = NULL;
+	// free(env);
 	return (copied_env);
 }
 
 char	*get_env_name(char *env)
 {
-	int	i;
+	int		i;
+	char	*name;
 	
 	if (!env)
 		return (NULL);
 	i = 0;
 	while (env[i] && env[i] != '=')
 		i++;
-	return(env);
+	name = malloc(i + 1);
+	if (!name)
+		return (NULL);
+	ft_strlcpy(name, env, i + 1);
+	return (name);
 }
 
 char	*get_env_value(char *env)

@@ -6,7 +6,7 @@
 /*   By: rraja-az <rraja-az@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 13:16:01 by rraja-az          #+#    #+#             */
-/*   Updated: 2025/02/19 11:13:50 by rraja-az         ###   ########.fr       */
+/*   Updated: 2025/02/23 18:41:33 by rraja-az         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ bool	is_builtin(char *cmd)
 	if (!cmd)
 		return (false);
 	return ((ft_strcmp(cmd, "echo") == 0)
+		|| (ft_strcmp(cmd, "/usr/bin/echo") == 0)
 		|| (ft_strcmp(cmd, "cd") == 0)
 		|| (ft_strcmp(cmd, "pwd") == 0)
 		|| (ft_strcmp(cmd, "export") == 0)
@@ -36,7 +37,7 @@ int		exec_builtin(char **cmd, t_shell *shell)
 {
 	if (!cmd || !cmd[0])
 		return (FAILURE);
-	else if (ft_strcmp(cmd[0], "echo") == 0)
+	else if (ft_strcmp(cmd[0], "echo") == 0 || ft_strcmp(cmd[0], "/usr/bin/echo") == 0)
 		return (builtin_echo(cmd, shell));
 	else if (ft_strcmp(cmd[0], "cd") == 0)
 		return (builtin_cd(cmd, shell));
@@ -52,25 +53,3 @@ int		exec_builtin(char **cmd, t_shell *shell)
 		return (builtin_exit(cmd, shell));
 	return (FAILURE);
 }
-
-/*
-int		exec_builtin(char **cmd, t_shell *shell)
-{
-	int				i;
-	static const	t_builtin builtins[] = {{"echo", builtin_echo},
-		{"cd", builtin_cd}, {"pwd", builtin_pwd}, {"export", builtin_export},
-		{"unset", builtin_unset}, {"env", builtin_env}, {"exit", builtin_exit},
-		{NULL, NULL}};
-
-	if (!cmd || cmd[0])
-		return (1);
-	i = 0;
-	while (builtins[i].name)
-	{
-		if (ft_strcmp(cmd[0], builtins[i].name) == 0)
-			return (builtins[i].func(cmd, shell));
-		i++;
-	}
-	return (1);
-}
-*/
