@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hni-xuan <hni-xuan@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rraja-az <rraja-az@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/23 13:08:21 by hni-xuan          #+#    #+#             */
-/*   Updated: 2025/01/26 18:43:39 by hni-xuan         ###   ########.fr       */
+/*   Updated: 2025/02/23 12:43:20 by rraja-az         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ void	handle_heredoc_signal(int status, t_shell *shell)
 	if (WIFSIGNALED(status))
 	{
 		if (WTERMSIG(status) == SIGINT)
-			shell->last_exit_status = 130;
+			shell->last_exit_status = 128 + WTERMSIG(status);
 	}
 	else
 		shell->last_exit_status = WEXITSTATUS(status);
