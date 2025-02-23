@@ -6,29 +6,33 @@
 /*   By: rraja-az <rraja-az@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/15 14:48:59 by rraja-az          #+#    #+#             */
-/*   Updated: 2025/02/23 13:06:06 by rraja-az         ###   ########.fr       */
+/*   Updated: 2025/02/23 19:03:12 by rraja-az         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-bool	is_env_name(char *name, t_shell *shell)
+bool is_env_name(char *name, char **env)
 {
-	int		i;
-	char	*env_name;
-	
-	i = 0;
-	while (shell->env[i])
-	{
-		env_name = get_env_name(shell->env[i]);
-		if (ft_strncmp(name, env_name, ft_strlen(name)) == 0)
-			return (true);
-		i++;
-	}
-	return (false);
+    int     i;
+    char    *env_name;
+
+    i = 0;
+    while (env && env[i])
+    {
+        env_name = get_env_name(env[i]);
+        if (ft_strncmp(name, env_name, ft_strlen(name) + 1) == 0)
+        {
+            free(env_name);
+            return (true);
+        }
+        free(env_name);
+        i++;
+    }
+    return (false);
 }
 
-char	*set_new_env(char *s1, char c, char *s2)
+static char	*set_new_env(char *s1, char c, char *s2)
 {
 	int		len;
 	char	*tmp;
@@ -50,29 +54,44 @@ char	*set_new_env(char *s1, char c, char *s2)
 	return (new_env);
 }
 
-void	update_env(char *name, char *value, bool add, t_shell *shell)
+static	bool	check_and_update_env(char **env, char *name, char *value)
 {
 	int		i;
 	char	*env_name;
 	char	*new_value;
-
+	
 	i = 0;
-	while (shell->env[i])
+	while (env[i])
 	{
-		env_name = get_env_name(shell->env[i]);
-		if (ft_strncmp(name, env_name, ft_strlen(env_name) + 1) == 0)
+		env_name = get_env_name(env[i]);
+		if (ft_strncmp(name, env_name, ft_strlen(name) + 1) == 0)
 		{
 			free(env_name);
-			free(shell->env[i]);
-			new_value = set_new_env(name, '=', value);
-			shell->env[i] = new_value;
-			return ;
+            free(env[i]);
+            new_value = set_new_env(name, '=', value);
+            env[i] = new_value;
+            return (true);
 		}
-		free(env_name);
-		i++;
+        free(env_name);
+        i++;
 	}
-	if (add)
-		shell->env = extend_env_array(shell->env, name, value);
+	return (false);
+}
+
+void    update_env(char *name, char *value, bool add, t_shell *shell)
+{
+    bool    found_env;
+    bool    found_export;
+
+	found_env = check_and_update_env(shell->env, name, value);
+	found_export = check_and_update_env(shell->export_env, name, value);
+    if (add)
+    {
+        if (!found_env)
+            shell->env = extend_env_array(shell->env, name, value);
+        if (!found_export)
+            shell->export_env = extend_env_array(shell->export_env, name, value);
+    }
 }
 
 /*
@@ -82,61 +101,54 @@ void	update_env(char *name, char *value, bool add, t_shell *shell)
 	2. calloc (len + 2); why 2? > new i & null
 	
 */
-
-char	**extend_env_array(char **env, char *name, char *value)
+static char **new_env_arr(char **env, char *name, char *value)
 {
-	int		i;
-	int		len;
-	char	**new_env_arr;
+    int     i;
+    int     len;
+    char    **new_env_arr;
 
-	len = 0;
-	while (env[len])
-		len++;
-	new_env_arr = ft_calloc((len + 2), sizeof(char *));
-	if (!new_env_arr)
-		return (free_array(env), NULL);
-	i = -1;
-	while (++i < len)
-	{
-		if (!(new_env_arr[i] = ft_strdup(env[i]))) 
-			return (free_array(new_env_arr), NULL);
-	}
-	if (value)
-		new_env_arr[i] = set_new_env(name, '=', value);
-	else
-		new_env_arr[i] = ft_strdup(name);
-	if (!new_env_arr[i])
-		return (free_array(new_env_arr), NULL);
-	new_env_arr[i + 1] = NULL;
-	free_array(env);
-	return (new_env_arr);
+    len = 0;
+    while (env[len])
+        len++;
+    new_env_arr = ft_calloc((len + 2), sizeof(char *));
+    if (!new_env_arr)
+        return (free_array(env), NULL);
+    i = -1;
+    while (++i < len)
+    {
+        if (!(new_env_arr[i] = ft_strdup(env[i])))
+            return (free_array(new_env_arr), NULL);
+    }
+    if (value)
+        new_env_arr[i] = set_new_env(name, '=', value);
+    else
+        new_env_arr[i] = ft_strdup(name);
+    if (!new_env_arr[i])
+        return (free_array(new_env_arr), NULL);
+    new_env_arr[i + 1] = NULL;
+    free_array(env);
+    return (new_env_arr);
 }
 
-
-/* char	**extend_env_array(char **env, char *name, char *value)
+char **extend_env_array(char **env, char *name, char *value)
 {
-	int		i;
-	int		len;
-	char	**new_env_arr;
-	char	*new_var;
+    int     i;
+    char    *env_name;
 
-	len = 0;
-	while (env[len])
-		len++;
-	new_env_arr = ft_calloc((len + 2), sizeof(char *));
-	if (!new_env_arr)
-		return (free_array(env), NULL);
-	i = -1;
-	while (++i < len)
-	{
-		if (!(new_env_arr[i] = ft_strdup(env[i])))
-			return (free_array(new_env_arr), NULL);
-	}
-	if (!(new_env_arr[i] = set_new_env(name, '=', value)))
-		return (free_array(new_env_arr), NULL);
-	else 
-		
-	new_env_arr[i + 1] = NULL;
-	free_array(env);
-	return (new_env_arr);
-} */
+    if (!value)
+    {
+        i = 0;
+        while (env[i])
+        {
+            env_name = get_env_name(env[i]);
+            if (ft_strncmp(name, env_name, ft_strlen(name) + 1) == 0)
+            {
+                free(env_name);
+                return (env);
+            }
+            free(env_name);
+            i++;
+        }
+    }
+    return (new_env_arr(env, name, value));
+}

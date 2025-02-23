@@ -6,7 +6,7 @@
 /*   By: rraja-az <rraja-az@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 13:06:57 by rraja-az          #+#    #+#             */
-/*   Updated: 2025/02/23 12:34:59 by rraja-az         ###   ########.fr       */
+/*   Updated: 2025/02/23 19:05:15 by rraja-az         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,43 +106,56 @@ static void print_export_env(t_shell *shell)
 	//free_array(shell->export_env);
 }
 
-/* 
-	DESC: Extract variable name
-	
-	1. Extract name
-	2. Check if name is valid
-		- error > prints error > returns failure > updates exit status
-	3. Extract value 
-	4. Check if it var exist in shell > update value
-	5. 
-	
-*/
-static	int	handle_equal(char *equal, char *argv, t_shell *shell)
+static void print_export_error(char *argv)
 {
-	int		len;
+	ft_putstr_fd("minishell: export: ", 2);
+	ft_putstr_fd(argv, 2);
+	ft_putstr_fd(": not a valid identifier\n", 2);
+}
+
+static void handle_without_equal(char *argv, t_shell *shell)
+{
+	if (!argv[0] || !is_valid_env_name(argv))
+	{
+		print_export_error(argv);
+		shell->last_exit_status = FAILURE;
+		return ;
+	}
+	if (!is_env_name(argv, shell->env))
+	
+	
+		shell->export_env = extend_env_array(shell->export_env, argv, NULL);
+		sort_export_env(shell->export_env);
+}
+
+static void handle_with_equal(char *equal, char *argv, t_shell *shell)
+{
 	char	name[PATH_MAX];
 	char	*value;
 
-	len = equal - argv;
-	ft_strlcpy(name, argv, len + 1);
-	if (!is_valid_env_name(name))
+	if (equal == argv)
 	{
-		printf("minishell: export: %s: not a valid identifier\n", name);
-        shell->last_exit_status = FAILURE;
-        return (shell->last_exit_status);
+		print_export_error(argv);
+		shell->last_exit_status = FAILURE;
+		return ;
+	}
+	ft_strlcpy(name, argv, equal - argv + 1);
+	if (!name[0] ||!is_valid_env_name(name))
+	{
+		print_export_error(argv);
+		shell->last_exit_status = FAILURE;
+		return ;
 	}
 	value = equal + 1;
-	shell->env = extend_env_array(shell->env, name, value);
-    shell->export_env = extend_env_array(shell->export_env, name, value);
+	update_env(name, value, true, shell);
 	sort_export_env(shell->export_env);
 	shell->last_exit_status = SUCCESS;
-	return (shell->last_exit_status);
 }
 
 int builtin_export(char **argv, t_shell *shell)
 {
-    int		i;
-	char	*equal;
+    int     i;
+    char    *equal;
 
     if (!argv[1])
     {
@@ -153,22 +166,11 @@ int builtin_export(char **argv, t_shell *shell)
     i = 0;
     while (argv[++i])
     {
-		equal = ft_strchr(argv[i], '=');
-		if (equal && handle_equal(equal, argv[i], shell))
-			return (shell->last_exit_status);
-		else if (!equal)
-		{
-			if (!is_valid_env_name(argv[i]))
-			{
-				printf("minishell: export: %s: not a valid identifier\n", argv[i]);
-				shell->last_exit_status = FAILURE;
-			}
-			else if (!is_env_name(argv[i], shell))
-			{
-				shell->export_env = extend_env_array(shell->export_env, argv[i], NULL);
-				sort_export_env(shell->export_env);
-			}
-		}
+        equal = ft_strchr(argv[i], '=');
+        if (equal)
+			handle_with_equal(equal, argv[i], shell);
+		else
+			handle_without_equal(argv[i], shell);
     }
     return (shell->last_exit_status);
-}
+}  
