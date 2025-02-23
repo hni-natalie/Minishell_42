@@ -6,7 +6,7 @@
 /*   By: rraja-az <rraja-az@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 17:50:49 by hni-xuan          #+#    #+#             */
-/*   Updated: 2025/02/22 11:28:29 by rraja-az         ###   ########.fr       */
+/*   Updated: 2025/02/23 12:24:38 by rraja-az         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,13 @@ void	execute_fork(t_node *ast, t_shell *shell)
 		if (WIFEXITED(status))
 			shell->last_exit_status = WEXITSTATUS(status);
 		else if (WIFSIGNALED(status))
+		{
 			shell->last_exit_status = 128 + WTERMSIG(status);
+			if (WTERMSIG(status) == SIGINT)
+				ft_putstr_fd("\n", 2);	
+			else if (WTERMSIG(status) == SIGQUIT)
+				ft_putstr_fd("Quit (core dumped)\n", 2);
+		}
 	}
 }
 
