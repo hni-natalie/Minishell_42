@@ -6,11 +6,33 @@
 /*   By: rraja-az <rraja-az@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 16:45:59 by rraja-az          #+#    #+#             */
-/*   Updated: 2025/02/17 16:46:01 by rraja-az         ###   ########.fr       */
+/*   Updated: 2025/02/23 14:04:48 by rraja-az         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
+
+/*
+	DESC: Handles process status
+	
+	1. If process exited > update exit status
+	2. If process terminated by signal > update exit status
+	3. If SIGINT > print \n
+	4. If SIGQUIT > print core dumped
+*/
+void	handle_process_status(int status, t_shell *shell)
+{
+		if (WIFEXITED(status))
+			shell->last_exit_status = WEXITSTATUS(status);
+		else if (WIFSIGNALED(status))
+		{
+			shell->last_exit_status = 128 + WTERMSIG(status);
+			if (WTERMSIG(status) == SIGINT)
+				ft_putstr_fd("\n", 2);	
+			else if (WTERMSIG(status) == SIGQUIT)
+				ft_putstr_fd("Quit (core dumped)\n", 2);
+		}
+}
 
 /*
 	DESC: Handles error, prints explicit err msg and exit accordingly
@@ -21,7 +43,7 @@
 		- else exit 127 > dir to cmd doesnt exist
 	3. If neither > error > not cmd > 127
 */
-void	execute_error(char	*cmd_path, t_exec_node *exec_node)
+void	handle_execute_error(char	*cmd_path, t_exec_node *exec_node)
 {
 	if (cmd_path)
 		free(cmd_path);
