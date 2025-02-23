@@ -6,7 +6,7 @@
 /*   By: rraja-az <rraja-az@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 13:06:57 by rraja-az          #+#    #+#             */
-/*   Updated: 2025/02/22 16:03:58 by rraja-az         ###   ########.fr       */
+/*   Updated: 2025/02/23 12:34:59 by rraja-az         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,19 +36,6 @@
 			- malloc for new vars
 */
 
-/* static int	env_len(t_shell *shell)
-{
-	int	i;
-
-	i = 0;
-	while (shell->env[i])
-		i++;
-	return (i);
-} */
-
-// print error?
-
-
 /*
 	DESC: Verifies a valid new env var
 		: follows syntax rules
@@ -70,36 +57,8 @@ static bool	is_valid_env_name(const char *name)
 	return (true);
 }
 
-// copy the env var because we dont want to modify the original env
-static char	**export_env_copy(t_shell *shell)
-{
-	int		i;
-	int		len;
-	char	**export_env;
-	
-	len = 0;
-	while (shell->env[len])
-		len++;
-	export_env = malloc((len + 1) * sizeof(char *));
-	if (!export_env)
-		return (NULL);
-	i = 0;
-	while(i < len)
-	{
-		export_env[i] = ft_strdup(shell->env[i]);
-		if (!export_env[i])
-		{
-			free_array(export_env);
-			return (NULL);
-		}
-		i++;
-	}
-	export_env[len] = NULL;
-	return (export_env);
-}
-
 // using insertion sort
-static void sort_export_var(char **export_env)
+static void sort_export_env(char **export_env)
 {
     int i;
     int j;
@@ -125,28 +84,26 @@ static void sort_export_var(char **export_env)
 static void print_export_env(t_shell *shell)
 {
     int		i;
-	char	**env;
 	char	*equal;
 
-	env = export_env_copy(shell);
-    if (!env || !env[0])
+	
+    if (!shell->export_env)
         return;
-    sort_export_var(env);
     i = 0;
-    while (env[i])
+    while (shell->export_env[i])
     {
-		equal = ft_strchr(env[i], '=');
+		equal = ft_strchr(shell->export_env[i], '=');
         if (equal)
 		{
 			*equal = '\0';
-			printf("declare -x %s=\"%s\"\n", env[i], equal + 1);
+			printf("declare -x %s=\"%s\"\n", shell->export_env[i], equal + 1);
 			*equal = '=';
 		}
 		else 
-			printf("declare -x %s\n", env[i]);
+			printf("declare -x %s\n", shell->export_env[i]);
 		i++;
 	}
-	free_array(env);
+	//free_array(shell->export_env);
 }
 
 /* 
@@ -175,10 +132,9 @@ static	int	handle_equal(char *equal, char *argv, t_shell *shell)
         return (shell->last_exit_status);
 	}
 	value = equal + 1;
-	if (is_env_name(name, shell))
-		update_env(name, value, false, shell);
-	else
-		update_env(name, value, true, shell);
+	shell->env = extend_env_array(shell->env, name, value);
+    shell->export_env = extend_env_array(shell->export_env, name, value);
+	sort_export_env(shell->export_env);
 	shell->last_exit_status = SUCCESS;
 	return (shell->last_exit_status);
 }
@@ -209,7 +165,8 @@ int builtin_export(char **argv, t_shell *shell)
 			}
 			else if (!is_env_name(argv[i], shell))
 			{
-				shell->env = extend_env_array(shell->env, argv[i], NULL);
+				shell->export_env = extend_env_array(shell->export_env, argv[i], NULL);
+				sort_export_env(shell->export_env);
 			}
 		}
     }
