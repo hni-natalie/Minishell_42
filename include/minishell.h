@@ -6,7 +6,7 @@
 /*   By: rraja-az <rraja-az@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 11:05:28 by hni-xuan          #+#    #+#             */
-/*   Updated: 2025/02/22 11:17:56 by rraja-az         ###   ########.fr       */
+/*   Updated: 2025/02/23 10:12:32 by rraja-az         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@
 # define YES 1
 # define NO 0
 
-# define PATH_MAX 4096
+# define PATH_MAX 1024
 // max buffer size for file paths (CLI: getconf PATH_MAX /)
 // LINUX : 4096 | MAC : 1024
 
@@ -51,14 +51,14 @@ extern int	g_signal;
 // main.c
 void	init_shell(t_shell *shell, char **env);
 void	start_shell(t_shell *shell);
-//void	free_arr(char **arr);
 void	print_error(char *error, char *prompt);
 
 // signal.c
 void	sigint_handler(int signum);
+//void	sigquit_handler(int signum);
 void	handle_sigint(t_shell *shell);
 void	handle_child_signal(int signum);
-void	handle_child_exit(int left_status, int right_status, t_shell *shell);
+//void	handle_child_exit(int left_status, int right_status, t_shell *shell);
 
 // check.c
 int		empty_line(char *prompt);
