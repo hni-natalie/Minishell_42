@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rraja-az <rraja-az@student.42kl.edu.my>    +#+  +:+       +#+        */
+/*   By: hni-xuan <hni-xuan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 17:50:49 by hni-xuan          #+#    #+#             */
-/*   Updated: 2025/02/23 14:02:45 by rraja-az         ###   ########.fr       */
+/*   Updated: 2025/02/24 09:01:15 by hni-xuan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,9 +125,10 @@ void	execute_command(t_exec_node *exec_node, t_shell *shell)
 	}
 	// printf("exec_node->argv[0] = %s\n", exec_node->argv[0]); // debug
 	cmd_path = NULL;
-	if (execve(exec_node->argv[0], exec_node->argv, shell->env) == -1)
-		cmd_path = get_path(exec_node->argv[0], shell);
+	execve(exec_node->argv[0], exec_node->argv, shell->env);
+	cmd_path = get_path(exec_node->argv[0], shell);
 	// printf("cmd fullpath: %s\n", cmd_path); // debug
 	if (!cmd_path || execve(cmd_path, exec_node->argv, shell->env) == -1)
 		handle_execute_error(cmd_path, exec_node);
+	free(cmd_path);
 }
