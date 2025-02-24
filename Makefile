@@ -6,7 +6,7 @@
 #    By: rraja-az <rraja-az@student.42kl.edu.my>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/01/10 16:18:44 by hni-xuan          #+#    #+#              #
-#    Updated: 2025/02/22 14:50:26 by rraja-az         ###   ########.fr        #
+#    Updated: 2025/02/24 07:58:16 by rraja-az         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -36,7 +36,7 @@ PARSING_FILES = token parsing init free arg_handler check
 HEREDOC_FILES = heredoc heredoc_utils
 EXECUTION_FILES = execute execute_utils setup
 BUILTIN_FILES = builtin builtin_cd builtin_echo builtin_env builtin_exit builtin_export builtin_pwd builtin_unset 
-ENV_FILES = env_init env_handler env_path
+ENV_FILES = env_init env_export env_handler env_path
 
 OBJ = $(addprefix $(OBJ_DIR), $(addsuffix .o, $(MAIN_FILES)))
 OBJ += $(addprefix $(OBJ_DIR), $(addsuffix .o, $(PARSING_FILES)))
