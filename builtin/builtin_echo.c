@@ -6,7 +6,7 @@
 /*   By: hni-xuan <hni-xuan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 14:20:27 by rraja-az          #+#    #+#             */
-/*   Updated: 2025/02/24 10:50:16 by hni-xuan         ###   ########.fr       */
+/*   Updated: 2025/02/24 14:50:51 by hni-xuan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,24 +29,7 @@
 		5. Return exit status
 */
 
-int	builtin_echo(char **argv, t_shell *shell)
-{
-	int		i;
-	bool	suppress_n;
-	
-	i = 0;
-	suppress_n = false;
-	while (argv[++i] && argv[i][0] == '-' && argv[i][1] == 'n' 
-		&& ft_strspn(argv[i] + 1, "n") == ft_strlen(argv[i]) - 1)
-		suppress_n = true;
-	print_arguments(argv, &i, shell);
-	if (!argv[i] && !suppress_n)
-		write (1, "\n", 1);
-	shell->last_exit_status = SUCCESS;
-	return (shell->last_exit_status);
-}
-
-void	print_arguments(char **argv, int *i, t_shell *shell)
+static void	print_arguments(char **argv, int *i, t_shell *shell)
 {
 	int	j;
 
@@ -65,3 +48,22 @@ void	print_arguments(char **argv, int *i, t_shell *shell)
 		(*i)++;
 	}
 }
+
+int	builtin_echo(char **argv, t_shell *shell)
+{
+	int		i;
+	bool	suppress_n;
+	
+	i = 0;
+	suppress_n = false;
+	while (argv[++i] && argv[i][0] == '-' && argv[i][1] == 'n' 
+		&& ft_strspn(argv[i] + 1, "n") == ft_strlen(argv[i]) - 1)
+		suppress_n = true;
+	print_arguments(argv, &i, shell);
+	if (!argv[i] && !suppress_n)
+		write (1, "\n", 1);
+	shell->last_exit_status = SUCCESS;
+	return (shell->last_exit_status);
+}
+
+
