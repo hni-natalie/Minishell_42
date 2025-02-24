@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   structs.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rraja-az <rraja-az@student.42kl.edu.my>    +#+  +:+       +#+        */
+/*   By: hni-xuan <hni-xuan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 13:24:44 by hni-xuan          #+#    #+#             */
-/*   Updated: 2025/02/23 07:52:39 by rraja-az         ###   ########.fr       */
+/*   Updated: 2025/02/24 09:25:48 by hni-xuan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ typedef struct s_shell
 	char	**env;
 	char	**export_env;
 	int		last_exit_status;
-	int		pipe_in_prompt;
+	int		argv_with_qoutes;
 }	t_shell;
 
 #endif

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_echo.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rraja-az <rraja-az@student.42kl.edu.my>    +#+  +:+       +#+        */
+/*   By: hni-xuan <hni-xuan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 14:20:27 by rraja-az          #+#    #+#             */
-/*   Updated: 2025/02/20 20:23:47 by rraja-az         ###   ########.fr       */
+/*   Updated: 2025/02/24 09:41:19 by hni-xuan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,6 @@
 int	builtin_echo(char **argv, t_shell *shell)
 {
 	int		i;
-	int		j;
 	bool	suppress_n;
 	
 	i = 0;
@@ -40,18 +39,29 @@ int	builtin_echo(char **argv, t_shell *shell)
 	while (argv[++i] && argv[i][0] == '-' && argv[i][1] == 'n' 
 		&& ft_strspn(argv[i] + 1, "n") == ft_strlen(argv[i]) - 1)
 		suppress_n = true;
-	while (argv[i])
-	{
-		j = -1;
-		while (argv[i][++j])
-			if (argv[i][j] != '\\')
-				write(1, &argv[i][j], 1);
-		if (argv[i + 1])
-			write(1, " ", 1);
-		i++;
-	}
+	print_arguments(argv, &i, shell);
 	if (!argv[i] && !suppress_n)
 		write (1, "\n", 1);
 	shell->last_exit_status = SUCCESS;
 	return (shell->last_exit_status);
+}
+
+void	print_arguments(char **argv, int *i, t_shell *shell)
+{
+	int	j;
+
+	while (argv[*i])
+	{
+		j = -1;
+		printf("argv_with_qoutes: %d\n", shell->argv_with_qoutes); // debug
+		while (argv[*i][++j])
+		{
+			if (argv[*i][j] == '\\' && shell->argv_with_qoutes == 0)
+				continue ;
+			write(1, &argv[*i][j], 1);
+		}
+		if (argv[(*i) + 1])
+			write(1, " ", 1);
+		(*i)++;
+	}
 }
