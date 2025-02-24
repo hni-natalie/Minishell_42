@@ -6,7 +6,7 @@
 /*   By: rraja-az <rraja-az@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 11:05:28 by hni-xuan          #+#    #+#             */
-/*   Updated: 2025/02/23 17:58:59 by rraja-az         ###   ########.fr       */
+/*   Updated: 2025/02/24 08:00:42 by rraja-az         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@
 # define YES 1
 # define NO 0
 
-# define PATH_MAX 1024
+# define PATH_MAX 4096
 // max buffer size for file paths (CLI: getconf PATH_MAX /)
 // LINUX : 4096 | MAC : 1024
 
@@ -113,6 +113,9 @@ char	**copy_env(char **env);
 char	*get_env_name(char *env);
 char	*get_env_value(char *env);
 bool	is_env_name(char *name, char **env);
+bool	is_valid_env_name(const char *name);
+void	sort_export_env(char **export_env);
+void	print_export_env(t_shell *shell);
 void	update_env(char *name, char *value, bool add, t_shell *shell);
 char	**extend_env_array(char **env, char *name, char *value);
 char	*get_path(char *cmd, t_shell *shell);
