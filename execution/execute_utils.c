@@ -6,7 +6,7 @@
 /*   By: hni-xuan <hni-xuan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 16:45:59 by rraja-az          #+#    #+#             */
-/*   Updated: 2025/02/24 14:58:36 by hni-xuan         ###   ########.fr       */
+/*   Updated: 2025/02/25 09:57:33 by hni-xuan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,14 @@ void	handle_process_status(int status, t_shell *shell)
 		- else exit 127 > dir to cmd doesnt exist
 	3. If neither > error > not cmd > 127
 */
+static void	print_execute_error(char *argv, char *msg)
+{
+	ft_putstr_fd("minishell: ", 2);
+	ft_putstr_fd(argv, 2);
+	ft_putstr_fd(msg, 2);
+	ft_putstr_fd("\n", 2);
+}
+
 void	handle_execute_error(char	*cmd_path, t_exec_node *exec_node)
 {
 	if (cmd_path)
@@ -51,18 +59,18 @@ void	handle_execute_error(char	*cmd_path, t_exec_node *exec_node)
 	{
 		if (access(exec_node->argv[0], F_OK) == 0)
 		{
-			printf("minishell: %s: Permission denied\n", exec_node->argv[0]);
+			print_execute_error(exec_node->argv[0], ": Permission denied\n");
 			exit(126);
 		}
 		else
 		{
-			printf("minishell: %s: No such file or directory\n", exec_node->argv[0]);
+			print_execute_error(exec_node->argv[0], ": No such file or directory\n");
 			exit(127);
 		}
 	}
 	else
 	{
-		printf("minishell: %s: command not found\n", exec_node->argv[0]);
+		print_execute_error(exec_node->argv[0], "minishell: %s: command not found\n");
 		exit(127);
 	}
 }
