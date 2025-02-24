@@ -6,7 +6,7 @@
 /*   By: rraja-az <rraja-az@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/10 09:56:27 by rraja-az          #+#    #+#             */
-/*   Updated: 2025/02/23 08:54:38 by rraja-az         ###   ########.fr       */
+/*   Updated: 2025/02/24 07:42:37 by rraja-az         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,8 +110,10 @@ int	builtin_unset(char **argv, t_shell *shell)
 		if (!is_env_var(argv[i], shell->env) && !is_env_var(argv[i], shell->export_env))
 			printf("unset: variable does not exist\n");
 		else
+		{
 			remove_env_var(argv[i], shell->env);
 			remove_env_var(argv[i], shell->export_env);
+		}
 		i++;
 	}
 	shell->last_exit_status = SUCCESS;
