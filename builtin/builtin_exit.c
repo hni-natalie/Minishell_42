@@ -6,7 +6,7 @@
 /*   By: rraja-az <rraja-az@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/07 16:24:16 by rraja-az          #+#    #+#             */
-/*   Updated: 2025/02/23 14:14:17 by rraja-az         ###   ########.fr       */
+/*   Updated: 2025/02/24 09:35:34 by rraja-az         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,14 +65,16 @@ int	builtin_exit(char **argv, t_shell *shell)
 	printf("exit\n");
 	if (argv[1] && argv[2])
 	{
-		printf("minishell: exit: too many arguments\n");
+		ft_putstr_fd("minishell: exit: too many arguments\n", 2);
 		return (1);
 	}
 	if (argv[1])
 	{
 		if (!is_numeric(argv[1]))
 		{
-			printf("minishell: exit: %s: numeric argument required\n", argv[1]);
+			ft_putstr_fd("minishell: exit: ", 2);
+			ft_putstr_fd(argv[1], 2);
+			ft_putstr_fd(": numeric argument required\n", 2);
 			shell->last_exit_status = 2;
 			exit(2);
 		}

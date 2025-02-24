@@ -6,7 +6,7 @@
 /*   By: rraja-az <rraja-az@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 12:20:41 by rraja-az          #+#    #+#             */
-/*   Updated: 2025/02/14 16:47:57 by rraja-az         ###   ########.fr       */
+/*   Updated: 2025/02/24 11:49:23 by rraja-az         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,21 +22,17 @@
 int	builtin_pwd(char **argv, t_shell *shell)
 {
 	char	pwd[PATH_MAX];
+	(void)	argv;
 
-	if (argv[1] == NULL)
+	if (getcwd(pwd, sizeof(pwd)))
 	{
-		if (getcwd(pwd, sizeof(pwd)))
-		{
-			printf("%s\n", pwd);
-			shell->last_exit_status = SUCCESS;
-		}
-		else
-		{
-			shell->last_exit_status = FAILURE;
-			perror("pwd");
-		}
+		printf("%s\n", pwd);
+		shell->last_exit_status = SUCCESS;
 	}
 	else
+	{
 		shell->last_exit_status = FAILURE;
+		perror("pwd");
+	}
 	return (shell->last_exit_status);
 }

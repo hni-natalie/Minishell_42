@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hni-xuan <hni-xuan@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rraja-az <rraja-az@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 11:05:28 by hni-xuan          #+#    #+#             */
-/*   Updated: 2025/02/24 09:40:06 by hni-xuan         ###   ########.fr       */
+/*   Updated: 2025/02/24 11:33:21 by rraja-az         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,6 @@ int		exec_builtin(char **cmd, t_shell *shell);
 
 // builtin
 int 	builtin_echo(char **argv, t_shell *shell);
-void	print_arguments(char **argv, int *i, t_shell *shell);
 int 	builtin_cd(char **argv, t_shell *shell);
 int 	builtin_pwd(char **argv, t_shell *shell);
 int 	builtin_export(char **argv, t_shell *shell);
