@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   setup.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rraja-az <rraja-az@student.42kl.edu.my>    +#+  +:+       +#+        */
+/*   By: hni-xuan <hni-xuan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/05 11:16:26 by hni-xuan          #+#    #+#             */
-/*   Updated: 2025/02/23 10:00:36 by rraja-az         ###   ########.fr       */
+/*   Updated: 2025/02/24 14:28:03 by hni-xuan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	setup_redir(t_redir_node *redir_node, t_shell *shell)
 
 	if (redir_node->file)
 	{
-		fd = open(redir_node->file, redir_node->mode, 0644);
+		fd = open(redir_node->file, redir_node->mode, 0666);
 		if (fd < 0)
 		{
 			perror(redir_node->file);
@@ -66,6 +66,7 @@ void	setup_pipe(t_pipe_node *pipe_node, t_shell *shell)
 	close(pipefd[1]);
 	waitpid(left_pid, &left_status, 0);
 	waitpid(right_pid, &right_status, 0);
+	handle_process_status(right_status, shell);
 }
 
 void	setup_child(int *pipefd, t_node *node, t_shell *shell)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env_handler.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rraja-az <rraja-az@student.42kl.edu.my>    +#+  +:+       +#+        */
+/*   By: hni-xuan <hni-xuan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/15 14:48:59 by rraja-az          #+#    #+#             */
-/*   Updated: 2025/02/23 19:03:12 by rraja-az         ###   ########.fr       */
+/*   Updated: 2025/02/24 10:02:27 by hni-xuan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ static char	*set_new_env(char *s1, char c, char *s2)
 	new_env = ft_strjoin(tmp, s2);
 	if (!new_env)
 		return (NULL);
-	//free(tmp);
+	free(tmp);
 	return (new_env);
 }
 

@@ -6,7 +6,7 @@
 /*   By: hni-xuan <hni-xuan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 10:22:10 by hni-xuan          #+#    #+#             */
-/*   Updated: 2025/02/24 09:26:32 by hni-xuan         ###   ########.fr       */
+/*   Updated: 2025/02/24 11:52:55 by hni-xuan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,7 @@ char	*join_arg(char *new_arg, char *arg, int *i, int quote)
 {
 	int		start;
 	char	*append_new_arg;
+	char	*tmp;
 	
 	start = *i;
 	while (arg[*i])
@@ -75,8 +76,11 @@ char	*join_arg(char *new_arg, char *arg, int *i, int quote)
 			break ;
 		(*i)++;
 	}
+	tmp = new_arg;
 	append_new_arg = ft_substr(arg, start, *i - start);
 	new_arg = ft_strjoin(new_arg, append_new_arg);
+	if (ft_strcmp(tmp, ""))
+		free(tmp);
 	free(append_new_arg);
 	return (new_arg);
 }

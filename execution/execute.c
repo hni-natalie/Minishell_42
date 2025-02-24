@@ -6,7 +6,7 @@
 /*   By: hni-xuan <hni-xuan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 17:50:49 by hni-xuan          #+#    #+#             */
-/*   Updated: 2025/02/24 09:01:15 by hni-xuan         ###   ########.fr       */
+/*   Updated: 2025/02/24 14:22:45 by hni-xuan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,13 +69,9 @@ void	execute_fork(t_node *ast, t_shell *shell)
 		execute_node(ast, shell);
 		exit(shell->last_exit_status);
 	}
-	else if (pid > 0)
-	{
-		waitpid(pid, &status, 0);
-		handle_process_status(status, shell);
-		signal(SIGINT, sigint_handler);
-		signal(SIGQUIT, SIG_IGN);
-	}
+	waitpid(pid, &status, 0);
+	signal(SIGINT, sigint_handler);
+	handle_process_status(status, shell);
 }
 
 /*
