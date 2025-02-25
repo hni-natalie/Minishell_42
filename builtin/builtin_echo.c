@@ -6,7 +6,7 @@
 /*   By: rraja-az <rraja-az@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 14:20:27 by rraja-az          #+#    #+#             */
-/*   Updated: 2025/02/24 15:11:26 by rraja-az         ###   ########.fr       */
+/*   Updated: 2025/02/25 09:44:51 by rraja-az         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,4 +71,3 @@ int	builtin_echo(char **argv, t_shell *shell)
 	shell->last_exit_status = SUCCESS;
 	return (shell->last_exit_status);
 }
-
