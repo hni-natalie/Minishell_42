@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   arg_handler.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rraja-az <rraja-az@student.42kl.edu.my>    +#+  +:+       +#+        */
+/*   By: hni-xuan <hni-xuan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 10:22:10 by hni-xuan          #+#    #+#             */
-/*   Updated: 2025/02/20 17:39:38 by rraja-az         ###   ########.fr       */
+/*   Updated: 2025/02/24 11:52:55 by hni-xuan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,14 +42,17 @@ char	*check_arg(char *arg, t_shell *shell)
 
 	i = 0;
 	quote = 0;
-	new_arg = ft_strdup("");
+	new_arg = "";
 	while (arg[i])
 	{
 		// printf("arg in while loop: %c\n", arg[i]); // debug
 		if (!quote && (arg[i] == '\'' || arg[i] == '\"'))
 			check_quote(&quote, arg, &i, OPEN_QUOTE);
 		else if (quote == arg[i])
+		{
 			check_quote(&quote, arg, &i, CLOSE_QUOTE);
+			shell->argv_with_qoutes = 1;
+		}
 		else if (arg[i] == '$' && (quote == '\"' || !quote))
 			new_arg = update_arg(arg, &i, new_arg, shell);
 		else
@@ -62,6 +65,7 @@ char	*join_arg(char *new_arg, char *arg, int *i, int quote)
 {
 	int		start;
 	char	*append_new_arg;
+	char	*tmp;
 	
 	start = *i;
 	while (arg[*i])
@@ -72,8 +76,11 @@ char	*join_arg(char *new_arg, char *arg, int *i, int quote)
 			break ;
 		(*i)++;
 	}
+	tmp = new_arg;
 	append_new_arg = ft_substr(arg, start, *i - start);
 	new_arg = ft_strjoin(new_arg, append_new_arg);
+	if (ft_strcmp(tmp, ""))
+		free(tmp);
 	free(append_new_arg);
 	return (new_arg);
 }
