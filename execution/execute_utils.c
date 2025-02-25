@@ -6,7 +6,7 @@
 /*   By: rraja-az <rraja-az@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 16:45:59 by rraja-az          #+#    #+#             */
-/*   Updated: 2025/02/25 12:55:39 by rraja-az         ###   ########.fr       */
+/*   Updated: 2025/02/25 17:18:13 by rraja-az         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,47 @@ void	handle_process_status(int status, t_shell *shell)
 		}
 }
 
+void	shift_argv(t_exec_node *exec_node)
+{
+	int	i;
+
+	if (!exec_node || !exec_node->argv)
+		return;
+
+	// printf("Before shifting:\n");
+	// for (i = 0; exec_node->argv; i++)
+	// 	printf("argv: %s\n", exec_node->argv[i]); // debug
+	while (exec_node->argv[0] && (ft_strcmp(exec_node->argv[0], "") == 0)) // shift only if argv[0] is NULL
+	{
+		i = 0;
+		while (exec_node->argv[i]) // shift everything left
+		{
+			exec_node->argv[i] = exec_node->argv[i + 1];
+			i++;
+		}
+		exec_node->argv[i] = NULL;
+	}
+	// printf("After shifting:\n");
+	// for (i = 0; exec_node->argv; i++)
+	// 	printf("argv: %s\n", exec_node->argv[i]); // debug
+}
+
+
+/* void	shift_argv(t_exec_node *exec_node)
+{
+	int	i;
+
+	if (!exec_node || !exec_node->argv[0])
+		return;
+	i = 0;
+	while (exec_node->argv[i] == NULL)
+	{
+		exec_node->argv[i] = exec_node->argv[i + 1];
+		i++;
+	}
+	exec_node->argv[i] = NULL;
+} */
+
 /*
 	DESC: Handles error, prints explicit err msg and exit accordingly
 	
@@ -53,7 +94,9 @@ static void	print_execute_error(char *argv, char *msg)
 }
 
 void	handle_execute_error(char	*cmd_path, t_exec_node *exec_node)
-{
+{	
+	// int	i;
+	
 	if (cmd_path)
 		free(cmd_path);
 	if (exec_node->argv[0][0] == '/' || (exec_node->argv[0][0] == '.'

@@ -6,7 +6,7 @@
 /*   By: rraja-az <rraja-az@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 17:50:49 by hni-xuan          #+#    #+#             */
-/*   Updated: 2025/02/25 08:34:39 by rraja-az         ###   ########.fr       */
+/*   Updated: 2025/02/25 15:16:31 by rraja-az         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,6 +112,8 @@ void	execute_command(t_exec_node *exec_node, t_shell *shell)
 {
 	char	*cmd_path;
 	
+	if (shell->argv_with_expansion)
+		shift_argv(exec_node);
 	if (!exec_node->argv[0])
 		return;
 	if (is_builtin(exec_node->argv[0]))
