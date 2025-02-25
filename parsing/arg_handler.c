@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   arg_handler.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hni-xuan <hni-xuan@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rraja-az <rraja-az@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 10:22:10 by hni-xuan          #+#    #+#             */
-/*   Updated: 2025/02/24 11:52:55 by hni-xuan         ###   ########.fr       */
+/*   Updated: 2025/02/25 17:20:18 by rraja-az         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ char	*check_arg(char *arg, t_shell *shell)
 			check_quote(&quote, arg, &i, CLOSE_QUOTE);
 			shell->argv_with_qoutes = 1;
 		}
-		else if (arg[i] == '$' && (quote == '\"' || !quote))
+		else if (arg[i] == '$' && (quote == '\"' || !quote) && arg[i + 1] != '\0')
 			new_arg = update_arg(arg, &i, new_arg, shell);
 		else
 			new_arg = join_arg(new_arg, arg, &i, quote);
@@ -70,12 +70,13 @@ char	*join_arg(char *new_arg, char *arg, int *i, int quote)
 	start = *i;
 	while (arg[*i])
 	{
-		if ((!quote && (arg[*i] == '\'' || arg[*i] == '\"' || arg[*i] == '$'))
-			|| (quote == '\'' && arg[*i] == quote) ||
-			(quote == '\"' && (arg[*i] == '$' || arg[*i] == quote)))
+		if ((!quote && (arg[*i] == '\'' || arg[*i] == '\"')) ||
+			(quote == '\'' && arg[*i] == quote) ||
+			(quote == '\"' && arg[*i] == quote) ||
+			(arg[*i] == '$' && arg[*i + 1] != '\0'))
 			break ;
 		(*i)++;
-	}
+}
 	tmp = new_arg;
 	append_new_arg = ft_substr(arg, start, *i - start);
 	new_arg = ft_strjoin(new_arg, append_new_arg);
@@ -89,10 +90,10 @@ char	*update_arg(char *arg, int *i, char *new_arg, t_shell *shell)
 {
 	char	*input;
 	char	*updated_input;
+	char 	*result;
 	int		start;
 
 	(*i)++;
-	// printf("arg in update_arg: %s\n", &arg[*i]); // debug
 	if (arg[*i] == '?')
 		return ((*i)++, ft_itoa(shell->last_exit_status));
 	if (ft_isdigit(arg[*i]))
@@ -103,18 +104,25 @@ char	*update_arg(char *arg, int *i, char *new_arg, t_shell *shell)
 	while (ft_isalnum(arg[*i]) || arg[*i] == '_')
 		(*i)++;
 	input = ft_substr(arg, start, *i - start);
-	updated_input = get_env(shell->env, input);
+	updated_input = get_env(shell, input);
 	free(input);
 	if (!updated_input)
 		return (new_arg);
-	// printf("updated_input: %s\n", updated_input); // debug
-	return (ft_strjoin(new_arg, updated_input));
+	//printf("new_arg: %s\n", new_arg); // debug
+	result = ft_strjoin(new_arg, updated_input);
+	// if (ft_strlen(new_arg) > 0)
+	// 	free(new_arg);
+	// free(updated_input);
+	return (result);
 }
 
-char	*get_env(char **env, char *input)
+char	*get_env(t_shell *shell, char *input)
 {
 	int		i;
+	char	**env;
 	
+	env = shell->env;
+	shell->argv_with_expansion = 1;
 	i = -1;
 	if (!input || !env)
 		return (NULL);
