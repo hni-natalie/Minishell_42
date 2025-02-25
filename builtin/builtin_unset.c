@@ -6,7 +6,7 @@
 /*   By: rraja-az <rraja-az@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/10 09:56:27 by rraja-az          #+#    #+#             */
-/*   Updated: 2025/02/24 13:52:17 by rraja-az         ###   ########.fr       */
+/*   Updated: 2025/02/25 07:38:55 by rraja-az         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,19 +101,15 @@ int	builtin_unset(char **argv, t_shell *shell)
 	i = 1;
 	if (!argv[i])
 	{
-		//ft_putstr_fd("unset: not enough arguments\n", 2);
 		shell->last_exit_status = SUCCESS;
 		return (shell->last_exit_status);
 	}
 	while (argv[i])
 	{
-		if (!is_env_var(argv[i], shell->env) && !is_env_var(argv[i], shell->export_env))
-			ft_putstr_fd("unset: variable does not exist\n", 2);
-		else
-		{
+		if (is_env_var(argv[i], shell->env))
 			remove_env_var(argv[i], shell->env);
+		if (is_env_var(argv[i], shell->export_env))
 			remove_env_var(argv[i], shell->export_env);
-		}
 		i++;
 	}
 	shell->last_exit_status = SUCCESS;

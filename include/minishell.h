@@ -6,7 +6,7 @@
 /*   By: rraja-az <rraja-az@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 11:05:28 by hni-xuan          #+#    #+#             */
-/*   Updated: 2025/02/24 11:33:21 by rraja-az         ###   ########.fr       */
+/*   Updated: 2025/02/25 08:40:57 by rraja-az         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 # include "structs.h"
 # include <readline/readline.h>
 # include <readline/history.h>
+# include <errno.h>
 # include <sys/wait.h>
 # include <stdbool.h>
 # include <stdio.h>

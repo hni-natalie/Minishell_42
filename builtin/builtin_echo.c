@@ -6,7 +6,7 @@
 /*   By: rraja-az <rraja-az@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 14:20:27 by rraja-az          #+#    #+#             */
-/*   Updated: 2025/02/24 14:54:58 by rraja-az         ###   ########.fr       */
+/*   Updated: 2025/02/24 15:11:26 by rraja-az         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,22 +72,3 @@ int	builtin_echo(char **argv, t_shell *shell)
 	return (shell->last_exit_status);
 }
 
-void	print_arguments(char **argv, int *i, t_shell *shell)
-{
-	int	j;
-
-	while (argv[*i])
-	{
-		j = -1;
-		// printf("argv_with_qoutes: %d\n", shell->argv_with_qoutes); // debug
-		while (argv[*i][++j])
-		{
-			if (argv[*i][j] == '\\' && shell->argv_with_qoutes == 0)
-				continue ;
-			write(1, &argv[*i][j], 1);
-		}
-		if (argv[(*i) + 1])
-			write(1, " ", 1);
-		(*i)++;
-	}
-}
