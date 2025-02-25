@@ -6,7 +6,7 @@
 /*   By: hni-xuan <hni-xuan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 14:20:27 by rraja-az          #+#    #+#             */
-/*   Updated: 2025/02/25 10:21:06 by hni-xuan         ###   ########.fr       */
+/*   Updated: 2025/02/25 10:22:24 by hni-xuan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,8 @@ static void	print_arguments(char **argv, int *i, t_shell *shell)
 		// printf("argv_with_qoutes: %d\n", shell->argv_with_qoutes); // debug
 		while (argv[*i][++j])
 		{
+			// if (ft_strcmp(argv[*i][j], "") == 0)
+			// 	continue ;
 			if (argv[*i][j] == '\\' && shell->argv_with_qoutes == 0)
 				continue ;
 			write(1, &argv[*i][j], 1);
