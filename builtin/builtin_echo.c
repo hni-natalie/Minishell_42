@@ -5,10 +5,11 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: hni-xuan <hni-xuan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/02/04 14:20:27 by rraja-az          #+#    #+#             */
-/*   Updated: 2025/02/25 09:59:25 by hni-xuan         ###   ########.fr       */
+/*   Created: Invalid date        by                   #+#    #+#             */
+/*   Updated: 2025/02/25 10:17:52 by hni-xuan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 
 
 /* 
@@ -36,7 +37,7 @@ static void	print_arguments(char **argv, int *i, t_shell *shell)
 	while (argv[*i])
 	{
 		j = -1;
-		//printf("argv_with_qoutes: %d\n", shell->argv_with_qoutes); // debug
+		// printf("argv_with_qoutes: %d\n", shell->argv_with_qoutes); // debug
 		while (argv[*i][++j])
 		{
 			if (argv[*i][j] == '\\' && shell->argv_with_qoutes == 0)
@@ -47,7 +48,7 @@ static void	print_arguments(char **argv, int *i, t_shell *shell)
 			write(1, " ", 1);
 		(*i)++;
 	}
-} 
+}
 
 int	builtin_echo(char **argv, t_shell *shell)
 {
