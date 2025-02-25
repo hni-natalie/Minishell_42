@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hni-xuan <hni-xuan@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rraja-az <rraja-az@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 16:45:59 by rraja-az          #+#    #+#             */
-/*   Updated: 2025/02/25 10:34:34 by rraja-az         ###   ########.fr       */
+/*   Updated: 2025/02/25 12:55:39 by rraja-az         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@ static void	print_execute_error(char *argv, char *msg)
 {
 	ft_putstr_fd("minishell: ", 2);
 	ft_putstr_fd(argv, 2);
+	ft_putstr_fd(": ", 2);
 	ft_putstr_fd(msg, 2);
 	ft_putstr_fd("\n", 2);
 }
@@ -71,30 +72,3 @@ void	handle_execute_error(char	*cmd_path, t_exec_node *exec_node)
 		exit (126);
 	exit(127);
 }
-
-
-/* void	handle_execute_error(char	*cmd_path, t_exec_node *exec_node)
-{
-	if (cmd_path)
-		free(cmd_path);
-	if (exec_node->argv[0][0] == '/' || (exec_node->argv[0][0] == '.'
-			&& exec_node->argv[0][1] == '/'))
-	{
-		if (access(exec_node->argv[0], F_OK) == 0)
-		{
-			print_execute_error();
-			ft_putstr_fd("minishell: Permission denied\n", 2);
-			exit(126);
-		}
-		else
-		{
-			ft_putstr_fd("minishell: No such file or directory\n", 2);
-			exit(127);
-		}
-	}
-	else
-	{
-		ft_putstr_fd("minishell: command not found\n", 2);
-		exit(127);
-	}
-} */
