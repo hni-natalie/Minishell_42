@@ -6,7 +6,7 @@
 /*   By: rraja-az <rraja-az@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 07:58:35 by rraja-az          #+#    #+#             */
-/*   Updated: 2025/02/25 10:02:48 by rraja-az         ###   ########.fr       */
+/*   Updated: 2025/02/24 07:59:39 by rraja-az         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,4 +74,5 @@ void print_export_env(t_shell *shell)
 			printf("declare -x %s\n", shell->export_env[i]);
 		i++;
 	}
+	//free_array(shell->export_env);
 }
