@@ -3,15 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_echo.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rraja-az <rraja-az@student.42kl.edu.my>    +#+  +:+       +#+        */
+/*   By: hni-xuan <hni-xuan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 14:20:27 by rraja-az          #+#    #+#             */
 /*   Updated: 2025/02/25 09:44:51 by rraja-az         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/minishell.h"
-
+#include "minishell.h"
 /* 
 	ECHO
 	DESC: prints arg to stdout, seperated by sapce
@@ -48,7 +47,7 @@ static void	print_arguments(char **argv, int *i, t_shell *shell)
 			write(1, " ", 1);
 		(*i)++;
 	}
-} 
+}
 
 int	builtin_echo(char **argv, t_shell *shell)
 {

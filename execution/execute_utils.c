@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   execute_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rraja-az <rraja-az@student.42kl.edu.my>    +#+  +:+       +#+        */
+/*   By: hni-xuan <hni-xuan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 16:45:59 by rraja-az          #+#    #+#             */
 /*   Updated: 2025/02/25 10:34:34 by rraja-az         ###   ########.fr       */
@@ -71,6 +71,7 @@ void	handle_execute_error(char	*cmd_path, t_exec_node *exec_node)
 		exit (126);
 	exit(127);
 }
+
 
 /* void	handle_execute_error(char	*cmd_path, t_exec_node *exec_node)
 {
