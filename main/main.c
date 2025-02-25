@@ -6,7 +6,7 @@
 /*   By: hni-xuan <hni-xuan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 11:03:11 by hni-xuan          #+#    #+#             */
-/*   Updated: 2025/02/24 09:32:42 by hni-xuan         ###   ########.fr       */
+/*   Updated: 2025/02/25 14:53:33 by hni-xuan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ void	start_shell(t_shell *shell)
 	{
 		g_signal = 0;
 		shell->argv_with_qoutes = 0;
+		shell->argv_with_expansion = 0;
 		prompt = readline("\033[0;33mminishell$\033[0m ");
 		if (!prompt) //handles ctrl_d signal
 		{
@@ -71,7 +72,6 @@ void	init_shell(t_shell *shell, char **env)
 	shell->env = copy_env(env);
 	shell->export_env = copy_env(env);
 	shell->last_exit_status = 0;
-	shell->argv_with_qoutes = 0;
 	signal(SIGINT, sigint_handler);
 	signal(SIGQUIT, SIG_IGN);
 }

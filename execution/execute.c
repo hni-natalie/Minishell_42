@@ -6,7 +6,7 @@
 /*   By: hni-xuan <hni-xuan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 17:50:49 by hni-xuan          #+#    #+#             */
-/*   Updated: 2025/02/24 14:22:45 by hni-xuan         ###   ########.fr       */
+/*   Updated: 2025/02/25 17:13:01 by hni-xuan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,7 +111,11 @@ void	execute_node(t_node *node, t_shell *shell)
 void	execute_command(t_exec_node *exec_node, t_shell *shell)
 {
 	char	*cmd_path;
+	int		i;
 	
+	i = -1;
+	if (shell->argv_with_expansion)
+		shift_argv(exec_node);
 	if (!exec_node->argv[0])
 		return;
 	if (is_builtin(exec_node->argv[0]))

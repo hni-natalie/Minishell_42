@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rraja-az <rraja-az@student.42kl.edu.my>    +#+  +:+       +#+        */
+/*   By: hni-xuan <hni-xuan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 13:25:16 by hni-xuan          #+#    #+#             */
-/*   Updated: 2025/02/15 13:27:35 by rraja-az         ###   ########.fr       */
+/*   Updated: 2025/02/25 13:41:47 by hni-xuan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,11 @@ void	free_array(char **arr)
 		return ;
 	i = -1;
 	while(arr[++i])
+	{
+		if (arr[i][0] == '\0')
+			continue ;
 		free(arr[i]);
+	}
 	free(arr);
 }
 

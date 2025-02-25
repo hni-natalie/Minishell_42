@@ -6,7 +6,7 @@
 /*   By: hni-xuan <hni-xuan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 13:24:44 by hni-xuan          #+#    #+#             */
-/*   Updated: 2025/02/24 09:25:48 by hni-xuan         ###   ########.fr       */
+/*   Updated: 2025/02/25 14:45:50 by hni-xuan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,7 @@ typedef struct s_shell
 	char	**export_env;
 	int		last_exit_status;
 	int		argv_with_qoutes;
+	int		argv_with_expansion;
 }	t_shell;
 
 #endif

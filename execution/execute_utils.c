@@ -6,7 +6,7 @@
 /*   By: hni-xuan <hni-xuan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 16:45:59 by rraja-az          #+#    #+#             */
-/*   Updated: 2025/02/25 09:57:33 by hni-xuan         ###   ########.fr       */
+/*   Updated: 2025/02/25 17:23:34 by hni-xuan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,31 @@ void	handle_process_status(int status, t_shell *shell)
 		}
 }
 
+void	shift_argv(t_exec_node *exec_node)
+{
+	int	i;
+
+	if (!exec_node || !exec_node->argv)
+		return;
+
+	// printf("Before shifting:\n");
+	// for (i = 0; exec_node->argv; i++)
+	// 	printf("argv: %s\n", exec_node->argv[i]); // debug
+	while (exec_node->argv[0] && (ft_strcmp(exec_node->argv[0], "") == 0)) // shift only if argv[0] is NULL
+	{
+		i = 0;
+		while (exec_node->argv[i]) // shift everything left
+		{
+			exec_node->argv[i] = exec_node->argv[i + 1];
+			i++;
+		}
+		exec_node->argv[i] = NULL;
+	}
+	// printf("After shifting:\n");
+	// for (i = 0; exec_node->argv; i++)
+	// 	printf("argv: %s\n", exec_node->argv[i]); // debug
+}
+
 /*
 	DESC: Handles error, prints explicit err msg and exit accordingly
 	
@@ -47,6 +72,7 @@ static void	print_execute_error(char *argv, char *msg)
 {
 	ft_putstr_fd("minishell: ", 2);
 	ft_putstr_fd(argv, 2);
+	ft_putstr_fd(": ", 2);
 	ft_putstr_fd(msg, 2);
 	ft_putstr_fd("\n", 2);
 }
@@ -59,18 +85,14 @@ void	handle_execute_error(char	*cmd_path, t_exec_node *exec_node)
 	{
 		if (access(exec_node->argv[0], F_OK) == 0)
 		{
-			print_execute_error(exec_node->argv[0], ": Permission denied\n");
+			print_execute_error(exec_node->argv[0], "Permission denied");
 			exit(126);
 		}
-		else
-		{
-			print_execute_error(exec_node->argv[0], ": No such file or directory\n");
-			exit(127);
-		}
-	}
-	else
-	{
-		print_execute_error(exec_node->argv[0], "minishell: %s: command not found\n");
+		print_execute_error(exec_node->argv[0], "No such file or directory");
 		exit(127);
 	}
+	print_execute_error(exec_node->argv[0], "command not found");
+	if (errno == EACCES)
+		exit(126);
+	exit(127);
 }
