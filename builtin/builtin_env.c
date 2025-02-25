@@ -1,38 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   builtin_pwd.c                                      :+:      :+:    :+:   */
+/*   builtin_env.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rraja-az <rraja-az@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/02/06 12:20:41 by rraja-az          #+#    #+#             */
-/*   Updated: 2025/02/24 11:49:23 by rraja-az         ###   ########.fr       */
+/*   Created: 2025/02/06 13:22:08 by rraja-az          #+#    #+#             */
+/*   Updated: 2025/02/14 16:47:49 by rraja-az         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
 /*
-	PWD
-	DESC: Prints working directory (absolute path; /home/user/projects)
-	
-	**PATH_MAX : prevents overflow, set standard limit
+	ENV (with no options or no arguments)
+	DESC: Prints all environment variables in newline
 */
-
-int	builtin_pwd(char **argv, t_shell *shell)
+int	builtin_env(char **args, t_shell *shell)
 {
-	char	pwd[PATH_MAX];
-	(void)	argv;
+	int	i;
 
-	if (getcwd(pwd, sizeof(pwd)))
+	if (args[1] == NULL)
 	{
-		printf("%s\n", pwd);
-		shell->last_exit_status = SUCCESS;
+		i = 0;
+		while (shell->env[i])
+		{
+			printf("%s\n", shell->env[i]);
+			i++;
+		}
 	}
-	else
-	{
-		shell->last_exit_status = FAILURE;
-		perror("pwd");
-	}
+	shell->last_exit_status = 0;
 	return (shell->last_exit_status);
 }
