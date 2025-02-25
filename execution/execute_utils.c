@@ -6,7 +6,7 @@
 /*   By: hni-xuan <hni-xuan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 16:45:59 by rraja-az          #+#    #+#             */
-/*   Updated: 2025/02/25 09:58:09 by hni-xuan         ###   ########.fr       */
+/*   Updated: 2025/02/25 10:02:07 by hni-xuan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,3 +111,5 @@ void	handle_execute_error(char	*cmd_path, t_exec_node *exec_node)
 		exit(127);
 	}
 } 
+
+//hello
