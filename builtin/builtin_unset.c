@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_unset.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rraja-az <rraja-az@student.42kl.edu.my>    +#+  +:+       +#+        */
+/*   By: hni-xuan <hni-xuan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/10 09:56:27 by rraja-az          #+#    #+#             */
-/*   Updated: 2025/02/24 13:52:17 by rraja-az         ###   ########.fr       */
+/*   Updated: 2025/02/25 09:01:16 by hni-xuan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,13 +107,10 @@ int	builtin_unset(char **argv, t_shell *shell)
 	}
 	while (argv[i])
 	{
-		if (!is_env_var(argv[i], shell->env) && !is_env_var(argv[i], shell->export_env))
-			ft_putstr_fd("unset: variable does not exist\n", 2);
-		else
-		{
+		if (is_env_var(argv[i], shell->env))
 			remove_env_var(argv[i], shell->env);
+		if (is_env_var(argv[i], shell->export_env))
 			remove_env_var(argv[i], shell->export_env);
-		}
 		i++;
 	}
 	shell->last_exit_status = SUCCESS;
