@@ -6,7 +6,7 @@
 /*   By: hni-xuan <hni-xuan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 16:45:59 by rraja-az          #+#    #+#             */
-/*   Updated: 2025/02/25 11:37:15 by hni-xuan         ###   ########.fr       */
+/*   Updated: 2025/02/25 11:39:20 by hni-xuan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,36 +60,6 @@ void	handle_process_status(int status, t_shell *shell)
 				: the cmd / file does not exist
 */
 /* void	handle_execute_error(char *cmd_path, t_exec_node *exec node)
-{
-	if (cmd_path)
-		free(cmd_path);
-	
-	// check if its a directory after execve fails
-	if (errno == EISDIR)
-	{
-		ft_putstr_fd("minishell: Is a directory\n", 2);
-		exit(126);
-	}
-	// check if there is no permission
-	else if (errno == EACCES)
-	{
-		ft_putstr_fd("minishell: Permission denied\n", 2);
-		exit(126);
-	}
-	// check if file doesnt exist
-	else if (errno == ENOENT)
-	{
-		ft_putstr_fd("No such file or directory\n", 2);
-		exit(127);
-	}
-	print_execute_error(exec_node->argv[0], "command not found");
-	if (errno == EACCES)
-		exit (126);
-	exit(127);
-}
-
-
-/* void	handle_execute_error(char	*cmd_path, t_exec_node *exec_node)
 {
 	if (cmd_path)
 		free(cmd_path);
