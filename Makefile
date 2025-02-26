@@ -6,7 +6,7 @@
 #    By: rraja-az <rraja-az@student.42kl.edu.my>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/01/10 16:18:44 by hni-xuan          #+#    #+#              #
-#    Updated: 2025/02/25 17:54:47 by rraja-az         ###   ########.fr        #
+#    Updated: 2025/02/26 08:46:31 by rraja-az         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,7 +19,7 @@ LFLAGS = -lreadline
 RM = rm -rf
 
 NAME = minishell
- 
+	
 # Directories
 LIBFT_DIR = ./libft
 OBJ_DIR = ./obj/

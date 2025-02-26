@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env_path.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hni-xuan <hni-xuan@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rraja-az <rraja-az@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/15 14:53:43 by rraja-az          #+#    #+#             */
-/*   Updated: 2025/02/24 09:09:13 by hni-xuan         ###   ########.fr       */
+/*   Updated: 2025/02/26 09:21:27 by rraja-az         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,14 @@
 	ABSOLUTE PATH : Starts with / (EG: /usr/bin/ls)
 	RELATIVE PATH : Does not start with / (EG : my_program or ./my_program)
 */
+/* static char	*is_relative_path(char *cmd)
+{
+	if (((cmd[0] == '/') || ((cmd[0] == '.' && cmd[1] == '/')))
+		&& access(cmd, F_OK | X_OK) == 0)
+		return (cmd);
+	return (NULL);
+} */
+
 static char	*is_relative_path(char *cmd)
 {
 	if ((cmd[0] == '.' && cmd[1] == '/') && access(cmd, F_OK | X_OK) == 0)
