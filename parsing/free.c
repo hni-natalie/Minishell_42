@@ -6,7 +6,7 @@
 /*   By: hni-xuan <hni-xuan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 13:25:16 by hni-xuan          #+#    #+#             */
-/*   Updated: 2025/02/27 14:23:11 by hni-xuan         ###   ########.fr       */
+/*   Updated: 2025/02/27 15:24:55 by hni-xuan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,6 @@ void	free_ast(t_node *node)
 	if (!node)
 		return ;
 	typecasting_node(node, &r_node, &e_node, &p_node);
-	// printf("free -- node->type: %d\n", node->type); //debug
 	if (node->type == PIPE)
 	{
 		free_ast(p_node->left);
@@ -60,7 +59,6 @@ void	free_redir_data(t_redir_node *r_node)
 {
 	if (r_node->file)
 		free(r_node->file);
-	// printf("heredoc: (%s)\n", r_node->heredoc); //debug
 	if (r_node->heredoc)
 		free(r_node->heredoc);
 }
@@ -72,19 +70,7 @@ void	free_array(char **arr)
 	if (!arr)
 		return ;
 	i = -1;
-	while(arr[++i])
+	while (arr[++i])
 		free(arr[i]);
 	free(arr);
 }
-
-/* void	free_shell(t_node *ast, t_shell *shell)
-{
-	if (ast)
-		free_ast(ast);
-	if (shell)
-	{
-		if (shell->env)
-			free_array(shell->env);
-		free(shell);
-	}
-} */

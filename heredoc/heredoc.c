@@ -6,7 +6,7 @@
 /*   By: hni-xuan <hni-xuan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 11:49:45 by hni-xuan          #+#    #+#             */
-/*   Updated: 2025/02/27 12:36:12 by hni-xuan         ###   ########.fr       */
+/*   Updated: 2025/02/27 16:18:32 by hni-xuan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,17 +27,15 @@ char	*handle_heredoc(char *delimeter, t_shell *shell)
 	int		status;
 	pid_t	pid;
 	int		quoted_delimeter;
-	char	*checked_delimeter;
 	char	*input;
-	
+
 	input = ft_strdup("");
 	quoted_delimeter = NO;
-	checked_delimeter = check_delimeter(delimeter, &quoted_delimeter);
-	// printf("delimeter: %s\n", checked_delimeter); //debug
+	delimeter = check_delimeter(delimeter, &quoted_delimeter);
 	pipe(fd);
 	pid = fork();
 	if (pid == 0)
-		heredoc_input(fd, checked_delimeter);
+		heredoc_input(fd, delimeter);
 	if (pid > 0)
 	{
 		read_heredoc_input(fd, &input);
@@ -46,9 +44,8 @@ char	*handle_heredoc(char *delimeter, t_shell *shell)
 	}
 	if (quoted_delimeter == NO)
 		input = update_input(input, shell);
-	// printf("input = %s\n", input);
-	if (quoted_delimeter == YES)
-		free(checked_delimeter);
+	else
+		free(delimeter);
 	return (input);
 }
 
@@ -58,19 +55,16 @@ void	read_heredoc_input(int *fd, char **input)
 	char	buffer[1024];
 	int		total_read;
 	char	*temp;
-	
+
 	close(fd[1]);
 	signal(SIGINT, handle_child_signal);
 	total_read = 0;
 	buffer_read = read(fd[0], buffer, sizeof(buffer));
-	// printf("buffer_read: %d\n", buffer_read); // debug
 	while (buffer_read > 0)
 	{
 		temp = malloc(total_read + buffer_read + 1);
-		// printf("malloc : %d\n", total_read + buffer_read + 1); // debug
 		if (*input)
 		{
-			// printf("input: %s\n", *input); // debug
 			ft_memcpy(temp, *input, total_read);
 			free(*input);
 		}
@@ -78,9 +72,7 @@ void	read_heredoc_input(int *fd, char **input)
 		total_read += buffer_read;
 		temp[total_read] = 0;
 		*input = temp;
-		// printf("input: %s\n", *input); // debug
 		buffer_read = read(fd[0], buffer, sizeof(buffer));
-		// printf("buffer_read: %d\n", buffer_read); // debug
 	}
 	close(fd[0]);
 }
@@ -88,7 +80,7 @@ void	read_heredoc_input(int *fd, char **input)
 void	heredoc_input(int *fd, char *delimeter)
 {
 	char	*line;
-	
+
 	signal(SIGINT, SIG_DFL);
 	close(fd[0]);
 	while (1)

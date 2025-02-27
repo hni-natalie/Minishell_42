@@ -6,7 +6,7 @@
 /*   By: hni-xuan <hni-xuan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 16:45:59 by rraja-az          #+#    #+#             */
-/*   Updated: 2025/02/27 15:02:51 by hni-xuan         ###   ########.fr       */
+/*   Updated: 2025/02/27 15:23:32 by hni-xuan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ void	shift_argv(t_exec_node *exec_node)
 		- else exit 127 > dir to cmd doesnt exist
 	3. If neither > error > not cmd > 127
 */
-/* static void	print_execute_error(char *argv, char *msg)
+static void	print_execute_error(char *argv, char *msg)
 {
 	ft_putstr_fd("minishell: ", 2);
 	ft_putstr_fd(argv, 2);
