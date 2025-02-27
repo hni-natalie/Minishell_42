@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: rraja-az <rraja-az@student.42kl.edu.my>    +#+  +:+       +#+         #
+#    By: hni-xuan <hni-xuan@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/01/10 16:18:44 by hni-xuan          #+#    #+#              #
-#    Updated: 2025/02/24 14:53:32 by rraja-az         ###   ########.fr        #
+#    Updated: 2025/02/27 12:18:30 by hni-xuan         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,7 @@ YELLOW = '\033[0;33m'
 RESET = '\033[0m'
 
 CC = cc 
-CFLAGS = -Wall -Wextra -Werror -Iinclude #-g3 -fsanitize=address
+CFLAGS = -Wall -Wextra -Werror -Iinclude -g3 -fsanitize=address
 LFLAGS = -lreadline
 RM = rm -rf
 

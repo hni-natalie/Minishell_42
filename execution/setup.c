@@ -6,7 +6,7 @@
 /*   By: hni-xuan <hni-xuan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/05 11:16:26 by hni-xuan          #+#    #+#             */
-/*   Updated: 2025/02/24 14:28:03 by hni-xuan         ###   ########.fr       */
+/*   Updated: 2025/02/27 14:17:51 by hni-xuan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,8 @@ void	setup_redir(t_redir_node *redir_node, t_shell *shell)
 		close(pipefd[1]);
 		dup2(pipefd[0], STDIN_FILENO);
 		close(pipefd[0]);
-		free(redir_node->heredoc);
+		if (redir_node->heredoc)
+			free(redir_node->heredoc);
 		redir_node->heredoc = NULL;
 	}
 	execute_node(redir_node->next, shell);

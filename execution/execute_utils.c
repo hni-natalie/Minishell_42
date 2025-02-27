@@ -6,7 +6,7 @@
 /*   By: hni-xuan <hni-xuan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 16:45:59 by rraja-az          #+#    #+#             */
-/*   Updated: 2025/02/25 11:43:03 by hni-xuan         ###   ########.fr       */
+/*   Updated: 2025/02/27 15:02:51 by hni-xuan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,31 @@ void	handle_process_status(int status, t_shell *shell)
 		}
 }
 
+void	shift_argv(t_exec_node *exec_node)
+{
+	int	i;
+
+	if (!exec_node || !exec_node->argv)
+		return;
+
+	// printf("Before shifting:\n");
+	// for (i = 0; exec_node->argv; i++)
+	// 	printf("argv: %s\n", exec_node->argv[i]); // debug
+	while (exec_node->argv[0] && (ft_strcmp(exec_node->argv[0], "") == 0)) // shift only if argv[0] is NULL
+	{
+		i = 0;
+		while (exec_node->argv[i]) // shift everything left
+		{
+			exec_node->argv[i] = exec_node->argv[i + 1];
+			i++;
+		}
+		exec_node->argv[i] = NULL;
+	}
+	// printf("After shifting:\n");
+	// for (i = 0; exec_node->argv; i++)
+	// 	printf("argv: %s\n", exec_node->argv[i]); // debug
+}
+
 /*
 	DESC: Handles error, prints explicit err msg and exit accordingly
 	
@@ -47,42 +72,37 @@ void	handle_process_status(int status, t_shell *shell)
 {
 	ft_putstr_fd("minishell: ", 2);
 	ft_putstr_fd(argv, 2);
+	ft_putstr_fd(": ", 2);
 	ft_putstr_fd(msg, 2);
 	ft_putstr_fd("\n", 2);
-} */
+}
 
-/*
-	EISDIR (21) : is a directory
-				: we cannot exec directory, we can only exec file.exe
-	EACCES (13) : permission denied
-				: file exist, but not permitted to access the dir it is in
-	ENOENT (2)	: no such file or directory
-				: the cmd / file does not exist
-*/
-/* void	handle_execute_error(char *cmd_path, t_exec_node *exec node)
+void	handle_execute_error(char *cmd_path, t_exec_node *exec_node)
 {
-	if (cmd_path)
-		free(cmd_path);
-	if (exec_node->argv[0][0] == '/' || (exec_node->argv[0][0] == '.'
-			&& exec_node->argv[0][1] == '/'))
+	bool	is_path;
+
+	is_path = (exec_node->argv[0][0] == '/' ||
+        (exec_node->argv[0][0] == '.' && (exec_node->argv[0][1] == '/' ||  
+        (exec_node->argv[0][1] == '.' && exec_node->argv[0][2] == '/'))));
+	if (!cmd_path && !is_path)
 	{
-		if (access(exec_node->argv[0], F_OK) == 0)
-		{
-			ft_putstr_fd("minishell: Permission denied\n", 2);
-		if (access(exec_node->argv[0], F_OK) == 0)
-		{
-			print_execute_error(exec_node->argv[0], ": Permission denied\n");
-			exit(126);
-		}
-		else
-		{
-			print_execute_error(exec_node->argv[0], ": No such file or directory\n");
-			exit(127);
-		}
-	}
-	else
-	{
-		print_execute_error(exec_node->argv[0], "minishell: %s: command not found\n");
+		print_execute_error(exec_node->argv[0], "command not found");
 		exit(127);
 	}
+	else if (errno == EACCES)
+	{
+		print_execute_error(exec_node->argv[0], "Permission denied");
+		exit(126);
+	}
+	else if (errno == ENOTDIR)
+	{
+		print_execute_error(exec_node->argv[0], "No such file or directory");
+		exit(126);
+	}
+	print_execute_error(exec_node->argv[0], "No such file or directory");
+	if (is_path && access(exec_node->argv[0], F_OK) == -1)
+		exit (127);
+	exit(126);
+	// if (cmd_path)
+	// 	free(cmd_path);
 }

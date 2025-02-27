@@ -6,7 +6,7 @@
 /*   By: hni-xuan <hni-xuan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 11:49:45 by hni-xuan          #+#    #+#             */
-/*   Updated: 2025/01/26 18:43:20 by hni-xuan         ###   ########.fr       */
+/*   Updated: 2025/02/27 12:36:12 by hni-xuan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,11 +33,12 @@ char	*handle_heredoc(char *delimeter, t_shell *shell)
 	input = ft_strdup("");
 	quoted_delimeter = NO;
 	checked_delimeter = check_delimeter(delimeter, &quoted_delimeter);
+	// printf("delimeter: %s\n", checked_delimeter); //debug
 	pipe(fd);
 	pid = fork();
 	if (pid == 0)
 		heredoc_input(fd, checked_delimeter);
-	else if (pid > 0)
+	if (pid > 0)
 	{
 		read_heredoc_input(fd, &input);
 		waitpid(pid, &status, 0);
@@ -45,7 +46,9 @@ char	*handle_heredoc(char *delimeter, t_shell *shell)
 	}
 	if (quoted_delimeter == NO)
 		input = update_input(input, shell);
-	// printf("input: %s\n", input); // debug
+	// printf("input = %s\n", input);
+	if (quoted_delimeter == YES)
+		free(checked_delimeter);
 	return (input);
 }
 
@@ -59,7 +62,7 @@ void	read_heredoc_input(int *fd, char **input)
 	close(fd[1]);
 	signal(SIGINT, handle_child_signal);
 	total_read = 0;
-	buffer_read = read(fd[0], buffer, 1024);
+	buffer_read = read(fd[0], buffer, sizeof(buffer));
 	// printf("buffer_read: %d\n", buffer_read); // debug
 	while (buffer_read > 0)
 	{
@@ -76,7 +79,7 @@ void	read_heredoc_input(int *fd, char **input)
 		temp[total_read] = 0;
 		*input = temp;
 		// printf("input: %s\n", *input); // debug
-		buffer_read = read(fd[0], buffer, 1024);
+		buffer_read = read(fd[0], buffer, sizeof(buffer));
 		// printf("buffer_read: %d\n", buffer_read); // debug
 	}
 	close(fd[0]);
@@ -93,9 +96,9 @@ void	heredoc_input(int *fd, char *delimeter)
 		line = readline("> ");
 		if (!line)
 		{
-			ft_putstr_fd(HEREDOC_ERROR, 1);
-			ft_putstr_fd(delimeter, 1);
-			ft_putendl_fd("')", 1);
+			ft_putstr_fd(HEREDOC_ERROR, 2);
+			ft_putstr_fd(delimeter, 2);
+			ft_putendl_fd("')", 2);
 			break ;
 		}
 		if (!ft_strcmp(line, delimeter))
@@ -106,6 +109,5 @@ void	heredoc_input(int *fd, char *delimeter)
 		ft_putendl_fd(line, fd[1]);
 		free(line);
 	}
-	printf("exit heredoc\n");
 	exit(SUCCESS);
 }

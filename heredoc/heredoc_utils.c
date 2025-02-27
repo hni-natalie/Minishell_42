@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rraja-az <rraja-az@student.42kl.edu.my>    +#+  +:+       +#+        */
+/*   By: hni-xuan <hni-xuan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/23 13:08:21 by hni-xuan          #+#    #+#             */
-/*   Updated: 2025/02/23 12:43:20 by rraja-az         ###   ########.fr       */
+/*   Updated: 2025/02/27 14:23:19 by hni-xuan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,11 +15,24 @@
 char	*check_delimeter(char *delimeter, int *quoted_delimeter)
 {
 	char	*new_delimeter;
+	char	tmp[2];
 	
 	if (delimeter[0] != '\'' && delimeter[0] != '\"')
 		return (delimeter);
 	*quoted_delimeter = YES;
-	new_delimeter = ft_substr(delimeter, 1, ft_strlen(delimeter) - 2);
+	new_delimeter = ft_strdup("");
+	while (*delimeter) 
+	{
+		tmp[0] = *delimeter;
+		tmp[1] = '\0';
+		char *temp = new_delimeter;
+		if (*delimeter != '\'' && *delimeter != '\"')
+		{
+			new_delimeter = ft_strjoin(new_delimeter, tmp);
+			free(temp);
+		}
+		delimeter++;
+	}
 	return (new_delimeter);
 }
 
@@ -38,13 +51,15 @@ char	*update_input(char *input, t_shell *shell)
 			new_input = join_input(new_input, input, &i);
 	}
 	free(input);
+	// printf("new_input = (%s)\n", new_input);
 	return (new_input);
 }
 
 char	*join_input(char *new_input, char *input, int *i)
 {
-	int start;
-	char *append_new_input;
+	int 	start;
+	char	*append_new_input;
+	char	*new_joined_input;
 
 	start = *i;
 	while (input[*i])
@@ -54,9 +69,10 @@ char	*join_input(char *new_input, char *input, int *i)
 		(*i)++;
 	}
 	append_new_input = ft_substr(input, start, *i - start);
-	new_input = ft_strjoin(new_input, append_new_input);
+	new_joined_input = ft_strjoin(new_input, append_new_input);
+	free(new_input);
 	free(append_new_input);
-	return (new_input);
+	return (new_joined_input);
 }
 
 void	handle_heredoc_signal(int status, t_shell *shell)

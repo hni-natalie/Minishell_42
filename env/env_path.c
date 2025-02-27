@@ -6,7 +6,7 @@
 /*   By: hni-xuan <hni-xuan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/15 14:53:43 by rraja-az          #+#    #+#             */
-/*   Updated: 2025/02/24 09:09:13 by hni-xuan         ###   ########.fr       */
+/*   Updated: 2025/02/26 12:54:40 by hni-xuan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,8 @@
 */
 static char	*is_relative_path(char *cmd)
 {
-	if ((cmd[0] == '.' && cmd[1] == '/') && access(cmd, F_OK | X_OK) == 0)
+	if (cmd[0] == '/' || (cmd[0] == '.' && (cmd[1] == '/' 
+		|| (cmd[1] == '.' && cmd[2] == '/'))))
 		return (cmd);
 	return (NULL);
 }

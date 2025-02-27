@@ -6,7 +6,7 @@
 /*   By: hni-xuan <hni-xuan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 11:05:28 by hni-xuan          #+#    #+#             */
-/*   Updated: 2025/02/25 11:43:11 by hni-xuan         ###   ########.fr       */
+/*   Updated: 2025/02/27 15:02:59 by hni-xuan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 # include "../libft/libft.h"
 # include "structs.h"
+# include <errno.h>
 # include <readline/readline.h>
 # include <readline/history.h>
 # include <errno.h>
@@ -83,7 +84,7 @@ void	handle_arg(char **argv, t_shell *shell);
 char	*check_arg(char *arg, t_shell *shell);
 char	*update_arg(char *arg, int *i, char *new_arg, t_shell *shell);
 char	*join_arg(char *new_arg, char *arg, int *i, int quote);
-char	*get_env(char **env, char *input);
+char	*get_env(t_shell *shell, char *input);
 
 // heredoc
 char	*handle_heredoc(char *arg, t_shell *shell);
@@ -126,6 +127,7 @@ void	parse_ast(t_node *ast, t_shell *shell);
 void	execute_fork(t_node *ast, t_shell *shell);
 void	execute_node(t_node *node, t_shell *shell);
 void	execute_command(t_exec_node *exec_node, t_shell *shell);
+void	shift_argv(t_exec_node *exec_node);
 void	handle_process_status(int status, t_shell *shell);
 void	handle_execute_error(char	*cmd_path, t_exec_node *exec_node);
 
