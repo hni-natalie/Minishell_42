@@ -6,7 +6,7 @@
 /*   By: hni-xuan <hni-xuan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 16:17:28 by hni-xuan          #+#    #+#             */
-/*   Updated: 2025/02/24 09:16:17 by hni-xuan         ###   ########.fr       */
+/*   Updated: 2025/02/27 15:11:27 by hni-xuan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,6 @@ char	*ft_strjoin(char *s1, char *s2)
 	while (++j < len2)
 		ptr[i + j] = s2[j];
 	ptr[i + j] = '\0';
-	// free(s1);
 	return (ptr);
 }
 

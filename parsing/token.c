@@ -6,7 +6,7 @@
 /*   By: hni-xuan <hni-xuan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 13:19:43 by hni-xuan          #+#    #+#             */
-/*   Updated: 2025/01/24 11:35:32 by hni-xuan         ###   ########.fr       */
+/*   Updated: 2025/02/27 15:26:49 by hni-xuan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,10 @@
 
 int	grab_token(char *prompt, int *idx, char *word_in_tok)
 {
-	int token;
-	int start_tok;
-	int end_tok;
-	
+	int	token;
+	int	start_tok;
+	int	end_tok;
+
 	while (prompt[*idx] && ft_isspace(prompt[*idx]))
 		(*idx)++;
 	start_tok = *idx;
@@ -27,7 +27,7 @@ int	grab_token(char *prompt, int *idx, char *word_in_tok)
 	while (prompt[*idx] && ft_isspace(prompt[*idx]))
 		(*idx)++;
 	if (word_in_tok)
-		ft_strlcpy(word_in_tok, &prompt[start_tok], 
+		ft_strlcpy(word_in_tok, &prompt[start_tok],
 			end_tok - start_tok + 1);
 	return (token);
 }
@@ -66,13 +66,13 @@ void	word_token(char *prompt, int *token, int *idx)
 	*token = 'w';
 	while (prompt[*idx])
 	{
-		if (!quote && (prompt[*idx] == '\'' ||
-			prompt[*idx] == '\"'))
+		if (!quote && (prompt[*idx] == '\''
+				|| prompt[*idx] == '\"'))
 			quote = prompt[*idx];
 		else if (quote == prompt[*idx])
 			quote = 0;
 		else if (!quote && (ft_isspace(prompt[*idx])
-			|| ft_strchr("<>|", prompt[*idx])))
+				|| ft_strchr("<>|", prompt[*idx])))
 			break ;
 		(*idx)++;
 	}

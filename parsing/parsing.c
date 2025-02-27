@@ -6,7 +6,7 @@
 /*   By: hni-xuan <hni-xuan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 14:17:01 by hni-xuan          #+#    #+#             */
-/*   Updated: 2025/02/27 14:24:28 by hni-xuan         ###   ########.fr       */
+/*   Updated: 2025/02/27 16:13:13 by hni-xuan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ t_node	*parse_node(char *prompt, t_shell *shell)
 	int		i;
 	int		token;
 	char	arg[1024];
-	
+
 	i = 0;
 	if (empty_line(prompt))
 		return (NULL);
@@ -27,7 +27,6 @@ t_node	*parse_node(char *prompt, t_shell *shell)
 		shell->last_exit_status = 2;
 		return (NULL);
 	}
-	// printf("prompt in parse_node: %s\n", prompt); // debug
 	node = parse_exec(prompt, &i, shell);
 	token = grab_token(prompt, &i, arg);
 	if (token == '|')
@@ -41,7 +40,7 @@ t_node	*parse_exec(char *prompt, int *i, t_shell *shell)
 	t_exec_node	*exec_node;
 	int			idx;
 	char		arg[1024];
-	
+
 	idx = 0;
 	node = init_exec_node();
 	exec_node = (t_exec_node *)node;
@@ -52,7 +51,6 @@ t_node	*parse_exec(char *prompt, int *i, t_shell *shell)
 	{
 		grab_token(prompt, i, arg);
 		exec_node->argv[idx] = ft_strdup(arg);
-		// printf("exec_node->argv[%d]: %s\n", idx, exec_node->argv[idx]); // debug
 		idx++;
 		if (ft_strchr("<>", prompt[*i]))
 			node = parse_redir(node, prompt, i, shell);
@@ -71,8 +69,8 @@ void	malloc_argv(char *prompt, t_exec_node *exec_node)
 	int	redir_count;
 	int	i;
 	int	token;
-	
-	i = 0;	
+
+	i = 0;
 	word_count = 0;
 	redir_count = 0;
 	while (prompt[i])
@@ -96,7 +94,7 @@ t_node	*parse_redir(t_node *node, char *prompt, int *i, t_shell *shell)
 {
 	int		tok;
 	char	arg[1024];
-	
+
 	while (ft_strchr("<>", prompt[*i]) && prompt[*i])
 	{
 		tok = grab_token(prompt, i, NULL);
@@ -132,17 +130,11 @@ t_node	*redir_node(char *arg, int redir_type, t_node *node, t_shell *shell)
 	else
 	{
 		redir_node->heredoc = handle_heredoc(arg, shell);
-		// printf("redir_node->heredoc: (%s)\n", redir_node->heredoc); // debug
 		redir_node->mode = -1;
 		redir_node->fd = -1;
 	}
-	// printf("redir_node->file: %s\n", redir_node->file); // debug
-	// printf("redir_node->delimeter: %s\n", redir_node->heredoc); // debug
 	if (node->type == REDIR)
-	{
-		// printf("redir_node->file: %s\n", redir_node->file); // debug
 		return (insert_node(node, redir_node), node);
-	}
 	redir_node->next = node;
 	return ((t_node *)redir_node);
 }

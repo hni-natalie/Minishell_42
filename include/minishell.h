@@ -6,7 +6,7 @@
 /*   By: hni-xuan <hni-xuan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 11:05:28 by hni-xuan          #+#    #+#             */
-/*   Updated: 2025/02/27 12:36:06 by hni-xuan         ###   ########.fr       */
+/*   Updated: 2025/02/27 16:08:27 by hni-xuan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 # include <errno.h>
 # include <readline/readline.h>
 # include <readline/history.h>
+# include <errno.h>
 # include <sys/wait.h>
 # include <stdbool.h>
 # include <stdio.h>
@@ -35,7 +36,8 @@
 # define NEWLINE_ERROR "minishell: syntax error near unexpected token 'newline'"
 # define REDIR_ERROR "minishell: syntax error near unexpected token '<' '>'"
 # define SEMICOLON_ERROR "minishell: syntax error near unexpected token ';'"
-# define HEREDOC_ERROR "minishell: warning: here-document delimited by end-of-file (wanted '"
+# define HEREDOC_ERROR "minishell: warning: here-document \
+	delimited by end-of-file (wanted '"
 
 # define OPEN_QUOTE 1
 # define CLOSE_QUOTE 0
@@ -101,13 +103,13 @@ bool	is_builtin(char *cmd);
 int		exec_builtin(char **cmd, t_shell *shell);
 
 // builtin
-int 	builtin_echo(char **argv, t_shell *shell);
-int 	builtin_cd(char **argv, t_shell *shell);
-int 	builtin_pwd(char **argv, t_shell *shell);
-int 	builtin_export(char **argv, t_shell *shell);
-int 	builtin_unset(char **argv, t_shell *shell);
-int 	builtin_env(char **argv, t_shell *shell);
-int 	builtin_exit(char **argv, t_shell *shell);
+int		builtin_echo(char **argv, t_shell *shell);
+int		builtin_cd(char **argv, t_shell *shell);
+int		builtin_pwd(char **argv, t_shell *shell);
+int		builtin_export(char **argv, t_shell *shell);
+int		builtin_unset(char **argv, t_shell *shell);
+int		builtin_env(char **argv, t_shell *shell);
+int		builtin_exit(char **argv, t_shell *shell);
 
 // env
 char	**copy_env(char **env);

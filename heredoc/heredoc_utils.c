@@ -6,7 +6,7 @@
 /*   By: hni-xuan <hni-xuan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/23 13:08:21 by hni-xuan          #+#    #+#             */
-/*   Updated: 2025/02/27 14:23:19 by hni-xuan         ###   ########.fr       */
+/*   Updated: 2025/02/27 16:21:05 by hni-xuan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,18 +16,19 @@ char	*check_delimeter(char *delimeter, int *quoted_delimeter)
 {
 	char	*new_delimeter;
 	char	tmp[2];
-	
+	char	*temp;
+
 	if (delimeter[0] != '\'' && delimeter[0] != '\"')
 		return (delimeter);
 	*quoted_delimeter = YES;
 	new_delimeter = ft_strdup("");
-	while (*delimeter) 
+	while (*delimeter)
 	{
 		tmp[0] = *delimeter;
 		tmp[1] = '\0';
-		char *temp = new_delimeter;
 		if (*delimeter != '\'' && *delimeter != '\"')
 		{
+			temp = new_delimeter;
 			new_delimeter = ft_strjoin(new_delimeter, tmp);
 			free(temp);
 		}
@@ -51,13 +52,12 @@ char	*update_input(char *input, t_shell *shell)
 			new_input = join_input(new_input, input, &i);
 	}
 	free(input);
-	// printf("new_input = (%s)\n", new_input);
 	return (new_input);
 }
 
 char	*join_input(char *new_input, char *input, int *i)
 {
-	int 	start;
+	int		start;
 	char	*append_new_input;
 	char	*new_joined_input;
 
@@ -85,4 +85,3 @@ void	handle_heredoc_signal(int status, t_shell *shell)
 	else
 		shell->last_exit_status = WEXITSTATUS(status);
 }
-
