@@ -6,7 +6,7 @@
 /*   By: rraja-az <rraja-az@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 16:45:59 by rraja-az          #+#    #+#             */
-/*   Updated: 2025/02/25 17:18:13 by rraja-az         ###   ########.fr       */
+/*   Updated: 2025/02/27 11:19:22 by rraja-az         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,16 +22,16 @@
 */
 void	handle_process_status(int status, t_shell *shell)
 {
-		if (WIFEXITED(status))
-			shell->last_exit_status = WEXITSTATUS(status);
-		else if (WIFSIGNALED(status))
-		{
-			shell->last_exit_status = 128 + WTERMSIG(status);
-			if (WTERMSIG(status) == SIGINT)
-				ft_putstr_fd("\n", 2);	
-			else if (WTERMSIG(status) == SIGQUIT)
-				ft_putstr_fd("Quit (core dumped)\n", 2);
-		}
+	if (WIFEXITED(status))
+		shell->last_exit_status = WEXITSTATUS(status);
+	else if (WIFSIGNALED(status))
+	{
+		shell->last_exit_status = 128 + WTERMSIG(status);
+		if (WTERMSIG(status) == SIGINT)
+			ft_putstr_fd("\n", 2);	
+		else if (WTERMSIG(status) == SIGQUIT)
+			ft_putstr_fd("Quit (core dumped)\n", 2);
+	}
 }
 
 void	shift_argv(t_exec_node *exec_node)
@@ -93,10 +93,89 @@ static void	print_execute_error(char *argv, char *msg)
 	ft_putstr_fd("\n", 2);
 }
 
-void	handle_execute_error(char	*cmd_path, t_exec_node *exec_node)
-{	
-	// int	i;
+void	handle_execute_error(char *cmd_path, t_exec_node *exec_node)
+{
+	bool	is_path;
+
+	is_path = (exec_node->argv[0][0] == '/' ||
+        (exec_node->argv[0][0] == '.' && (exec_node->argv[0][1] == '/' ||  
+        (exec_node->argv[0][1] == '.' && exec_node->argv[0][2] == '/'))));
+	if (!cmd_path && !is_path)
+	{
+		print_execute_error(exec_node->argv[0], "command not found");
+		exit(127);
+	}
+	else if (errno == EACCES)
+	{
+		print_execute_error(exec_node->argv[0], "Permission denied");
+		exit(126);
+	}
+	else if (errno == ENOTDIR)
+	{
+		print_execute_error(exec_node->argv[0], "No such file or directory");
+		exit(126);
+	}
+	print_execute_error(exec_node->argv[0], "No such file or directory");
+	if (is_path && access(exec_node->argv[0], F_OK) == -1)
+		exit (127);
+	exit(126);
+	// if (cmd_path)
+	// 	free(cmd_path);
+}
+
+/* void	handle_execute_error(char *cmd_path, t_exec_node *exec_node)
+{
+	bool	is_path;
 	
+	is_path = (exec_node->argv[0][0] == '/' || (exec_node->argv[0][0] == '.'
+		&& exec_node->argv[0][1] == '/'));
+	if (!cmd_path && !is_path)
+	{
+		print_execute_error(exec_node->argv[0], "command not found");
+		exit(127);
+	}
+	else if (errno == EACCES)
+	{
+		print_execute_error(exec_node->argv[0], "Permission denied");
+		exit(126);
+	}
+	else if (errno == ENOTDIR)
+	{
+		print_execute_error(exec_node->argv[0], "No such file or directory");
+		exit(126);
+	}
+	else 
+	{
+		print_execute_error(exec_node->argv[0], "No such file or directory");
+		if (is_path && access(exec_node->argv[0], F_OK) == -1)
+			exit (127);
+		exit(126);
+	}
+	//if (cmd_path)
+		//free(cmd_path);
+} */
+
+/* void	handle_execute_error(char *cmd_path, t_exec_node *exec_node)
+{
+	bool	is_path;
+
+	is_path = (exec_node->argv[0][0] == '/' || (exec_node->argv[0][0] == '.'
+			&& exec_node->argv[0][1] == '/'));
+	if (!cmd_path && !is_path)
+		print_execute_error(exec_node->argv[0], "command not found");
+	else if (errno == EACCES)
+		print_execute_error(exec_node->argv[0], "Permission denied");
+	else
+		print_execute_error(exec_node->argv[0], "No such file or directory");
+	if (cmd_path)
+		free(cmd_path);
+	if (errno == EACCES)
+		exit (126);
+	exit (127);
+} */
+
+/* void	handle_execute_error(char	*cmd_path, t_exec_node *exec_node)
+{	
 	if (cmd_path)
 		free(cmd_path);
 	if (exec_node->argv[0][0] == '/' || (exec_node->argv[0][0] == '.'
@@ -114,4 +193,6 @@ void	handle_execute_error(char	*cmd_path, t_exec_node *exec_node)
 	if (errno == EACCES)
 		exit (126);
 	exit(127);
-}
+	if (cmd_path)
+		free(cmd_path);
+} */
