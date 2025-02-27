@@ -6,7 +6,7 @@
 /*   By: hni-xuan <hni-xuan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 15:59:01 by hni-xuan          #+#    #+#             */
-/*   Updated: 2025/02/24 09:25:59 by hni-xuan         ###   ########.fr       */
+/*   Updated: 2025/02/27 15:25:10 by hni-xuan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,6 @@ int	quote_opening(char *prompt)
 			quote = prompt[i];
 		else if (quote == prompt[i])
 			quote = 0;
-		// printf("quote: %d\n", quote); // debug
 	}
 	if (quote)
 		return (1);

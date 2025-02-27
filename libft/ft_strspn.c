@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strspn.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rraja-az <rraja-az@student.42kl.edu.my>    +#+  +:+       +#+        */
+/*   By: hni-xuan <hni-xuan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 11:27:06 by rraja-az          #+#    #+#             */
-/*   Updated: 2025/02/20 20:22:07 by rraja-az         ###   ########.fr       */
+/*   Updated: 2025/02/27 15:12:13 by hni-xuan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ size_t	ft_strspn(const char *s, const char *accept)
 {
 	int		i;
 	size_t	count;
-	
+
 	if (!s || !accept)
 		return (0);
 	i = 0;
@@ -33,7 +33,7 @@ size_t	ft_strspn(const char *s, const char *accept)
 	{
 		while (accept[i] && *s != accept[i])
 			i++;
-		if(accept[i] == '\0')
+		if (accept[i] == '\0')
 			return (count);
 		i = 0;
 		count++;

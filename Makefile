@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: rraja-az <rraja-az@student.42kl.edu.my>    +#+  +:+       +#+         #
+#    By: hni-xuan <hni-xuan@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/01/10 16:18:44 by hni-xuan          #+#    #+#              #
-#    Updated: 2025/02/27 10:50:55 by rraja-az         ###   ########.fr        #
+#    Updated: 2025/02/27 15:22:31 by hni-xuan         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -32,7 +32,7 @@ ENV_DIR = ./env/
 
 # Files
 MAIN_FILES = main signal
-PARSING_FILES = token parsing init free arg_handler check 
+PARSING_FILES = token parsing init free arg_handler check parsing_utils
 HEREDOC_FILES = heredoc heredoc_utils
 EXECUTION_FILES = execute execute_utils setup
 BUILTIN_FILES = builtin builtin_cd builtin_echo builtin_env builtin_exit builtin_export builtin_pwd builtin_unset 

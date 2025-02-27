@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signal.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rraja-az <rraja-az@student.42kl.edu.my>    +#+  +:+       +#+        */
+/*   By: hni-xuan <hni-xuan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 16:51:50 by hni-xuan          #+#    #+#             */
-/*   Updated: 2025/02/23 13:08:50 by rraja-az         ###   ########.fr       */
+/*   Updated: 2025/02/26 15:56:03 by hni-xuan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,5 +39,5 @@ void	handle_sigint(t_shell *shell)
 void	handle_child_signal(int signum)
 {
 	if (signum == SIGINT)
-		ft_putstr_fd("\n", 1);
+		ft_putstr_fd("\n", 2);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_exit.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rraja-az <rraja-az@student.42kl.edu.my>    +#+  +:+       +#+        */
+/*   By: hni-xuan <hni-xuan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/07 16:24:16 by rraja-az          #+#    #+#             */
-/*   Updated: 2025/02/27 12:47:41 by rraja-az         ###   ########.fr       */
+/*   Updated: 2025/02/27 14:54:19 by hni-xuan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,8 +65,10 @@ int	builtin_exit(char **argv, t_shell *shell)
 	printf("exit\n");
 	if (!argv[1])
 		exit(0);
-	if (!is_numeric(argv[1]))
-	{
+	//if (!is_numeric(argv[1]))
+	//printf("%s%s%s\n", RED, "exit 👋 Bye ~", RESET);
+	if (argv[1] && argv[2])
+  {
 		ft_putstr_fd("minishell: exit: ", 2);
 		ft_putstr_fd(argv[1], 2);
 		ft_putstr_fd(": numeric argument required\n", 2);

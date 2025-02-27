@@ -20,13 +20,6 @@
 					(EG : ../my_program ; in parent directory)
 					
 */
-/* static char	*is_relative_path(char *cmd)
-{
-	if (((cmd[0] == '/') || ((cmd[0] == '.' && cmd[1] == '/')))
-		&& access(cmd, F_OK | X_OK) == 0)
-		return (cmd);
-	return (NULL);
-} */
 
 static char	*is_path(char *cmd)
 {
