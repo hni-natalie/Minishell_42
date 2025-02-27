@@ -6,7 +6,7 @@
 /*   By: rraja-az <rraja-az@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 17:50:49 by hni-xuan          #+#    #+#             */
-/*   Updated: 2025/02/25 15:16:31 by rraja-az         ###   ########.fr       */
+/*   Updated: 2025/02/26 14:24:12 by rraja-az         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,10 +123,10 @@ void	execute_command(t_exec_node *exec_node, t_shell *shell)
 	}
 	// printf("exec_node->argv[0] = %s\n", exec_node->argv[0]); // debug
 	cmd_path = NULL;
-	execve(exec_node->argv[0], exec_node->argv, shell->env);
+	// execve(exec_node->argv[0], exec_node->argv, shell->env);
 	cmd_path = get_path(exec_node->argv[0], shell);
 	// printf("cmd fullpath: %s\n", cmd_path); // debug
 	if (!cmd_path || execve(cmd_path, exec_node->argv, shell->env) == -1)
 		handle_execute_error(cmd_path, exec_node);
-	free(cmd_path);
+	//free(cmd_path);
 }
