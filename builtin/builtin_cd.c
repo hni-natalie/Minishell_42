@@ -6,7 +6,7 @@
 /*   By: rraja-az <rraja-az@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/05 15:59:07 by rraja-az          #+#    #+#             */
-/*   Updated: 2025/02/27 13:15:28 by rraja-az         ###   ########.fr       */
+/*   Updated: 2025/02/27 21:31:06 by rraja-az         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,20 +62,6 @@ static char	*get_directory(char *var, t_shell *shell)
 	return (NULL);
 }
 
-/*
-	DESC: handles all pwd and oldpwd updates
-	
-	1. Get current directory (PWD)
-		- getcwd(char *buf, size_t size) 
-		- NULL 	; we're not providing our required buffer
-		- 0		; malloc for buffer
-		- since its NULL,0 > getcwd auto mallocs required size for dir path
-		- thus we need to FREE after using it
-	2. Get old working directory (OLDPWD)
-		- if oldpwd is not null > update the oldpwd
-	3. Else, update the pwd to current dir
-	4. Free pwd (cz getcwd previously malloc)
-*/
 static int update_pwd(t_shell *shell)
 {
 	char	*pwd;
