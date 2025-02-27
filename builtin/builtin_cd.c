@@ -6,7 +6,7 @@
 /*   By: rraja-az <rraja-az@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/05 15:59:07 by rraja-az          #+#    #+#             */
-/*   Updated: 2025/02/24 08:44:25 by rraja-az         ###   ########.fr       */
+/*   Updated: 2025/02/27 13:15:28 by rraja-az         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -141,7 +141,7 @@ static void	cd_error(char *directory)
 
 int	builtin_cd(char **argv, t_shell *shell)
 {
-	if (argv[2])
+	if (argv[1] && argv[2])
 	{
 		ft_putstr_fd("minishell: cd: too many arguments\n", 2);
 		shell->last_exit_status = FAILURE;
