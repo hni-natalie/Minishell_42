@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rraja-az <rraja-az@student.42kl.edu.my>    +#+  +:+       +#+        */
+/*   By: hni-xuan <hni-xuan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 13:16:01 by rraja-az          #+#    #+#             */
-/*   Updated: 2025/02/23 18:41:33 by rraja-az         ###   ########.fr       */
+/*   Updated: 2025/02/26 13:03:33 by hni-xuan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ bool	is_builtin(char *cmd)
 		|| (ft_strcmp(cmd, "pwd") == 0)
 		|| (ft_strcmp(cmd, "export") == 0)
 		|| (ft_strcmp(cmd, "unset") == 0)
-		|| (ft_strcmp(cmd, "env") == 0)
+		//|| (ft_strcmp(cmd, "env") == 0)
 		|| (ft_strcmp(cmd, "exit") == 0));
 }
 
@@ -47,8 +47,8 @@ int		exec_builtin(char **cmd, t_shell *shell)
 		return (builtin_export(cmd, shell));
 	else if (ft_strcmp(cmd[0], "unset") == 0)
 		return (builtin_unset(cmd, shell));
-	else if (ft_strcmp(cmd[0], "env") == 0)
-		return (builtin_env(cmd, shell));
+	//else if (ft_strcmp(cmd[0], "env") == 0)
+	//	return (builtin_env(cmd, shell));
 	else if (ft_strcmp(cmd[0], "exit") == 0)
 		return (builtin_exit(cmd, shell));
 	return (FAILURE);

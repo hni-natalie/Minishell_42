@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_exit.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rraja-az <rraja-az@student.42kl.edu.my>    +#+  +:+       +#+        */
+/*   By: hni-xuan <hni-xuan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/07 16:24:16 by rraja-az          #+#    #+#             */
-/*   Updated: 2025/02/24 09:35:34 by rraja-az         ###   ########.fr       */
+/*   Updated: 2025/02/27 14:54:19 by hni-xuan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ int	builtin_exit(char **argv, t_shell *shell)
 {
 	int	exit_status;
 	
-	printf("exit\n");
+	printf("%s%s%s\n", RED, "exit 👋 Bye ~", RESET);
 	if (argv[1] && argv[2])
 	{
 		ft_putstr_fd("minishell: exit: too many arguments\n", 2);

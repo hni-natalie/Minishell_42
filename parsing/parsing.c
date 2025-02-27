@@ -6,7 +6,7 @@
 /*   By: hni-xuan <hni-xuan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 14:17:01 by hni-xuan          #+#    #+#             */
-/*   Updated: 2025/02/25 17:08:46 by hni-xuan         ###   ########.fr       */
+/*   Updated: 2025/02/27 14:24:28 by hni-xuan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,13 @@ t_node	*parse_node(char *prompt, t_shell *shell)
 	char	arg[1024];
 	
 	i = 0;
-	if (empty_line(prompt) || syntax_error(prompt))
+	if (empty_line(prompt))
 		return (NULL);
+	if (syntax_error(prompt))
+	{
+		shell->last_exit_status = 2;
+		return (NULL);
+	}
 	// printf("prompt in parse_node: %s\n", prompt); // debug
 	node = parse_exec(prompt, &i, shell);
 	token = grab_token(prompt, &i, arg);
@@ -127,6 +132,7 @@ t_node	*redir_node(char *arg, int redir_type, t_node *node, t_shell *shell)
 	else
 	{
 		redir_node->heredoc = handle_heredoc(arg, shell);
+		// printf("redir_node->heredoc: (%s)\n", redir_node->heredoc); // debug
 		redir_node->mode = -1;
 		redir_node->fd = -1;
 	}

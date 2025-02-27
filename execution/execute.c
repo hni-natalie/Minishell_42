@@ -6,7 +6,7 @@
 /*   By: hni-xuan <hni-xuan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 17:50:49 by hni-xuan          #+#    #+#             */
-/*   Updated: 2025/02/25 17:13:01 by hni-xuan         ###   ########.fr       */
+/*   Updated: 2025/02/27 14:25:22 by hni-xuan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,7 @@ void	execute_fork(t_node *ast, t_shell *shell)
 		signal(SIGINT, SIG_DFL);
 		signal(SIGQUIT, SIG_DFL);
 		execute_node(ast, shell);
+		// printf("execute_fork: exit_code = %d\n", shell->last_exit_status); // debug
 		exit(shell->last_exit_status);
 	}
 	waitpid(pid, &status, 0);
@@ -114,6 +115,7 @@ void	execute_command(t_exec_node *exec_node, t_shell *shell)
 	int		i;
 	
 	i = -1;
+	// printf("exec_node->argv = %s\n", exec_node->argv[0]); // debug
 	if (shell->argv_with_expansion)
 		shift_argv(exec_node);
 	if (!exec_node->argv[0])
@@ -123,12 +125,11 @@ void	execute_command(t_exec_node *exec_node, t_shell *shell)
 		shell->last_exit_status = exec_builtin(exec_node->argv, shell);
 		return ;
 	}
-	// printf("exec_node->argv[0] = %s\n", exec_node->argv[0]); // debug
 	cmd_path = NULL;
-	execve(exec_node->argv[0], exec_node->argv, shell->env);
+	//execve(exec_node->argv[0], exec_node->argv, shell->env);
 	cmd_path = get_path(exec_node->argv[0], shell);
 	// printf("cmd fullpath: %s\n", cmd_path); // debug
 	if (!cmd_path || execve(cmd_path, exec_node->argv, shell->env) == -1)
 		handle_execute_error(cmd_path, exec_node);
-	free(cmd_path);
+	// free(cmd_path);
 }

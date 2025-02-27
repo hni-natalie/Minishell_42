@@ -6,7 +6,7 @@
 /*   By: hni-xuan <hni-xuan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 16:45:59 by rraja-az          #+#    #+#             */
-/*   Updated: 2025/02/25 17:23:34 by hni-xuan         ###   ########.fr       */
+/*   Updated: 2025/02/27 11:35:54 by hni-xuan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,22 +77,32 @@ static void	print_execute_error(char *argv, char *msg)
 	ft_putstr_fd("\n", 2);
 }
 
-void	handle_execute_error(char	*cmd_path, t_exec_node *exec_node)
+void	handle_execute_error(char *cmd_path, t_exec_node *exec_node)
 {
-	if (cmd_path)
-		free(cmd_path);
-	if (exec_node->argv[0][0] == '/' || (exec_node->argv[0][0] == '.' && exec_node->argv[0][1] == '/'))
+	bool	is_path;
+
+	is_path = (exec_node->argv[0][0] == '/' ||
+        (exec_node->argv[0][0] == '.' && (exec_node->argv[0][1] == '/' ||  
+        (exec_node->argv[0][1] == '.' && exec_node->argv[0][2] == '/'))));
+	if (!cmd_path && !is_path)
 	{
-		if (access(exec_node->argv[0], F_OK) == 0)
-		{
-			print_execute_error(exec_node->argv[0], "Permission denied");
-			exit(126);
-		}
-		print_execute_error(exec_node->argv[0], "No such file or directory");
+		print_execute_error(exec_node->argv[0], "command not found");
 		exit(127);
 	}
-	print_execute_error(exec_node->argv[0], "command not found");
-	if (errno == EACCES)
+	else if (errno == EACCES)
+	{
+		print_execute_error(exec_node->argv[0], "Permission denied");
 		exit(126);
-	exit(127);
+	}
+	else if (errno == ENOTDIR)
+	{
+		print_execute_error(exec_node->argv[0], "No such file or directory");
+		exit(126);
+	}
+	print_execute_error(exec_node->argv[0], "No such file or directory");
+	if (is_path && access(exec_node->argv[0], F_OK) == -1)
+		exit (127);
+	exit(126);
+	// if (cmd_path)
+	// 	free(cmd_path);
 }

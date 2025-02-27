@@ -6,7 +6,7 @@
 /*   By: hni-xuan <hni-xuan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 14:20:27 by rraja-az          #+#    #+#             */
-/*   Updated: 2025/02/25 17:38:25 by hni-xuan         ###   ########.fr       */
+/*   Updated: 2025/02/26 17:01:54 by hni-xuan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,7 @@ int	builtin_echo(char **argv, t_shell *shell)
 	while (argv[++i] && argv[i][0] == '-' && argv[i][1] == 'n' 
 		&& ft_strspn(argv[i] + 1, "n") == ft_strlen(argv[i]) - 1)
 		suppress_n = true;
+	// printf("argv in builtin_echo = %s\n", argv[i]); //debug
 	print_arguments(argv, &i, shell);
 	if (!argv[i] && !suppress_n)
 		write (1, "\n", 1);
