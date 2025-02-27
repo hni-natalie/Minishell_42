@@ -6,7 +6,7 @@
 /*   By: rraja-az <rraja-az@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 13:25:16 by hni-xuan          #+#    #+#             */
-/*   Updated: 2025/02/25 16:03:00 by rraja-az         ###   ########.fr       */
+/*   Updated: 2025/02/27 12:05:33 by rraja-az         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void	free_ast(t_node *node)
 	if (!node)
 		return ;
 	typecasting_node(node, &r_node, &e_node, &p_node);
-	//printf("free -- node->type: %d\n", node->type); //debug
+	// printf("free -- node->type: %d\n", node->type); //debug
 	if (node->type == PIPE)
 	{
 		free_ast(p_node->left);
@@ -72,10 +72,7 @@ void	free_array(char **arr)
 		return ;
 	i = -1;
 	while(arr[++i])
-	{
-		if (ft_strlen(arr[i]) > 0)
-			free(arr[i]);
-	}
+		free(arr[i]);
 	free(arr);
 }
 

@@ -6,7 +6,7 @@
 /*   By: hni-xuan <hni-xuan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 14:17:01 by hni-xuan          #+#    #+#             */
-/*   Updated: 2025/02/24 14:32:29 by hni-xuan         ###   ########.fr       */
+/*   Updated: 2025/02/26 17:02:05 by hni-xuan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,13 @@ t_node	*parse_node(char *prompt, t_shell *shell)
 	char	arg[1024];
 	
 	i = 0;
-	if (empty_line(prompt) || syntax_error(prompt))
+	if (empty_line(prompt))
 		return (NULL);
+	if (syntax_error(prompt))
+	{
+		shell->last_exit_status = 2;
+		return (NULL);
+	}
 	// printf("prompt in parse_node: %s\n", prompt); // debug
 	node = parse_exec(prompt, &i, shell);
 	token = grab_token(prompt, &i, arg);

@@ -6,7 +6,7 @@
 /*   By: rraja-az <rraja-az@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 11:03:11 by hni-xuan          #+#    #+#             */
-/*   Updated: 2025/02/25 14:49:09 by rraja-az         ###   ########.fr       */
+/*   Updated: 2025/02/27 12:07:27 by rraja-az         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ void	start_shell(t_shell *shell)
 		g_signal = 0;
 		shell->argv_with_qoutes = 0;
 		shell->argv_with_expansion = 0;
-		prompt = readline("\033[0;33mminishell$\033[0m ");
+		prompt = readline("\001\e[0;33m\002minishell$\001\e[0m\002 ");
 		if (!prompt) //handles ctrl_d signal
 		{
 			printf("%s%s%s\n", RED, "exit 👋 Bye ~", RESET);
