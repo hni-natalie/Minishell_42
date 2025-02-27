@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env_path.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hni-xuan <hni-xuan@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rraja-az <rraja-az@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/15 14:53:43 by rraja-az          #+#    #+#             */
-/*   Updated: 2025/02/26 12:54:40 by hni-xuan         ###   ########.fr       */
+/*   Updated: 2025/02/27 10:05:38 by rraja-az         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,13 @@
 /*
 	WHY : To determine how to find cmd in filesystem
 	ABSOLUTE PATH : Starts with / (EG: /usr/bin/ls)
-	RELATIVE PATH : Does not start with / (EG : my_program or ./my_program)
+	RELATIVE PATH : Does not start with / 
+					(EG : ./my_program ; in current directory)
+					(EG : ../my_program ; in parent directory)
+					
 */
-static char	*is_relative_path(char *cmd)
+
+static char	*is_path(char *cmd)
 {
 	if (cmd[0] == '/' || (cmd[0] == '.' && (cmd[1] == '/' 
 		|| (cmd[1] == '.' && cmd[2] == '/'))))
@@ -74,7 +78,7 @@ char	*get_path(char *cmd, t_shell *shell)
 	char	*cmd_path;
 	char	**paths;
 
-	cmd_path = is_relative_path(cmd);
+	cmd_path = is_path(cmd);
 	if (cmd_path)
 		return (cmd_path);
 	env_path = extract_path("PATH", shell);

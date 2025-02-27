@@ -6,7 +6,7 @@
 /*   By: rraja-az <rraja-az@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 13:06:57 by rraja-az          #+#    #+#             */
-/*   Updated: 2025/02/24 07:59:29 by rraja-az         ###   ########.fr       */
+/*   Updated: 2025/02/27 20:30:02 by rraja-az         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,12 +15,12 @@
 /*
 	EXPORT
 	DESC: Create / modify env and make them available to child process
-	
+
 	EG	: (1) export a NEW var > export VAR=value (make var/val part of env and shell)
 		: (2) modify EXISTING var > export VAR=new_value (updates var with new value)
 		: (3) LIST exported vars > export > prints all exported vars alphabetically
-		
-	FLOW : 
+
+	FLOW :
 		1. Check args
 			- no args > print list of exported vars ALPHABETICALLY (insertion sort)
 			- has args > process each one
@@ -42,7 +42,7 @@
 		: NAME must start with alpha, can only contain alphanum
 */
 
-static void print_export_error(char *argv)
+static void	print_export_error(char *argv)
 {
 	ft_putstr_fd("minishell: export: ", 2);
 	ft_putchar_fd('`', 2);
@@ -51,7 +51,7 @@ static void print_export_error(char *argv)
 	ft_putstr_fd(": not a valid identifier\n", 2);
 }
 
-static void handle_without_equal(char *argv, t_shell *shell)
+static void	handle_without_equal(char *argv, t_shell *shell)
 {
 	if (!argv[0] || !is_valid_env_name(argv))
 	{
@@ -60,14 +60,11 @@ static void handle_without_equal(char *argv, t_shell *shell)
 		return ;
 	}
 	if (!is_env_name(argv, shell->env))
-	{
 		shell->export_env = extend_env_array(shell->export_env, argv, NULL);
-		sort_export_env(shell->export_env);
-	}
 	shell->last_exit_status = SUCCESS;
 }
 
-static void handle_with_equal(char *equal, char *argv, t_shell *shell)
+static void	handle_with_equal(char *equal, char *argv, t_shell *shell)
 {
 	char	name[PATH_MAX];
 	char	*value;
@@ -79,7 +76,7 @@ static void handle_with_equal(char *equal, char *argv, t_shell *shell)
 		return ;
 	}
 	ft_strlcpy(name, argv, equal - argv + 1);
-	if (!name[0] ||!is_valid_env_name(name))
+	if (!name[0] || !is_valid_env_name(name))
 	{
 		print_export_error(argv);
 		shell->last_exit_status = FAILURE;
@@ -87,29 +84,29 @@ static void handle_with_equal(char *equal, char *argv, t_shell *shell)
 	}
 	value = equal + 1;
 	update_env(name, value, true, shell);
-	sort_export_env(shell->export_env);
 	shell->last_exit_status = SUCCESS;
 }
 
-int builtin_export(char **argv, t_shell *shell)
+int	builtin_export(char **argv, t_shell *shell)
 {
-    int     i;
-    char    *equal;
+	int		i;
+	char	*equal;
 
-    if (!argv[1])
-    {
-        print_export_env(shell);
-        shell->last_exit_status = SUCCESS;
-        return (shell->last_exit_status);
-    }
-    i = 0;
-    while (argv[++i])
-    {
-        equal = ft_strchr(argv[i], '=');
-        if (equal)
+	if (!argv[1])
+	{
+		sort_export_env(shell->export_env);
+		print_export_env(shell);
+		shell->last_exit_status = SUCCESS;
+		return (shell->last_exit_status);
+	}
+	i = 0;
+	while (argv[++i])
+	{
+		equal = ft_strchr(argv[i], '=');
+		if (equal)
 			handle_with_equal(equal, argv[i], shell);
 		else
 			handle_without_equal(argv[i], shell);
-    }
-    return (shell->last_exit_status);
-}  
+	}
+	return (shell->last_exit_status);
+}

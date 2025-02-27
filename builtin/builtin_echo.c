@@ -3,10 +3,11 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_echo.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hni-xuan <hni-xuan@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rraja-az <rraja-az@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 14:20:27 by rraja-az          #+#    #+#             */
-/*   Updated: 2025/02/26 17:01:54 by hni-xuan         ###   ########.fr       */
+
+/*   Updated: 2025/02/25 17:35:18 by rraja-az         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +37,6 @@ static void	print_arguments(char **argv, int *i, t_shell *shell)
 	while (argv[*i])
 	{
 		j = -1;
-		
 		if (argv[*i][0] == '\0')
 			write(1, "\"\"", 0);
 		while (argv[*i][++j])

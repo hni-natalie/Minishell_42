@@ -19,7 +19,7 @@ LFLAGS = -lreadline
 RM = rm -rf
 
 NAME = minishell
-
+	
 # Directories
 LIBFT_DIR = ./libft
 OBJ_DIR = ./obj/

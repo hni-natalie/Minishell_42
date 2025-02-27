@@ -112,10 +112,7 @@ void	execute_node(t_node *node, t_shell *shell)
 void	execute_command(t_exec_node *exec_node, t_shell *shell)
 {
 	char	*cmd_path;
-	int		i;
 	
-	i = -1;
-	// printf("exec_node->argv = %s\n", exec_node->argv[0]); // debug
 	if (shell->argv_with_expansion)
 		shift_argv(exec_node);
 	if (!exec_node->argv[0])
@@ -126,10 +123,9 @@ void	execute_command(t_exec_node *exec_node, t_shell *shell)
 		return ;
 	}
 	cmd_path = NULL;
-	//execve(exec_node->argv[0], exec_node->argv, shell->env);
 	cmd_path = get_path(exec_node->argv[0], shell);
 	// printf("cmd fullpath: %s\n", cmd_path); // debug
 	if (!cmd_path || execve(cmd_path, exec_node->argv, shell->env) == -1)
 		handle_execute_error(cmd_path, exec_node);
-	// free(cmd_path);
+	//free(cmd_path);
 }

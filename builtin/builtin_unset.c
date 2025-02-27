@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_unset.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hni-xuan <hni-xuan@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rraja-az <rraja-az@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/10 09:56:27 by rraja-az          #+#    #+#             */
-/*   Updated: 2025/02/25 09:01:16 by hni-xuan         ###   ########.fr       */
+/*   Updated: 2025/02/25 11:35:29 by rraja-az         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,6 @@ int	builtin_unset(char **argv, t_shell *shell)
 	i = 1;
 	if (!argv[i])
 	{
-		//ft_putstr_fd("unset: not enough arguments\n", 2);
 		shell->last_exit_status = SUCCESS;
 		return (shell->last_exit_status);
 	}
