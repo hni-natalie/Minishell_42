@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_exit.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rraja-az <rraja-az@student.42kl.edu.my>    +#+  +:+       +#+        */
+/*   By: hni-xuan <hni-xuan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/07 16:24:16 by rraja-az          #+#    #+#             */
-/*   Updated: 2025/02/28 10:28:29 by rraja-az         ###   ########.fr       */
+/*   Updated: 2025/02/28 17:34:51 by hni-xuan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,12 +44,11 @@ static bool	is_numeric(char *s)
 	return (true);
 }
 
-//printf("%s%s%s\n", RED, "exit 👋 Bye ~", RESET);
 int	builtin_exit(char **argv, t_shell *shell)
 {
 	int	exit_status;
 
-	printf("exit\n");
+	printf("%s%s%s\n", RED, "exit 👋 Bye ~", RESET);
 	if (!argv[1])
 		exit(0);
 	if (!is_numeric(argv[1]))
