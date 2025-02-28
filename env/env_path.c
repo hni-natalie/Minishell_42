@@ -6,7 +6,7 @@
 /*   By: rraja-az <rraja-az@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/15 14:53:43 by rraja-az          #+#    #+#             */
-/*   Updated: 2025/02/27 10:05:38 by rraja-az         ###   ########.fr       */
+/*   Updated: 2025/02/28 08:59:09 by rraja-az         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,16 +15,15 @@
 /*
 	WHY : To determine how to find cmd in filesystem
 	ABSOLUTE PATH : Starts with / (EG: /usr/bin/ls)
-	RELATIVE PATH : Does not start with / 
+	RELATIVE PATH : Does not start with /
 					(EG : ./my_program ; in current directory)
 					(EG : ../my_program ; in parent directory)
-					
-*/
 
+*/
 static char	*is_path(char *cmd)
 {
-	if (cmd[0] == '/' || (cmd[0] == '.' && (cmd[1] == '/' 
-		|| (cmd[1] == '.' && cmd[2] == '/'))))
+	if (cmd[0] == '/' || (cmd[0] == '.' && (cmd[1] == '/' || (cmd[1] == '.'
+					&& cmd[2] == '/'))))
 		return (cmd);
 	return (NULL);
 }
@@ -33,14 +32,15 @@ static char	*extract_path(char *path, t_shell *shell)
 {
 	int	i;
 	int	len;
-	
+
 	if (!shell->env)
 		return (NULL);
 	i = 0;
 	len = ft_strlen(path);
 	while (shell->env[i])
 	{
-		if (ft_strncmp(shell->env[i], path, len) == 0 && shell->env[i][len] == '=')
+		if (ft_strncmp(shell->env[i], path, len) == 0
+			&& shell->env[i][len] == '=')
 			return (shell->env[i] + len + 1);
 		i++;
 	}
@@ -52,7 +52,6 @@ static char	*find_path(char *cmd, char **paths)
 	int		i;
 	char	*append;
 	char	*fullpath;
-	
 
 	if (!cmd || !paths || !paths[0])
 		return (NULL);

@@ -6,40 +6,15 @@
 /*   By: rraja-az <rraja-az@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 13:06:57 by rraja-az          #+#    #+#             */
-/*   Updated: 2025/02/27 20:30:02 by rraja-az         ###   ########.fr       */
+/*   Updated: 2025/02/28 08:18:23 by rraja-az         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
 /*
-	EXPORT
+	EXPORT (with no options)
 	DESC: Create / modify env and make them available to child process
-
-	EG	: (1) export a NEW var > export VAR=value (make var/val part of env and shell)
-		: (2) modify EXISTING var > export VAR=new_value (updates var with new value)
-		: (3) LIST exported vars > export > prints all exported vars alphabetically
-
-	FLOW :
-		1. Check args
-			- no args > print list of exported vars ALPHABETICALLY (insertion sort)
-			- has args > process each one
-		2. Validate args
-			- valid identifier (NAME=value format, start with letter/underscore)
-			- reject invalid names
-		3. Update / Add to env
-			- if env exist > update its value
-			- if it doesnt exist > add to array
-		4. Mark the var as exported
-			- make it available for child process
-		5. Handle memory
-			- malloc for new vars
-*/
-
-/*
-	DESC: Verifies a valid new env var
-		: follows syntax rules
-		: NAME must start with alpha, can only contain alphanum
 */
 
 static void	print_export_error(char *argv)
