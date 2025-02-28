@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: hni-xuan <hni-xuan@student.42.fr>          +#+  +:+       +#+         #
+#    By: rraja-az <rraja-az@student.42kl.edu.my>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/01/10 16:18:44 by hni-xuan          #+#    #+#              #
-#    Updated: 2025/02/27 15:22:31 by hni-xuan         ###   ########.fr        #
+#    Updated: 2025/02/28 12:43:58 by rraja-az         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,12 +14,12 @@ YELLOW = '\033[0;33m'
 RESET = '\033[0m'
 
 CC = cc 
-CFLAGS = -Wall -Wextra -Werror -Iinclude -g3 -fsanitize=address
+CFLAGS = -Wall -Wextra -Werror -Iinclude #-g3 -fsanitize=address
 LFLAGS = -lreadline
 RM = rm -rf
 
 NAME = minishell
-
+	
 # Directories
 LIBFT_DIR = ./libft
 OBJ_DIR = ./obj/
