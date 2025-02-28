@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hni-xuan <hni-xuan@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rraja-az <rraja-az@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 11:05:28 by hni-xuan          #+#    #+#             */
-/*   Updated: 2025/02/27 16:08:27 by hni-xuan         ###   ########.fr       */
+/*   Updated: 2025/02/28 09:11:02 by rraja-az         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,6 +115,7 @@ int		builtin_exit(char **argv, t_shell *shell);
 char	**copy_env(char **env);
 char	*get_env_name(char *env);
 char	*get_env_value(char *env);
+char	*get_directory(char *var, t_shell *shell);
 bool	is_env_name(char *name, char **env);
 bool	is_valid_env_name(const char *name);
 void	sort_export_env(char **export_env);
