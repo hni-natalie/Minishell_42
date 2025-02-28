@@ -6,7 +6,7 @@
 /*   By: rraja-az <rraja-az@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/05 15:59:07 by rraja-az          #+#    #+#             */
-/*   Updated: 2025/02/28 09:08:11 by rraja-az         ###   ########.fr       */
+/*   Updated: 2025/02/28 10:30:49 by rraja-az         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ static int	update_pwd(t_shell *shell)
 	pwd = getcwd(NULL, 0);
 	if (!pwd)
 		return (FAILURE);
-	update_env("PWD", pwd, false, shell);
+	update_env("PWD", pwd, NO, shell);
 	free(pwd);
 	return (SUCCESS);
 }
@@ -50,7 +50,7 @@ static int	home_directory(t_shell *shell)
 	oldpwd = get_directory("PWD", shell);
 	if (!oldpwd)
 		oldpwd = "";
-	update_env("OLDPWD", oldpwd, false, shell);
+	update_env("OLDPWD", oldpwd, NO, shell);
 	home = get_directory("HOME", shell);
 	if (!home)
 	{
@@ -59,7 +59,7 @@ static int	home_directory(t_shell *shell)
 	}
 	if (chdir(home) == 0)
 	{
-		update_env("PWD", home, false, shell);
+		update_env("PWD", home, NO, shell);
 		return (SUCCESS);
 	}
 	return (FAILURE);
@@ -80,8 +80,8 @@ static int	prev_directory(t_shell *shell)
 	if (!cwd)
 		return (FAILURE);
 	printf("%s\n", cwd);
-	update_env("OLDPWD", get_directory("PWD", shell), false, shell);
-	update_env("PWD", cwd, false, shell);
+	update_env("OLDPWD", get_directory("PWD", shell), NO, shell);
+	update_env("PWD", cwd, NO, shell);
 	free(cwd);
 	return (SUCCESS);
 }
@@ -111,7 +111,7 @@ int	builtin_cd(char **argv, t_shell *shell)
 		shell->last_exit_status = prev_directory(shell);
 		return (shell->last_exit_status);
 	}
-	update_env("OLDPWD", get_directory("PWD", shell), false, shell);
+	update_env("OLDPWD", get_directory("PWD", shell), NO, shell);
 	if (chdir(argv[1]) == -1)
 	{
 		cd_error(argv[1]);

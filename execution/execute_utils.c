@@ -6,7 +6,7 @@
 /*   By: rraja-az <rraja-az@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 16:45:59 by rraja-az          #+#    #+#             */
-/*   Updated: 2025/02/28 09:00:42 by rraja-az         ###   ########.fr       */
+/*   Updated: 2025/02/28 10:58:32 by rraja-az         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ void	handle_execute_error(char *cmd_path, t_exec_node *exec_node)
 				&& (exec_node->argv[0][1] == '/'
 					|| (exec_node->argv[0][1] == '.'
 						&& exec_node->argv[0][2] == '/'))));
-	if (!cmd_path && !is_path)
+	if ((!cmd_path && !is_path) || !exec_node->argv[0][0])
 	{
 		print_execute_error(exec_node->argv[0], "command not found");
 		exit(127);
