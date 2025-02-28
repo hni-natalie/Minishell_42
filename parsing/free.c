@@ -6,7 +6,7 @@
 /*   By: rraja-az <rraja-az@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 13:25:16 by hni-xuan          #+#    #+#             */
-/*   Updated: 2025/02/28 07:31:10 by rraja-az         ###   ########.fr       */
+/*   Updated: 2025/02/28 07:48:08 by rraja-az         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,6 @@ void	free_array(char **arr)
 	if (!arr)
 		return ;
 	i = -1;
-	while (arr[++i])
 	while (arr[++i])
 		free(arr[i]);
 	free(arr);
