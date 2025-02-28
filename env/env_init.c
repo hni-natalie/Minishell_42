@@ -6,7 +6,7 @@
 /*   By: rraja-az <rraja-az@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/15 14:48:34 by rraja-az          #+#    #+#             */
-/*   Updated: 2025/02/21 08:25:49 by rraja-az         ###   ########.fr       */
+/*   Updated: 2025/02/28 09:08:49 by rraja-az         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,6 @@ char	**copy_env(char **env)
 	while (env[++i])
 		copied_env[i] = ft_strdup(env[i]);
 	copied_env[i] = NULL;
-	// free(env);
 	return (copied_env);
 }
 
@@ -35,7 +34,7 @@ char	*get_env_name(char *env)
 {
 	int		i;
 	char	*name;
-	
+
 	if (!env)
 		return (NULL);
 	i = 0;
@@ -51,7 +50,7 @@ char	*get_env_name(char *env)
 char	*get_env_value(char *env)
 {
 	int	i;
-	
+
 	if (!env)
 		return (NULL);
 	i = 0;
@@ -61,6 +60,43 @@ char	*get_env_value(char *env)
 			return (ft_substr(env, i + 1, ft_strlen(env) - i - 1));
 		i++;
 	}
-	//return (NULL);
 	return (ft_strdup(""));
+}
+
+char	*get_directory(char *var, t_shell *shell)
+{
+	int		var_len;
+	char	**env;
+
+	if (!var || !shell || !shell->env)
+		return (NULL);
+	var_len = ft_strlen(var);
+	env = shell->env;
+	while (*env)
+	{
+		if (ft_strncmp(*env, var, var_len) == 0 && (*env)[var_len] == '=')
+			return (*env + var_len + 1);
+		env++;
+	}
+	return (NULL);
+}
+
+bool	is_env_name(char *name, char **env)
+{
+	int		i;
+	char	*env_name;
+
+	i = 0;
+	while (env && env[i])
+	{
+		env_name = get_env_name(env[i]);
+		if (ft_strncmp(name, env_name, ft_strlen(name) + 1) == 0)
+		{
+			free(env_name);
+			return (true);
+		}
+		free(env_name);
+		i++;
+	}
+	return (false);
 }
