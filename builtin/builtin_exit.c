@@ -6,7 +6,7 @@
 /*   By: rraja-az <rraja-az@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/07 16:24:16 by rraja-az          #+#    #+#             */
-/*   Updated: 2025/02/28 09:13:03 by rraja-az         ###   ########.fr       */
+/*   Updated: 2025/02/28 10:28:29 by rraja-az         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ int	builtin_exit(char **argv, t_shell *shell)
 	if (argv[2])
 	{
 		ft_putstr_fd("minishell: exit: too many arguments\n", 2);
-		return (1);
+		return (FAILURE);
 	}
 	exit_status = ft_atoi(argv[1]) % 256;
 	shell->last_exit_status = exit_status;

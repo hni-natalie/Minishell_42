@@ -6,7 +6,7 @@
 /*   By: rraja-az <rraja-az@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 13:06:57 by rraja-az          #+#    #+#             */
-/*   Updated: 2025/02/28 08:18:23 by rraja-az         ###   ########.fr       */
+/*   Updated: 2025/02/28 10:31:15 by rraja-az         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ static void	handle_with_equal(char *equal, char *argv, t_shell *shell)
 		return ;
 	}
 	value = equal + 1;
-	update_env(name, value, true, shell);
+	update_env(name, value, YES, shell);
 	shell->last_exit_status = SUCCESS;
 }
 
