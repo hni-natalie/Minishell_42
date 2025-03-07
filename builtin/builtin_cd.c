@@ -6,7 +6,7 @@
 /*   By: rraja-az <rraja-az@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/05 15:59:07 by rraja-az          #+#    #+#             */
-/*   Updated: 2025/02/28 10:30:49 by rraja-az         ###   ########.fr       */
+/*   Updated: 2025/03/07 23:34:40 by rraja-az         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,13 +21,6 @@
 	cd -	; go to previous directory 
 	cd ~ 	; go to home directory
 
-*/
-
-/*
-	DESC: Search for env var by its (1)name, returns corresponding (2)directory
-		- EG: var = OLDPWD, directory = /home/rraja-az/Desktop/Minishell
-		- EG: VAR/NAME=VALUE
-		- compares exactly and and make sure *env[len] is = > return after =
 */
 
 static int	update_pwd(t_shell *shell)
