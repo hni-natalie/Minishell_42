@@ -6,7 +6,7 @@
 /*   By: rraja-az <rraja-az@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 14:20:27 by rraja-az          #+#    #+#             */
-/*   Updated: 2025/02/28 08:00:55 by rraja-az         ###   ########.fr       */
+/*   Updated: 2025/03/07 23:34:57 by rraja-az         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,6 @@ static void	print_arguments(char **argv, int *i, t_shell *shell)
 	while (argv[*i])
 	{
 		j = -1;
-		if (argv[*i][0] == '\0')
-			write(1, "\"\"", 0);
 		while (argv[*i][++j])
 		{
 			if (argv[*i][j] == '\\' && shell->argv_with_qoutes == 0)
