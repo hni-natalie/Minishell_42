@@ -6,7 +6,7 @@
 /*   By: rraja-az <rraja-az@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 11:05:28 by hni-xuan          #+#    #+#             */
-/*   Updated: 2025/02/28 09:11:02 by rraja-az         ###   ########.fr       */
+/*   Updated: 2025/03/07 23:41:19 by rraja-az         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,9 @@
 # include "../libft/libft.h"
 # include "structs.h"
 # include <errno.h>
+# include <limits.h>
 # include <readline/readline.h>
 # include <readline/history.h>
-# include <errno.h>
 # include <sys/wait.h>
 # include <stdbool.h>
 # include <stdio.h>
@@ -44,10 +44,6 @@
 
 # define YES 1
 # define NO 0
-
-# define PATH_MAX 4096
-// max buffer size for file paths (CLI: getconf PATH_MAX /)
-// LINUX : 4096 | MAC : 1024
 
 extern int	g_signal;
 
